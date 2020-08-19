@@ -1,0 +1,11 @@
+^{:watch-dirs ["src/cljs" "src/cljc"]}
+{:modules
+ {:guest-list {:entries #{adx-billing.guest.list}
+               ;; :output-to "target/public/js/something/something.js"
+               }
+  :guest-sign {:entries #{adx-billing.guest.sign}}
+  :user-list {:entries #{adx-billing.user.user}}
+  :auth {:entries #{adx-billing.auth.auth}}}
+
+ :output-dir "resources/public/js/app"
+ :asset-path "/js/app"}

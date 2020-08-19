@@ -1,0 +1,4 @@
+{:prod true
+ :port 3000
+ :database-url "postgresql://localhost/adx_billing?user=dev&password=password"
+}

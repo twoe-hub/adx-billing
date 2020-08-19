@@ -1,0 +1,11 @@
+(ns adx-billing.env
+  (:require [clojure.tools.logging :as log]))
+
+(def defaults
+  {:init
+   (fn []
+     (log/info "\n-=[adx-billing started successfully]=-"))
+   :stop
+   (fn []
+     (log/info "\n-=[adx-billing has shut down successfully]=-"))
+   :middleware identity})

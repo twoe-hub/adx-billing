@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="tabs">
+    <ul>
+        <li class="{% ifequal tab "list" %}is-active{%endifequal%}"><a href="/guest/list">Guests</a></li>
+        <li class="{% ifequal tab "sign" %}is-active{%endifequal%}"><a href="/guest/sign">Sign</a></li>
+    </ul>
+</div>
+{% block tab-content %}
+{% endblock %}
+{% endblock %}

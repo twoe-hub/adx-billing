@@ -1,0 +1,8 @@
+{% extends "guest/guest.html" %}
+{% block tab-content %}
+<div id="tab-content"></div>
+{% endblock %}
+{% block page-scripts %}
+{% script "/js/app/cljs_base.js" %}
+{% script "/js/app/adx_billing/guest/list.js" %}
+{% endblock %}
