@@ -1,0 +1,38 @@
+/////////////////
+//  Custom Icons
+/////////////////
+.icon-custom {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+}
+
+.icon-custom-lg {
+  width: 38px;
+  height: 38px;
+}
+
+.icon-outbox {
+  background: url("../images/icons/u133.png") no-repeat;
+  background-size: contain;
+}
+
+.icon-inbox {
+  background: url("../images/icons/u137.png") no-repeat;
+  background-size: contain;
+}
+
+.icon-doc-reject {
+  background: url("../images/icons/u147.png") no-repeat;
+  background-size: contain;
+}
+
+.icon-doc-send {
+  background: url("../images/icons/u135.png") no-repeat;
+  background-size: contain;
+}
+
+.icon-kpi-chart {
+  background: url("../images/icons/u143.png") no-repeat;
+  background-size: contain;
+}

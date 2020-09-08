@@ -1,0 +1,81 @@
+%white-link {
+  color: color('white', 'base');
+
+  &:hover,
+  &:focus,
+  &:visited {
+    color: white;
+  }
+}
+
+%text-thin {
+  font-family: 'RobotoThin';
+  font-weight: 100;
+  font-style: normal;
+}
+
+%text-thin-italic {
+  font-family: 'RobotoThinItalic';
+  font-weight: 100;
+  font-style: italic;
+}
+
+%text-light {
+  font-family: 'RobotoLight';
+  font-weight: 300;
+  font-style: normal;
+}
+
+%text-light-italic {
+  font-family: 'RobotoLightItalic';
+  font-weight: 300;
+  font-style: italic;
+}
+
+%text-regular {
+  font-family: 'RobotoRegular';
+  font-weight: 400;
+  font-style: normal;
+}
+
+%text-regular-italic {
+  font-family: 'RobotoItalic';
+  font-weight: 400;
+  font-style: italic;
+}
+
+%text-medium {
+  font-family: 'RobotoMedium';
+  font-weight: 500;
+  font-style: normal;
+}
+
+%text-medium-italic {
+  font-family: 'RobotoMediumItalic';
+  font-weight: 500;
+  font-style: italic;
+}
+
+%text-bold {
+  font-family: 'RobotoBold';
+  font-weight: 700;
+  font-style: normal;
+}
+
+%text-bold-italic {
+  font-family: 'RobotoBoldItalic';
+  font-weight: 700;
+  font-style: italic;
+}
+
+%text-black {
+  font-family: 'RobotoBlack';
+  font-weight: 900;
+  font-style: normal;
+}
+
+%text-black-italic {
+  font-family: 'RobotoBlackItalic';
+  font-weight: 900;
+  font-style: italic;
+}

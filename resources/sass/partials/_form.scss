@@ -1,0 +1,82 @@
+// Form > Underlined Style
+.form-underline {
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  background-color: transparent;
+  background-image: none;
+  color: color('white', 'base');
+  border: none;
+  border-bottom: 1px solid color('white', 'base');
+  border-radius: 0;
+  box-shadow: none;
+
+  &:focus {
+    border-color: color('white', 'base');
+    outline: 0;
+    box-shadow: none;
+  }
+}
+
+// Form > Material Design Style
+.form-group-material {
+  position: relative;
+
+  .form-input-material {
+    width: 100%;
+    height: 2.5rem;
+    padding: .25rem .5rem;
+    background-color: transparent;
+    background-image: none;
+    color: color('white', 'base');
+    border: none;
+    border-bottom: 1px solid color('white', 'base');
+    border-radius: 0;
+    box-shadow: none;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:focus ~ .form-placeholder-material,
+    &:valid ~ .form-placeholder-material {
+      font-size: 0.75rem;
+      top: -1rem;
+      color: color('white', 'base');
+    }
+
+    &:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 1000px transparent inset;
+      -webkit-text-fill-color: color('white', 'base') !important;
+      background-color: transparent;
+    }
+
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active {
+      transition: background-color 6000s ease-in-out 0s;
+      background-clip: content-box;
+    }
+  }
+
+  .form-placeholder-material {
+    color: color('white-smoke', 'base');
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    left: .5rem;
+    top: 10px;
+    transition: 0.2s ease all;
+  }
+
+  &.has-icons-right > .form-input-material {
+    padding-right: 3rem;
+  }
+
+  .form-icon-material {
+    position: absolute;
+    right: .5rem;
+    top: 0;
+  }
+}

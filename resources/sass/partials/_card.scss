@@ -1,0 +1,40 @@
+/////////////////
+//  Cards Styles
+/////////////////
+
+.card {
+  border: 1px solid color('gray', 'lighten', 30);
+  margin: 8pt 0;
+  color: color('gray', 'darken', 10);
+  position: relative;
+
+  //.card-header {}
+  //.card-content {}
+  //.card-footer {}
+
+  .card-loading {
+    background-color: color('white', 'opacity', 0.9);
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    padding: 50px;
+    text-align: center;
+  }
+}
+
+.card-indigo {
+  background-color: color('indigo', 'base');
+  color: color('white', 'base');
+}
+
+.card-skyblue {
+  background-color: color('skyblue', 'lighten', 10);
+  color: color('white', 'base');
+}
+
+.card-olive {
+  background-color: color('olive', 'base');
+  color: color('white', 'base');
+}

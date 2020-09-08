@@ -1,0 +1,107 @@
+////////////////////////////////
+//  Chat Box Styles
+////////////////////////////////
+
+.chat {
+  overflow: hidden;
+  position: sticky;
+  top: 0;
+  min-height: 480px;
+  min-width: 24em;
+}
+
+.chat-header {
+  @extend %text-medium;
+
+  // H4
+  font-size: 1.5rem;
+  padding-bottom: 1.25rem;
+
+}
+
+.chat-tabs {
+  li {
+    width: 50%;
+    text-align: center;
+  }
+}
+
+.chat-content {
+  min-height: 20vh;
+  max-height: 60vh;
+  overflow: auto;
+  padding-top: 16px;
+  padding-bottom: 16px;
+
+  .chat-content-alert {
+    color: color('red', 'base');
+  }
+
+  .chat-message {
+    background-color: color('lightblue', 'lighten', 23);
+    padding: 8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+
+    .chat-message-from {
+      @extend %text-medium;
+    }
+
+    .chat-message-age {
+      @extend %text-regular-italic;
+
+      font-size: 0.75rem;
+    }
+
+    .chat-message-text {
+      margin-top: 8px;
+    }
+  }
+}
+
+.chat-input {
+  .chat-input-header {
+    @extend %text-medium;
+
+    text-align: justify;
+    padding-top: 8px;
+    height: 30px;
+    border-top: 1px solid color('gray', 'lighten', 30);
+
+    &:after{
+      content: '';
+	    display: inline-block;
+	    width: 100%;
+    }
+
+    span {
+      display: inline-block;
+    }
+
+    .tooltip-inner {
+      font-size: 0.75rem;
+    }
+
+    a {
+      color: color('gray', 'base');
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+
+  textarea {
+    resize: none;
+    height: 8rem;
+  }
+}
+
+.chat-actions {
+  @extend %text-bold;
+
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-align: center;
+}

@@ -1,0 +1,83 @@
+@charset "utf-8";
+
+////////////////////////////////////////////////////////////
+//  Bulma style customizations
+////////////////////////////////////////////////////////////
+
+//  Bulma generic declarations
+
+$body-size: 14px !default;
+
+$gap: 14px !default;
+
+//  Bulma initial declarations
+
+$black:              hsl(0, 0%, 44%) !default;
+
+$glass-black:        hsla(0, 0%, 0%, 0.56) !default;
+$glass-black-bis:    hsla(0, 0%, 0%, 0.53) !default;
+$glass-black-ter:    hsla(0, 0%, 0%, 0.46) !default;
+
+$glass-white-ter:    hsla(0, 0%, 100%, 0.76) !default;
+$glass-white-bis:    hsla(0, 0%, 100%, 0.78) !default;
+$glass-white:        hsla(0, 0%, 100%, 0.80) !default;
+
+//  Bulma derived declarations
+
+// $scheme-main: $glass-white !default;
+// $scheme-main-bis: $glass-white-bis !default;
+// $scheme-main-ter: $glass-white-ter !default;
+// $scheme-invert: $glass-black !default;
+// $scheme-invert-bis: $glass-black-bis !default;
+// $scheme-invert-ter: $glass-black-ter !default;
+
+// $link-hover-border: $glass-white-ter !default;
+// $link-focus-border: $glass-white-bis !default;
+// $link-active-border: $glass-white !default;
+
+$scheme-invert: $black !default;
+
+$hr-background-color: hsla(0, 0%, 0%, 0.14);
+
+$table-striped-row-even-background-color: hsla(0, 0%, 100%, 0.56) !default;
+$table-row-hover-background-color: hsla(0, 0%, 100%, 0.8) !default;
+$table-striped-row-even-hover-background-color: hsla(0, 0%, 100%, 0.76) !default;
+
+$card-header-color: hsl(0, 0%, 44%) !default;
+$card-header-weight: unset !default;
+
+$modal-card-head-background-color: hsl(0, 0%, 100%) !default;
+$modal-card-body-background-color: hsl(0, 0%, 100%) !default;
+
+$box-shadow: 0 0.125em 0.25em 0 rgba($scheme-invert, 0.2), 0 0 0 1px rgba($scheme-invert, 0.02) !default;
+$card-shadow: 0 0.125em 0.25em 0 rgba($scheme-invert, 0.2), 0 0 0 1px rgba($scheme-invert, 0.02) !default;
+
+$title-weight: 400 !default;
+
+$navbar-height: 4rem !default;
+$navbar-item-img-max-height: 1.25rem !default;
+
+$help-size: 1rem !default
+
+//  Custom Declarations
+$purple: #19133d;
+$purple-light: #392b8b;
+$purple-lighter: #aaa0e2;
+
+$blue: #13313d;
+$blue-light: #1f5064;
+$blue-lighter: #53a7c9;
+
+$cold-blue: #4080b0;
+$cold-blue-light: #4080b0;
+$cold-blue-lighter: #4080b0;
+
+$green: #090;
+
+$red: #f00;
+
+//  Update Bulma's global variables
+$family-sans-serif: "RobotoRegular", sans-serif;
+
+$primary: $purple-light;
+$link: $blue-light;

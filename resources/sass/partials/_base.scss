@@ -1,0 +1,24 @@
+/////////////////////
+//  Base Styles
+/////////////////////
+body {
+  font-size: $base-font-size;
+  @extend %text-regular;
+  min-height: 100%;
+  min-height: 100vh;
+
+  background-color: color('cold-blue', 'lighten', 45);
+  background:
+    url('/assets/hexagons.svg') center top / 100%,
+    linear-gradient(
+      color('cold-blue', 'lighten', 10),
+      color('cold-blue', 'base'));
+}
+
+strong {
+  @extend %text-medium;
+}
+
+a {
+  color: color('lightblue', 'base');
+}

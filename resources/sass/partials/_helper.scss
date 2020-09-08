@@ -1,0 +1,95 @@
+// Helper : Text Color
+
+.text-lightblue {
+  color: color('lightblue', 'base');
+}
+
+// Helper : Font Styles
+.text-thin {
+  font-family: 'RobotoThin';
+  font-weight: 100;
+  font-style: normal;
+}
+
+.text-thin-italic {
+  font-family: 'RobotoThinItalic';
+  font-weight: 100;
+  font-style: italic;
+}
+
+.text-light {
+  font-family: 'RobotoLight';
+  font-weight: 300;
+  font-style: normal;
+}
+
+.text-light-italic {
+  font-family: 'RobotoLightItalic';
+  font-weight: 300;
+  font-style: italic;
+}
+
+.text-regular {
+  font-family: 'RobotoRegular';
+  font-weight: 400;
+  font-style: normal;
+}
+
+.text-regular-italic {
+  font-family: 'RobotoRegularItalic';
+  font-weight: 400;
+  font-style: italic;
+}
+
+.text-medium {
+  font-family: 'RobotoMedium';
+  font-weight: 500;
+  font-style: normal;
+}
+
+.text-medium-italic {
+  font-family: 'RobotoMediumItalic';
+  font-weight: 500;
+  font-style: italic;
+}
+
+.text-bold {
+  font-family: 'RobotoBold';
+  font-weight: 700;
+  font-style: normal;
+}
+
+.text-bold-italic {
+  font-family: 'RobotoBoldItalic';
+  font-weight: 700;
+  font-style: italic;
+}
+
+.text-black {
+  font-family: 'RobotoBlack';
+  font-weight: 900;
+  font-style: normal;
+}
+
+.text-black-italic {
+  font-family: 'RobotoBlackItalic';
+  font-weight: 900;
+  font-style: italic;
+}
+
+// Helper : Border
+.border-top {
+  border-top: 1px solid color('gray', 'lighten', 30) !important;
+}
+
+.border-bottom {
+  border-bottom: 1px solid color('gray', 'lighten', 30) !important;
+}
+
+.border-left {
+  border-left: 1px solid color('gray', 'lighten', 30) !important;
+}
+
+.border-right {
+  border-right: 1px solid color('gray', 'lighten', 30) !important;
+}

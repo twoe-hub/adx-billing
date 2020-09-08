@@ -1,0 +1,258 @@
+.main-section {
+  padding: 3rem 0;
+}
+
+.main-container {
+  > .title {
+    color: color('white', 'base');
+  }
+
+  > .subtitle {
+    color: color('white', 'darken', 10);
+  }
+
+  > .breadcrumb a,
+  > .breadcrumb li.is-active a {
+    color: color('white', 'base');
+  }
+
+  > .tabs {
+    background-color: color('white', 'opacity', 0.2);
+    border-radius: $radius-large;
+    box-shadow: 0 0.125em 0.25em 0 rgba($scheme-invert, 0.1), 0 0px 0 1px rgba($scheme-invert, 0.02);
+
+    ul,
+    a {
+      border-bottom-width: 0;
+    }
+
+    // Tab item width behaviors
+
+    &.is-flex li {
+      flex: 1 0;
+    }
+
+    &.is-block li {
+      min-width: 14rem;
+    }
+
+    li {
+      a {
+        color: color('white', 'base');
+        padding: 0.75em 1.25em;
+      }
+
+      &.is-active {
+        @extend %text-bold;
+        background-color: color('green', 'base');
+      }
+
+      &.is-active a,
+      a:focus,
+      a:hover {
+        color: color('white', 'base');
+      }
+
+      a:focus,
+      a:hover {
+        background-color: color('green', 'lighten', 5);
+      }
+
+      &.is-right {
+        margin-left: auto;
+      }
+    }
+  }
+}
+
+.tab-pane {
+  &:not(.is-active) {
+    display: none;
+  }
+}
+
+// Make boxes fancy.
+.box {
+  backdrop-filter: blur(0.75rem);
+
+  // Box - transparent with white border variant
+  &.is-bordered {
+    background-color: transparent;
+    border: 1px solid color('white', 'base');
+  }
+
+  // Box - black glass variant
+  &.is-dark {
+    background-color: color('black', 'opacity', 0.4);
+  }
+}
+
+
+
+// Make all modal dialogs fade in
+.modal {
+  // Replace Bulma's "display: none" with "visibility: hidden"
+  // to make transitions work.
+  display: flex;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease, visibility 0.3s linear;
+
+  .modal-card {
+    transition: top 0.3s;
+    top: -3em;
+  }
+
+
+  &.is-active {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s ease, visibility 0s linear;
+
+    .modal-card {
+      top: 0;
+    }
+  }
+
+  // HACK: to allow drop-down menus to work on Bulma's modals
+  // See issue: https://github.com/jgthms/bulma/issues/936)
+  &.is-overflow {
+    position: fixed;
+    overflow: auto;
+
+    .modal-background {
+      position: fixed;
+    }
+
+    .modal-content,
+    .modal-card,
+    .modal-card-body {
+      overflow: visible;
+    }
+  }
+}
+
+// Fix DateTimePicker styling.
+.bulma-datetimepicker-widget {
+  .dropdown-content {
+    background-color: color('white', 'base');
+  }
+}
+
+// Extend tabs behavior
+.tabs li {
+  &.is-right {
+    margin-left: auto;
+  }
+}
+
+// Content header columns extension
+.content-header {
+  .title {
+    color: color('white', 'base');
+  }
+
+  @include mobile {
+    .column.is-divider {
+      display: none;
+    }
+  }
+
+  .column.is-divider > div {
+    border-left: 1px solid white;
+    height: 3rem;
+  }
+
+  .tabs.is-pivot {
+    font-size: 1.25rem;
+
+    ul {
+      border-bottom: none;
+
+      li {
+        margin-right: 0.75rem;
+        border-top: 0.1875rem solid transparent;
+        border-bottom: 0.1875rem solid transparent;
+
+        a {
+          color: color('white', 'opacity', 0.8);
+          border-bottom: none;
+          padding: 0.1875rem 1rem;
+        }
+
+
+        &:hover a,
+        &.is-active a {
+          @extend %text-medium;
+          color: color('white', 'base');
+        }
+
+        &.is-active {
+          border-bottom: 0.1875rem solid color('blue', 'base');
+        }
+      }
+    }
+  }
+}
+
+// Add column padding, but compensate for bottom margin of .buttons.
+.action-buttons {
+  @extend .buttons;
+  @extend .is-centered;
+  padding: $column-gap;
+  padding-bottom: 0.25rem;
+
+  transition: background .4s, backdrop-filter .4s;
+  backdrop-filter: blur(0.75rem);
+  background-color: color('black', 'opacity', 0.4);
+  position: sticky;
+  bottom: 0;
+
+  > .is-divider {
+    align-self: stretch;
+    background-color: color('white', 'base');
+    width: 1px;
+    margin: 0 0.25rem 0.5rem 0.25rem;
+  }
+}
+
+// Bland button style
+// Transparent blur BG, white text, white border
+.button.is-white.is-outlined {
+  // backdrop-filter: blur(0.75rem);
+  background-color: transparent;
+  border-color: color('white', 'base');
+  color: color('white', base);
+
+  &:active:not(:disabled),
+  &:focus:not(:disabled),
+  &:hover:not(:disabled) {
+    color: color('cold-blue', base);
+  }
+}
+
+.pagination.is-white.is-outlined {
+  .pagination-link,
+  .pagination-ellipsis {
+    // backdrop-filter: blur(0.75rem);
+    background-color: transparent;
+    color: color('white', base);
+  }
+
+  .pagination-link {
+    border-color: color('white', 'base');
+
+    &:active,
+    &:focus,
+    &:hover {
+      background-color: color('white', 'base');
+      color: color('cold-blue', 'base');
+    }
+  }
+
+  .pagination-link.is-current {
+    background-color: color('white', 'base');
+    color: color('cold-blue', 'base');
+    cursor: default;
+  }
+}

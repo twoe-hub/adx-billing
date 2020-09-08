@@ -1,0 +1,83 @@
+////////////////////////////////
+//  Dual-pane styles
+////////////////////////////////
+
+.duo {
+
+  // On desktop, display as sidebar
+  @include desktop {
+
+    display: flex;
+    align-items: stretch;
+
+    .duo-lead,
+    .duo-side {
+      margin-bottom: 1.5rem;
+      width: 100%;
+    }
+
+    .duo-lead {
+      max-width: 61.8034%;
+      transition: margin 0.3s ease, max-width 0.3s ease, visibility 0s linear;
+    }
+
+    .duo-side {
+      margin-left: 1.5rem;
+      max-width: 38.1966%;
+      opacity: 1;
+      visibility: visible;
+      transition: margin 0.3s ease, max-width 0.3s ease, opacity 0.2s ease, visibility 0s linear;
+    }
+
+    &.is-side-hidden {
+
+      .duo-lead {
+        max-width: 100%;
+      }
+
+      .duo-side {
+        margin-left: 0;
+        max-width: 0;
+        opacity: 0;
+        visibility: hidden;
+        transition: margin 0.3s ease, max-width 0.3s ease, opacity 0.2s ease, visibility 0.2s linear;
+      }
+
+    }
+
+  }
+
+  // On mobile, display as overlay
+  @include touch {
+
+    .duo-lead,
+    .duo-side {
+      display: inline-block;
+    }
+
+    .duo-side {
+      position: absolute;
+      left: 0;
+      opacity: 1;
+      visibility: visible;
+      transition: left 0.3s ease, opacity 0.2s ease, visibility 0s linear;
+    }
+
+    &.is-side-hidden {
+      .duo-side {
+        left: 100vw;
+        opacity: 0;
+        visibility: hidden;
+        transition: left 0.3s ease, opacity 0.2s ease, visibility 0.2s linear;
+      }
+    }
+
+  }
+
+  .duo-lead,
+  .duo-side {
+    margin-bottom: 1.5rem;
+    width: 100%;
+  }
+
+}

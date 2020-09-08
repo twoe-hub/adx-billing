@@ -1,0 +1,44 @@
+///////////////////
+//  Checkbox Styles
+///////////////////
+.checkbox-fancy {
+  min-width: 130px;
+  display: inline-block;
+  margin-right: 4px;
+
+  input[type=checkbox] {
+    display: none;
+  }
+
+  input[type=checkbox] + label.btn{
+    @extend %text-medium;
+
+    width: 100%;
+    display: inline-block;
+    position: relative;
+    background-color: color('white', 'base');
+    padding: 28px 0px;
+    margin-bottom: 8px;
+    color: color('gray', 'darken', 10);
+
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    transition: all 0.2s;
+
+    border: 1px solid color('gray', 'lighten', 30);
+    border-radius: 0;
+    cursor: pointer;
+    outline: none;
+  }
+
+  input[type=checkbox] + label.btn:hover{
+    box-shadow: 2px 2px 4px color('gray', 'lighten', 30);
+  }
+
+  input[type=checkbox]:checked + label.btn{
+    background: color('green', 'lighten', 10);
+    color: color('white', 'base');
+    box-shadow: none;
+    border: 1px solid transparent;
+  }
+}

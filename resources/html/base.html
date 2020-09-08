@@ -8,81 +8,91 @@
 
         <title>Welcome to adx-billing</title>
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <!-- styles -->
-        {% style "/css/main.css" %}
-        {% style "/assets/material-icons/css/material-icons.min.css" %}
+        {% style "/css/start.css" %}
     </head>
-    <body>
+    <body class="has-navbar-fixed-top">
 
-        <header class="hero">
-            <div class="hero-head">
-                <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
-                    <div class="navbar-brand">
-                        <a class="navbar-item is--brand" href="/"><span class="icon is-medium"><i class="fa fa-superpowers"></i></span>adx-billing</a>
+        <header>
+            <nav class="main-navbar navbar is-fixed-top" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    <div class="navbar-brand-title navbar-item">
+                        <asset:image src="adxios-brand-white.svg" />
+                        <strong>TMS</strong>
                     </div>
+                    <a class="navbar-burger burger" role="button" aria-label="menu" aria-expanded="false" data-target="main-navbar-menu">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
 
-                    <div class="navbar-menu navbar-end" id="navMenu">
-                        <a class="navbar-item nav-tag">
-                            <span class="icon is-small">
-                                <i class="fa fa-envelope-o"></i>
+                <div class="navbar-menu" id="main-navbar-menu">
+                    <div class="navbar-start">
+                        <div class="navbar-search navbar-item">
+                            <form action="/docSearch">
+                                <div class="field has-addons is-material">
+                                    <div class="control is-expanded">
+                                        <input type="text" class="input" name="docNo" value="" placeholder="Search" />
+                                    </div>
+                                    <div class="control">
+                                        <button type="submit" class="button">
+                                            <span class="fa fa-search" aria-hidden="true"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="navbar-end">
+                        <div class="navbar-welcome navbar-item">
+                            <span>
+                                <p><sec:loggedInUserInfo field="affName"/></p>
+                                <p>
+                                    <strong>
+                                        Welcome, <sec:loggedInUserInfo field="displayName"/>
+                                    </strong>
+                                </p>
                             </span>
-                            <span class="tag is-primary tag-notif">6</span>
-                        </a>
-                        <div class="navbar-item has-dropdown is-hoverable">
-                            <a class="navbar-link">
-                                <figure class="image is-32x32" style="margin-right:.5em;">
-                                    <img src="https://www.gravatar.com/avatar/92cb80ae99475273147202fe67407662">
-                                </figure>
-                                adeel
-                            </a>
-
-                            <div class="navbar-dropdown is-right">
-                                <a class="navbar-item">
-                                    <span class="icon is-small">
-                                        <i class="fa fa-user-o"></i>
-                                    </span>
-                                    &nbsp; Profile
-                                </a>
+                        </div>
+                        <div class="navbar-profile navbar-item has-dropdown">
+                            <div class="navbar-link is-arrowless">
+                                <span class="icon is-medium"><span class="fa fa-2x fa-user-circle"></span></span>
+                            </div>
+                            <div class="navbar-dropdown is-boxed is-right" id="navbar-dropdown">
+                                <g:link class="navbar-item" namespace="settings" controller="user" action="editProfile">
+                                    <span class="icon is-medium"><span class="fa fa-lg fa-cog"></span></span>
+                                    <span>User Profile</span>
+                                </g:link>
                                 <hr class="navbar-divider">
-                                <a class="navbar-item" href="/logout">
-                                    <span class="icon is-small">
-                                        <i class="fa fa-power-off"></i>
-                                    </span>
-                                    &nbsp; Logout
-                                </a>
+                                <g:link class="navbar-item" url="/logoff">
+                                    <span class="icon is-medium"><span class="fa fa-lg fa-sign-out-alt"></span></span>
+                                    <span>Logout</span>
+                                </g:link>
                             </div>
                         </div>
                     </div>
-                </nav>
-            </div>
+                </div>
+            </nav>
         </header>
+        <aside class="sidebar-menu menu is-hidden-touch">
+            <ul class="menu-list">
+                <li><a class="navbar-item{% ifequal page "guest/list.html" %} is-active{%endifequal%}" href="/">Guests</a></li>
+                <li><a class="navbar-item{% ifequal page "user/user-list.html" %} is-active{%endifequal%}" href="/user/list">Users</a></li>
+                <li><a class="navbar-item{% ifequal page "about.html" %} is-active{%endifequal%}" href="/about">About</a></li>
+            </ul>
+        </aside>
 
-        <div class="wrapper">
-            <div class="columns">
-                <aside class="column is-2 aside">
-                    <nav class="menu">
-                        <p class="menu-label">
-                            General
-                        </p>
-                        <ul class="menu-list">
-                            <li><a class="navbar-item{% ifequal page "guest/list.html" %} is-active{%endifequal%}" href="/">Guests</a></li>
-                            <li><a class="navbar-item{% ifequal page "user/user-list.html" %} is-active{%endifequal%}" href="/user/list">Users</a></li>
-                            <li><a class="navbar-item{% ifequal page "about.html" %} is-active{%endifequal%}" href="/about">About</a></li>
-                        </ul>
-                    </nav>
-                </aside>
+        <section class="main-section section">
 
-                <main class="column main">
-                    <section class="section">
-                        <div class="container is-fluid">
-                            {% block content %}
-                            {% endblock %}
-                        </div>
-                    </section>
-                </main>
+            <div class="main-container container is-fluid">
+
+                {% block content %}
+                {% endblock %}
+
             </div>
-        </div>
+
+        </section>
 
         {% block page-scripts %}
         {% endblock %}

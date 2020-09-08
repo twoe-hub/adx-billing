@@ -46,22 +46,11 @@
   :main ^:skip-aot adx-billing.core
 
   :plugins [[lein-immutant "2.1.0"]
-            [lein-scss "0.3.0"]]
+            [yogthos/lein-sass "0.1.10"]]
 
-  :scss {:builds
-         {:development {:source-dir "resources/scss"
-                        :dest-dir "resources/public/css"
-                        :executable "sassc"
-                        :args ["--style" "expanded"]}
-          :production {:source-dir "resources/scss"
-                       :dest-dir "resources/public/css"
-                       :executable "sassc"
-                       :args ["--style" "compressed"]}}}
+  :sass {:source "resources/sass" :target "resources/public/css"}
 
   :clean-targets ^{:protect false} [...targets...]
-  ;; :clean-targets ^{:protect false} [:target-path
-  ;;                                   [:cljsbuild :builds :app :compiler :output-dir]
-  ;;                                   [:cljsbuild :builds :app :compiler :output-to]]
 
   :profiles
   {:uberjar {:omit-source true

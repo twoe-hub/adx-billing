@@ -1,0 +1,132 @@
+/****************************************
+  Color Variables
+  ------------
+  Please add all colors throughout the
+  project in this file.
+
+  Use the color function provide to get color
+  e.g. color('blue', 'base')
+  e.g. color('red', 'lighten', 5)
+  e.g. color('green', 'darken', 25)
+  e.g. color('green', 'saturate', 25)
+  e.g. color('green', 'desaturate', 25)
+  e.g. color('green', opacity, 0.5)
+
+  One is all talk, the other only color
+****************************************/
+
+// Color variables
+$white: #fff;
+$white-smoke: #f2f2f2;
+$black: #000;
+$gray: #868686;
+$skyblue: #223341;
+$red: #f00;
+$green: #9c0;
+// $blue: #039;
+$lightblue: #66ccff;
+$indigo: #0099cc;
+$brick: #993333;
+$jade: #6bd96a;
+$yellow: #feb742;
+$olive: #999900;
+
+$purple: #19133d;
+$blue: #13313d;
+$cold-blue: #3b96b8;
+
+// List of our colors
+$colors: (
+  "white": $white,
+  "white-smoke": $white-smoke,
+  "black": $black,
+  "gray": $gray,
+  "grey": $gray,
+  "skyblue": $skyblue,
+  "red": $red,
+  "green": $green,
+  "blue": $blue,
+  "lightblue": $lightblue,
+  "cold-blue": $cold-blue,
+  "indigo": $indigo,
+  "brick": $brick,
+  "jade": $jade,
+  "yellow": $yellow,
+  "olive": $olive,
+  "purple": $purple
+);
+
+/**
+ * Color Generator
+ * @param  $color          Name of color [required]
+ * @param  $type           'Darken', 'Lighten', 'Saturate', 'Desaturate', 'Opacity' or 'Base' [required]
+ * @param  $percentage     Percentage of change [optional]
+ * @return color in Hex format
+ *
+ * @usage: color('name_of_color', 'type of color', 'percentage')
+ */
+@function color($color, $type, $percentage: 0) {
+  // if color exists in our color list
+  @if map-has-key($colors, $color) {
+    // get the color value
+    $curr_color: map-get($colors, $color);
+
+    // if type is to Darken
+    // darken the color by given percentage
+    // return the color
+    @if ($type == darken) {
+      $curr_color: darken($curr_color, $percentage);
+      @return $curr_color;
+    }
+
+    // if type is to Lighten
+    // lighten the color by given percentage
+    // return the color
+    @else if ($type == lighten) {
+      $curr_color: lighten($curr_color, $percentage);
+      @return $curr_color;
+    }
+
+    // if type is to Saturate
+    // Saturate the color by given percentage
+    // return the color
+    @else if ($type == saturate) {
+      $curr_color: saturate($curr_color, $percentage);
+      @return $curr_color;
+    }
+
+    // if type is to Desaturate
+    // Desaturate the color by given percentage
+    // return the color
+    @else if ($type == desaturate) {
+      $curr_color: desaturate($curr_color, $percentage);
+      @return $curr_color;
+    }
+
+    // if type is to Opacity
+    // set opaque to given percentage
+    // return the color
+    @else if ($type == opacity) {
+      $curr_color: rgba($curr_color, $percentage);
+      @return $curr_color;
+    }
+
+    // if type is to get Base
+    // return base color without changing it
+    @else if ($type == base) {
+      @return $curr_color;
+    }
+
+    // if type is unknown
+    // send a warning message
+    @else {
+      @warn "Unknown `#{type}`!";
+      @return null;
+    }
+  }
+
+  // if color name does not exist in our color list
+  // send a warning message
+  @warn "Unknown `#{name}` in $colors.";
+  @return null;
+}

@@ -1,0 +1,160 @@
+.content {
+  .content-header {
+    @include clearfix;
+
+    color: color('gray', 'lighten', 15);
+    margin: 0 8pt;
+    position: relative;
+    border-bottom: 1px solid color('gray', 'lighten', 40);
+
+    .content-title {
+      @extend %text-light;
+
+      font-size: 2rem;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+      display: inline-block;
+    }
+
+    .content-breadcrumb {
+      float: right;
+      margin-top: 2.5rem;
+
+      a {
+        color: color('gray', 'lighten', 15);
+      }
+    }
+  }
+
+  .content-body {
+    color: color('gray', 'lighten', 15);
+    padding: 8pt;
+
+    .tabs {
+      margin-top: -4pt;
+      margin-bottom: 16pt;
+      padding-bottom: 4pt;
+      border-bottom: 1px solid color('gray', 'lighten', 40);
+    }
+  }
+
+  .content-tabs {
+    .content-tab {
+      @extend %text-medium;
+
+      display: inline-table;
+      position: relative;
+      width: 180px;
+      height: 77px;
+      font-size: 1rem;
+      color: color('white', 'base');
+      text-align: right;
+      margin-bottom: 16pt;
+      margin-right: 8pt;
+      padding: 0 16pt;
+
+      &.active {
+        box-shadow: $shadow-content-tab;
+      }
+
+      &.red {
+        background-color: color('red', 'base');
+      }
+
+      &.green {
+        background-color: color('green', 'base');
+      }
+
+      &.blue {
+        background-color: color('blue', 'base');
+      }
+
+      &.lightblue {
+        background-color: color('lightblue', 'darken', 10);
+      }
+
+      &.indigo {
+        background-color: color('indigo', 'base');
+      }
+
+      &.brick {
+        background-color: color('brick', 'base');
+      }
+
+      &.yellow {
+        background-color: color('yellow', 'base');
+      }
+
+      &.gray {
+        background-color: color('gray', 'darken', 30);
+      }
+
+      &:hover,
+      &:focus {
+        box-shadow: $shadow-content-tab;
+        text-decoration: none;
+        transition: 0.25s;
+      }
+
+      .tab-icon {
+        position: absolute;
+        left: 11pt;
+        top: 11px;
+        font-size: 2.5rem;
+        opacity: .3;
+      }
+
+      .tab-text {
+        display: inline-block;
+        text-align: center;
+
+        .tab-text-stat {
+          display: block;
+          font-size: 3rem;
+        }
+
+        .tab-text-label {
+          display: block;
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+}
+
+// Move content to the right if sidebar exists.
+.sidebar + .content {
+  margin-left: 150px;
+  transition: margin 200ms;
+
+  &.content-collapse {
+    margin-left: 60px;
+
+    @media screen and (max-width: 768px) {
+      margin-left: 0;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    margin-left: 0;
+  }
+}
+
+// Remove unnecessary content and spacing when printing.
+@media print {
+  .content {
+    margin-left: 0;
+
+    .content-body {
+      padding: 0;
+
+      .tabs {
+        display: none;
+      }
+    }
+  }
+
+  .chat-button {
+    display: none;
+  }
+}
