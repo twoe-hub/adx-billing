@@ -46,9 +46,22 @@
   :main ^:skip-aot adx-billing.core
 
   :plugins [[lein-immutant "2.1.0"]
-            [yogthos/lein-sass "0.1.10"]]
+            ;; Too slow
+            ;; [yogthos/lein-sass "0.1.10"]
+            [lein-scss "0.3.0"]
+            ]
 
-  :sass {:source "resources/sass" :target "resources/public/css"}
+  ;; Uncomment the block below, and comment out the next to use yogthos/lein-sass
+  ;; :sass {:source "resources/sass" :target "resources/public/css"}
+  :scss {:builds
+         {:development {:source-dir "resources/sass"
+                        :dest-dir "resources/public/css"
+                        :executable "sassc"
+                        :args ["--style" "expanded"]}
+          :production {:source-dir "resources/sass"
+                       :dest-dir "resources/public/css"
+                       :executable "sassc"
+                       :args ["--style" "compressed"]}}}
 
   :clean-targets ^{:protect false} [...targets...]
 

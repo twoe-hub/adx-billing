@@ -1,55 +1,15 @@
-////////////////////////////////////////
-//  Start Styles
-//  ------------
-//  As you start to walk on the way, the way appears
-//  --------------------------------------
-//  TOC
-//  --------------------------------------
-//  > Imports [Vendor Libs]
-//  > Imports [Modules and Partials]
-////////////////////////////////////////
+@charset "utf-8";
 
-/////////////////////
-// Imports [Vendor Libs]
-/////////////////////
-// Font Awesome Icon Pack
 @import 'vendor/fontawesome/font-awesome';
-
-// Custom Fonts
 @import 'vendor/roboto';
-
-// Bulma customization
 @import 'customization-bulma';
-
-// Bulma
 @import 'vendor/bulma/bulma';
-
 @import 'vendor/bulma-datetimepicker';
-
-// Sweet Alert 2
 @import 'vendor/sweetalert2/sweetalert2';
-
-// Sweet Alert 2 customization
 @import 'customization-swal2';
-
-// Trix [Rich Text Editor]
 @import 'vendor/trix/trix';
-
-// Chart.JS
-@import 'vendor/chart';
-
-/////////////////////
-// Imports [Modules and Partials]
-/////////////////////
-
-// Biztrade Global Modules
+// @import 'vendor/chart';
 @import 'modules/all';
-
-// BizTrade Bootstrap
 @import 'app';
-
-// Layout Theme
 @import 'views/layout/all';
-
-// Bulma overrides
 @import 'overrides-bulma';
