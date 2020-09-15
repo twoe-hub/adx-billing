@@ -12,6 +12,7 @@
                  [cprop "0.1.15"]
                  [expound "0.8.3"]
                  [funcool/struct "1.4.0"]
+                 [garden "1.3.10"]
                  [luminus-jetty "0.1.7"]
                  [luminus-migrations "0.6.6"]
                  [luminus/ring-ttl-session "0.3.3"]

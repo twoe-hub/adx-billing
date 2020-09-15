@@ -47,14 +47,10 @@
          {:errors {:server-error ["Failed to save user!"]}})))))
 
 (defn render-list [request]
-  (layout/render
-   request
-   "user/user-list.html" {:tab "list"}))
+  (layout/render request "user/user-list.html" {:tab "list"}))
 
 (defn render-form [request]
-  (layout/render
-   request
-   "user/user-edit-form.html" {:tab "create"}))
+  (layout/render request "user/user-edit-form.html" {:tab "create"}))
 
 (defn transform-keys
   "Recursively transforms all map keys from strings to keywords."
@@ -80,6 +76,5 @@
    {:middleware [middleware/wrap-csrf
                  middleware/wrap-formats]}
    ["/user/list" {:get render-list}]
-   ["/user/create" {:get render-form}]
    ["/user/users" {:get get-users}]
    ["/user/save" {:post save-user!}]])

@@ -10,6 +10,9 @@
    [ring.util.response :refer [redirect]]
    ))
 
+(defn render-login [request]
+  (layout/render request "auth/login.html"))
+
 (defn logout [request]
   (do
     (-> request
@@ -20,5 +23,8 @@
      :headers {"Location" "/"}}))
 
 (defn auth-routes []
-  ["/logout" {:get logout}]
-  )
+  [""
+   {:middleware [middleware/wrap-csrf
+                 middleware/wrap-formats]}
+   ["/login" {:get render-login}]
+   ["/logout" {:get logout}]])

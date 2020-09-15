@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        {% block title %}
+        {% endblock %}
+        {% style "/css/start.css" %}
+        {% block style %}
+        {% endblock %}
+    </head>
+    <body>
+        <div class="block-main columns is-gapless">
+
+            {% block side %}
+            {% endblock %}
+
+            <div class="column block block-main">
+                <header>
+                    <div class="header-brand">
+                        <img src="/img/adxios-brand-white.svg" />
+                        <strong>e-Billing</strong>
+                    </div>
+                    <ul class="header-links">
+                        <li>
+                            <a data-toggle="modal" data-target="#termsOfService">
+                                Terms of Service
+                            </a>
+                        </li>
+                        <li>
+                            <a data-toggle="modal" data-target="#privacyPolicies">
+                                Privacy Policy
+                            </a>
+                        </li>
+                    </ul>
+                </header>
+
+                <section class="section">
+                    {% block content %}
+                    {% endblock %}
+                </section>
+            </div>
+
+        </div>
+
+        {% block page-scripts %}
+        {% endblock %}
+
+    </body>
+</html>

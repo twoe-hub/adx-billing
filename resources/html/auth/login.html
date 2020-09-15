@@ -1,28 +1,25 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8"/>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=7">
-        <meta name="language" content="en-EN" />
+{% extends "lax-base.html" %}
 
-        <title>Welcome to adx-billing</title>
+{% block title %}
+<title>Login to Adxios e-Billing</title>
+{% endblock %}
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-        <!-- styles -->
-        {% style "/css/main.css" %}
-        {% style "/assets/material-icons/css/material-icons.min.css" %}
-    </head>
-    <body>
+{% block title %}
+<style></style>
+{% endblock %}
 
-        <input id="token" type="hidden" value="{{csrf-token}}">
-        <section class="section">
-            <br/><br/><br/> <br/><br/><br/><br/> <br/>
-            <div id="content"></div>
-        </section>
-        {% block page-scripts %}
-        {% script "/js/app/cljs_base.js" %}
-        {% script "/js/auth.js" %}
-        {% endblock %}
-    </body>
-</html>
+{% block side %}
+<!-- <g:if test="${anns}">
+     <g:render template="announcement"/>
+     </g:if> -->
+{% endblock %}
+
+{% block content %}
+<input id="token" type="hidden" value="{{csrf-token}}">
+<div id="content"></div>
+{% endblock %}
+
+{% block page-scripts %}
+{% script "/js/app/cljs_base.js" %}
+{% script "/js/app/adx_billing/auth/login.js" %}
+{% endblock %}
