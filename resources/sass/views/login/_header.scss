@@ -1,0 +1,42 @@
+.block-main > header {
+  height: 100px;
+  padding: 32px;
+  margin: 0;
+
+  .header-brand {
+    display: flex;
+    width: 170px;
+
+    img {
+      padding-right: 0.25rem;
+    }
+
+    strong {
+      margin-top: -0.25rem;
+      color: color('white', 'base');
+      align-self: baseline;
+    }
+  }
+
+  .header-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.header-brand {
+  float: left;
+  text-align: left;
+}
+
+.header-links {
+  min-width: 50%;
+  float: right;
+  text-align: right;
+
+  li {
+    float: right;
+    margin-left: 2rem;
+  }
+}

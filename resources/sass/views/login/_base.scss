@@ -1,0 +1,269 @@
+/*
+  Generic
+ */
+a {
+  @extend %text-medium;
+  text-decoration: none;
+  color: color('white', 'opacity', 0.8);
+  cursor: pointer;
+
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: underline;
+    color: color('white', 'base');
+  }
+}
+
+button {
+  @extend %text-regular;
+}
+
+header,
+.block {
+  color: color('white', 'base');
+}
+
+
+// Override Bulma styling
+.modal-card-foot {
+  justify-content: center;
+}
+
+.checkbox:hover {
+  color: unset;
+}
+
+.field:not(:last-child) {
+  margin-bottom: 3rem;
+}
+
+/*
+  Container
+ */
+.block-main {
+  width: 100%;
+
+  &.columns.is-gapless {
+    margin-bottom: 0;
+  }
+}
+
+/*
+  Blocks
+ */
+.block {
+  .block-header {
+    font-size: 2rem;
+    line-height: 1.25;
+    margin-bottom: 2rem;
+  }
+
+  .block-header,
+  .block-content {
+    text-align: center;
+  }
+}
+
+// Announcement Block
+.block-announcement {
+  background-color: color('black', 'opacity', 0.2);
+
+  section {
+    padding: 10rem 6rem;
+  }
+
+  .block-header,
+  .block-content {
+    text-align: left;
+  }
+
+  .announcement {
+    &:not(.is-current) {
+      display: none;
+    }
+
+    .title {
+      font-size: 1.5rem;
+      color: color('white', 'base');
+    }
+
+    .published-on {
+      font-size: 0.75rem;
+      color: color('white', 'opacity', 0.8);
+    }
+
+    .content {
+      strong {
+        color: color('white', 'base');
+      }
+
+      ul {
+        margin-bottom: 2rem;
+      }
+    }
+  }
+
+  .pagination li a {
+    font-size: 0.5rem;
+    color: color('white', 'opacity', 0.4);
+
+    &:hover {
+      color: color('white', 'base');
+    }
+
+    &.is-current {
+      font-size: 0.75rem;
+      color: color('white', 'opacity', 0.8);
+    }
+  }
+}
+
+// Login Block
+.block-login {
+  margin: auto;
+  max-width: 48rem;
+  text-align: center;
+
+  .form-group {
+    margin-bottom: 32px;
+  }
+
+  .button.is-green {
+    background-color: color('green', 'base');
+    color: color('white', 'base');
+
+    &:active,
+    &:hover {
+      background-color: color('green', 'lighten', 10);
+    };
+  }
+}
+
+// Forgot Password Block
+.block-forgot {
+  .form-group {
+    margin-bottom: 2rem;
+  }
+}
+
+// Success Page Block
+.block-success {
+  .block-success-icon {
+    font-size: 108px;
+    margin-bottom: 2rem;
+  }
+
+  .form-group {
+    margin-top: 2rem;
+  }
+
+  a {
+    @extend %white-link;
+  }
+}
+
+// Failed Page Block
+.block-failed {
+  .block-failed-icon {
+    font-size: 108px;
+    margin-bottom: 2rem;
+  }
+
+  .form-group {
+    margin-top: 2rem;
+  }
+
+  a {
+    @extend %white-link;
+  }
+}
+
+// Reset Password Page
+.block-reset {
+
+  .auth-form-newpass {
+    position: relative;
+  }
+
+  .new-password-feedback {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: color('lightblue', 'base');
+  }
+
+  .form-group {
+    margin-top: 2rem;
+  }
+
+  a {
+    @extend %white-link;
+  }
+
+  .tooltip-inner {
+    width: 200px;
+    font-size: .75rem;
+  }
+}
+
+// Invalid Token Page Block
+.block-invalid {
+  .block-invalid-icon {
+    font-size: 108px;
+    margin-bottom: 2rem;
+  }
+
+  .form-group {
+    margin-top: 2rem;
+  }
+
+  a {
+    @extend %white-link;
+  }
+}
+
+/*
+  Auth Elements
+ */
+.auth-message {
+  margin: 1rem auto;
+  width: 75%;
+}
+
+.auth-errors {
+  @extend %text-bold;
+}
+
+.auth-form {
+  margin: 2rem auto 0;
+  width: 50%;
+
+  @media screen and (max-width: 970px) {
+    width: 100%;
+  }
+
+  .remember-me {
+    float: left;
+  }
+
+  .forgot-password {
+    float: right;
+  }
+
+  .auth-form-required {
+    @extend %text-medium;
+
+    color: color('red', 'base');
+    float: left;
+    font-size: .75rem;
+    margin-left: .5rem;
+    margin-top: .25rem;
+    position: absolute;
+  }
+
+  .form-icon-material > .fa-stack > .fa-lock {
+    color: color('cold-blue', 'base');
+    font-size: 1.25rem;
+  }
+}
