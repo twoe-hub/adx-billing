@@ -12,11 +12,11 @@
         {:format :json
          :headers
          {"Accept" "application/transit+json"
-          "x-csrf-token" (.-value (.getElementById js/document "token"))}
+          "x-csrf-token" (.-value (.getElementById js/document "__anti-forgery-token"))}
          :params @fields
          :handler #(do
                      (.log js/console (str %))
-                     (.replace (.-location js/window) "/guest/list")
+                     (.replace (.-location js/window) "/user/list")
                      (reset! fields nil)
                      (reset! errors nil))
          :error-handler #(do

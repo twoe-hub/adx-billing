@@ -731,10 +731,10 @@ insert into "module" ("id", "parent_id", "code", "ordinal", "basic_role", "blank
 (21, 5, 'AUDIT_EXPORT', 51, 'ROLE_AUDIT_EXPORT', 'ROLE_AUDIT_EXPORT', '#', '0');
 --;;
 insert into "public"."user" ("id", "aff_id", "username", "password", "first_name", "last_name", "email") values
-('c9c93c10-c02d-445b-a05d-1a2f8501c9fe', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'circlek', '$2a$10$nnVIPECfcMZG9lb80SJPuenxdpSwNpxHw8hJXM2Nfb4Wvz4bEfuC6', 'Abd', 'CircleK', 'admin@circlek.com.my'),
-('0696f9a0-339f-4a05-b1f6-dc5c86daf378', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'admin@suppla.b2b.com.my', '$2a$10$nnVIPECfcMZG9lb80SJPuenxdpSwNpxHw8hJXM2Nfb4Wvz4bEfuC6', 'Abd', 'al-Rehman', 'admin@suppla.b2b.com.my'),
-('7907b471-99c0-4778-8dba-97493623bd7c', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'admin@reta.b2b.com.my', '$2a$10$nnVIPECfcMZG9lb80SJPuenxdpSwNpxHw8hJXM2Nfb4Wvz4bEfuC6', 'Abd', 'al-Rashid', 'admin@reta.b2b.com.my'),
-('fd8ec1c3-59e2-49fe-bdff-c15537a02b3c', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'admin@retb.b2b.com.my', '$2a$10$nnVIPECfcMZG9lb80SJPuenxdpSwNpxHw8hJXM2Nfb4Wvz4bEfuC6', 'Abd', 'al-Latif', 'admin@retb.b2b.com.my'),
-('c9c93c10-c02d-445b-a05d-1a2f8501c9ff', 'fde78682-419e-423f-bdc6-32f48a7be64b', 'guardian', '$2a$10$nnVIPECfcMZG9lb80SJPuenxdpSwNpxHw8hJXM2Nfb4Wvz4bEfuC6', 'Abd', 'Guardian', 'admin@guardian.com.my'),
-('c9c93c10-c02d-445b-a05d-1a2f8501cfff', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'arch', '$2a$10$nnVIPECfcMZG9lb80SJPuenxdpSwNpxHw8hJXM2Nfb4Wvz4bEfuC6', 'Abd', 'Both', 'admin@default.b2b.com.my'),
-('c9c93c10-c02d-445b-a05d-1a2f8501cccc', 'fde78682-419e-423f-bdc6-32f48a7be64c', 'unilever', '$2a$10$nnVIPECfcMZG9lb80SJPuenxdpSwNpxHw8hJXM2Nfb4Wvz4bEfuC6', 'A.', 'Unilever', 'admin@unilever.com');
+('c9c93c10-c02d-445b-a05d-1a2f8501c9fe', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'circlek', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'CircleK', 'admin@circlek.com.my'),
+('0696f9a0-339f-4a05-b1f6-dc5c86daf378', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'admin@suppla.b2b.com.my', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Rehman', 'admin@suppla.b2b.com.my'),
+('7907b471-99c0-4778-8dba-97493623bd7c', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'admin@reta.b2b.com.my', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Rashid', 'admin@reta.b2b.com.my'),
+('fd8ec1c3-59e2-49fe-bdff-c15537a02b3c', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'admin@retb.b2b.com.my', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Latif', 'admin@retb.b2b.com.my'),
+('c9c93c10-c02d-445b-a05d-1a2f8501c9ff', 'fde78682-419e-423f-bdc6-32f48a7be64b', 'guardian', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'Guardian', 'admin@guardian.com.my'),
+('c9c93c10-c02d-445b-a05d-1a2f8501cfff', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'arch', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'Both', 'admin@default.b2b.com.my'),
+('c9c93c10-c02d-445b-a05d-1a2f8501cccc', 'fde78682-419e-423f-bdc6-32f48a7be64c', 'unilever', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'A.', 'Unilever', 'admin@unilever.com');

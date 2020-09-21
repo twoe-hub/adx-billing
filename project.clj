@@ -33,6 +33,7 @@
                  [ring/ring-core "1.8.0"]
                  [ring/ring-defaults "0.3.2"]
                  [buddy/buddy-auth "2.2.0"]
+                 [buddy/buddy-hashers "1.6.0"]
                  [selmer "1.12.18"]
                  [reagent "0.8.1"]
                  [cljs-ajax "0.7.3"]

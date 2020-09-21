@@ -11,7 +11,10 @@
    [ring.util.http-response :as response]
    [ring.util.response :refer [redirect]]
    [ring.util.anti-forgery :as util]
+   [buddy.hashers :as hashers]
    ))
+
+(def trusted-algs #{:bcrypt+sha512})
 
 (def announcement false)
 (defn render-ann []
@@ -53,9 +56,9 @@
          [:a {:data-toggle "modal", :data-target "#termsOfService"} "Terms of Service"]]
         [:li
          [:a {:data-toggle "modal", :data-target "#privacyPolicies"} "Privacy Policy"]]]]
-
       [:section.section
        [:div.block.block-login
+        (util/anti-forgery-field)
         [:h1.block-header "Welcome to e-Billing"]
         [:div.block-content
          [:p.auth-message "Please login with your username and password." [:br]
@@ -82,18 +85,33 @@
   ;; (layout/render request "auth/login.html")
   )
 
-(defn logout [request]
-  (do
-    (-> request
-        :server-exchange
-        (.getSecurityContext)
-        (.logout))
-    {:status 302
-     :headers {"Location" "/"}}))
+(defn logout
+  [request]
+  (-> (redirect "/auth/login")
+      (assoc :session {})))
+
+(defn auth! [request]
+  (let [username (get-in request [:params :username])
+        incm-pwd(get-in request [:params :password])
+        session (:session request)
+        derv-pwd (get-in (first (db/auth! {:username username})) [:password])]
+
+    (if (hashers/verify incm-pwd derv-pwd {:limit trusted-algs})
+      (let [next-url (get-in request [:query-params :next] "/")
+            updated-session (assoc session :identity (keyword username))]
+        (-> (response/ok {:status :ok})
+            (assoc :session updated-session)
+            ))
+      (response/internal-server-error
+       {:errors {:server-error ["Incorrect username or password!"]}}))
+    )
+  )
 
 (defn auth-routes []
   [""
    {:middleware [middleware/wrap-csrf
                  middleware/wrap-formats]}
    ["/auth/login" {:get render-login}]
-   ["/logout" {:get logout}]])
+   ["/auth/auth" {:post auth!}]
+   ["/logout" {:get logout}]]
+  )

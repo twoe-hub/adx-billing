@@ -55,6 +55,9 @@
 (defn permit-all [request]
   true)
 
+(defn authenticated-access [request]
+  (authenticated? (:session request)))
+
 (defn on-error [request val]
   (let [current-url (:uri request)]
     (redirect (format "/auth/login?next=%s" current-url))))
@@ -66,9 +69,10 @@
       (redirect (format "/auth/login?next=%s" current-url))
       )))
 
-(defn wrap-authr [handler]
+(defn wrap-auth [handler]
   (let [backend (backends/session {:unauthorized-handler handle-unauthorized})]
     (-> handler
+        (wrap-authentication backend)
         (wrap-authorization backend)
         (wrap-access-rules {:rules [{:pattern #"^/favicon.ico$"
                                      :handler permit-all}
@@ -76,12 +80,15 @@
                                      :handler permit-all}
                                     {:pattern #"^/css/.*"
                                      :handler permit-all}
+                                    {:pattern #"^/fonts/.*"
+                                     :handler permit-all}
                                     {:pattern #"^/js/.*"
                                      :handler permit-all}
                                     {:pattern #"^/auth/.*"
                                      :handler permit-all}
                                     {:pattern #"^/.*"
-                                     :handler permit-all}]
+                                     :handler authenticated-access}
+                                    ]
                             :on-error on-error})))
   )
 
@@ -94,6 +101,7 @@
             ;; (assoc-in  [:session :store] (ttl-memory-store (* 60 30)))
             (dissoc :session)
             ))
+      wrap-auth
       wrap-flash
       wrap-session
       wrap-internal-error))

@@ -8,7 +8,6 @@ VALUES (:name, :message, :timestamp)
 -- :doc selects all messages
 SELECT * FROM guestbook
 
--- Not used anymore
 -- :name auth! :? :*
 -- :doc select user for authentication
 SELECT u.password FROM public.user u
