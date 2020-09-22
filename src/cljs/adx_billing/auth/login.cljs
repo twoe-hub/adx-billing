@@ -5,7 +5,8 @@
             [reagent.core :as r]
             [adx-billing.auth.validate-login :refer [validate]]))
 
-(defn auth! [fields errors]
+(defn auth! [e fields errors]
+  (.preventDefault e)
   (if-let [validation-errors (validate @fields)]
     (reset! errors validation-errors)
     (POST "/auth/auth"
@@ -15,12 +16,12 @@
           "x-csrf-token" (.-value (.getElementById js/document "__anti-forgery-token"))}
          :params @fields
          :handler #(do
-                     (.log js/console (str %))
-                     (.replace (.-location js/window) "/user/list")
+                     ;; (.log js/console (str %))
+                     (.replace (.-location js/window) (get-in % [:next]))
                      (reset! fields nil)
                      (reset! errors nil))
          :error-handler #(do
-                           (.log js/console (str %))
+                           ;; (.log js/console (str %))
                            (reset! errors (get-in % [:response :errors])))})))
 
 (defn errors-component [errors id]
@@ -66,9 +67,10 @@
          [errors-component errors :password]]
         ;; login
         [:div.field
-         [:button.button.is-green.is-fullwidth
-          {:type 'button
-           :on-click #(auth! fields errors)} 'Login]]
+         [:input.button.is-green.is-fullwidth
+          {:type 'submit
+           :on-click #(auth! % fields errors)
+           :value 'Login}]]
         [:div.field.auth-form-links
          [:div.remember-me
           [:div.checkbox.checkbox-outline.checkbox-outline-white

@@ -79,11 +79,14 @@
                         "/js/app/adx_billing/auth/login.js"]}))
 
 (defn render-login [request]
-  (response/content-type
-   (response/ok (login-page))
-   "text/html; charset=utf-8")
-  ;; (layout/render request "auth/login.html")
-  )
+  (let [next-url (get-in request [:params :next] "/")
+        session (:session request)
+        upd-sess (assoc session :next next-url)]
+    (->
+     (response/content-type
+      (response/ok (login-page))
+      "text/html; charset=utf-8")
+     (assoc :session upd-sess))))
 
 (defn logout
   [request]
@@ -96,9 +99,10 @@
         session (:session request)
         hashed-pwd (get-in (first (db/auth! {:username username})) [:password])]
     (if (and hashed-pwd (hashers/verify plain-pwd hashed-pwd {:limit trusted-algs}))
-      (let [next-url (get-in request [:query-params :next] "/")
+      (let [next-url (get-in session [:next] "/")
             updated-session (assoc session :identity (keyword username))]
         (-> (response/ok {:status :ok :next next-url})
+            (assoc :session (dissoc session :next))
             (assoc :session updated-session)))
       (response/internal-server-error
        {:errors {:server-error ["Incorrect username or password!"]}}))))

@@ -76,13 +76,13 @@
         (wrap-authorization backend)
         (wrap-access-rules {:rules [{:pattern #"^/favicon.ico$"
                                      :handler permit-all}
-                                    {:pattern #"^/assets/.*"
-                                     :handler permit-all}
                                     {:pattern #"^/css/.*"
                                      :handler permit-all}
                                     {:pattern #"^/fonts/.*"
                                      :handler permit-all}
                                     {:pattern #"^/js/.*"
+                                     :handler permit-all}
+                                    {:pattern #"^/img/.*"
                                      :handler permit-all}
                                     {:pattern #"^/auth/.*"
                                      :handler permit-all}
