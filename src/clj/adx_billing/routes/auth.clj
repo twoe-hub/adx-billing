@@ -63,8 +63,8 @@
         [:div.block-content
          [:p.auth-message "Please login with your username and password." [:br]
           "If you do not have one, please contact "
-          [:a {:href "mailto:info@adxios.com"} "info@adxios.com"] " to register."]]]
-       [:div#content]
+          [:a {:href "mailto:info@adxios.com"} "info@adxios.com"] " to register."]]
+        [:div#content]]
        ]
       ]]
     (for [e (:js m)] (page/include-js e))
@@ -92,20 +92,16 @@
 
 (defn auth! [request]
   (let [username (get-in request [:params :username])
-        incm-pwd(get-in request [:params :password])
+        plain-pwd(get-in request [:params :password])
         session (:session request)
-        derv-pwd (get-in (first (db/auth! {:username username})) [:password])]
-
-    (if (hashers/verify incm-pwd derv-pwd {:limit trusted-algs})
+        hashed-pwd (get-in (first (db/auth! {:username username})) [:password])]
+    (if (and hashed-pwd (hashers/verify plain-pwd hashed-pwd {:limit trusted-algs}))
       (let [next-url (get-in request [:query-params :next] "/")
             updated-session (assoc session :identity (keyword username))]
-        (-> (response/ok {:status :ok})
-            (assoc :session updated-session)
-            ))
+        (-> (response/ok {:status :ok :next next-url})
+            (assoc :session updated-session)))
       (response/internal-server-error
-       {:errors {:server-error ["Incorrect username or password!"]}}))
-    )
-  )
+       {:errors {:server-error ["Incorrect username or password!"]}}))))
 
 (defn auth-routes []
   [""

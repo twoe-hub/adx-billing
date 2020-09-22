@@ -25,53 +25,65 @@
 
 (defn errors-component [errors id]
   (when-let [error (id @errors)]
-    [:p.help.is-danger (string/join error)]))
+    [:p.has-text-danger (string/join error)]))
 
 (defn login-form []
   (let [fields (r/atom {})
         errors (r/atom nil)]
     (fn []
-      [:div.columns.is-multiline.is-centered>div.column.is-3
-       [errors-component errors :server-error]
-       [:form {:method "post", :action "#"}
+      [:div
+       [:div.auth-errors
+        [errors-component errors :server-error]]
+       [:form#loginForm.auth-form {:method "post", :action "#"}
         ;; username
-        [:div.field.is-horizontal
-         [:div.field-label.is-normal
-          [:label.label "Username"]]
-         [:div.field-body>div.field>div.control
-          [:input.input.is-normal
-           {:type :text
-            :name :username
-            :on-change #(swap! fields assoc :username (-> % .-target .-value))
-            :placeholder "e.g. adeel@ymail.com"
-            :value (:username @fields)}]
-          [errors-component errors :username]]]
-        ;; password
-        [:div.field.is-horizontal
-         [:div.field-label.is-normal
-          [:label.label "Password"]]
-         [:div.field-body>div.field>div.control
-          [:input.input.is-normal
-           {:type :password
-            :name :password
-            :on-change #(swap! fields assoc :password (-> % .-target .-value))
-            :value (:password @fields)}]
-          [errors-component errors :password]]]
+        [:div.field.form-group-material.has-icons-right
+         [:input#username.form-input-material
+          {:type :text
+           :name :username
+           :pattern ".*\\S+.*"
+           :on-change #(swap! fields assoc :username (-> % .-target .-value))
+           :value (:username @fields)}]
+         [:label.form-placeholder-material
+          {:for 'username}
+          "Username/Email"]
+         [:span.form-icon-material.icon.is-medium
+          [:i.fa.fa-2x.fa-user-circle]]
+         [errors-component errors :username]]
+        [:div.field.form-group-material.has-icons-right
+         [:input#password.form-input-material
+          {:type :password
+           :name :password
+           :pattern ".*\\S+.*"
+           :on-change #(swap! fields assoc :password (-> % .-target .-value))
+           :value (:password @fields)}]
+         [:label.form-placeholder-material
+          {:for 'password}
+          "Password"]
+         [:span.form-icon-material.icon.is-medium
+          [:span.fa-stack.fa-2x
+           [:i.fa.fa-stack-1x.fa-circle]
+           [:i.fa.fa-stack-1x.fa-lock]]]
+         [errors-component errors :password]]
         ;; login
-        [:div.field.is-horizontal
-         [:div.field-label]
-         [:div.field-body>div.field>div.control
-          [:input.button.is-primary
-           {:type "button"
-            :on-click #(auth! fields errors)
-            :value "Login"}]]]]]
-      )))
+        [:div.field
+         [:button.button.is-green.is-fullwidth
+          {:type 'button
+           :on-click #(auth! fields errors)} 'Login]]
+        [:div.field.auth-form-links
+         [:div.remember-me
+          [:div.checkbox.checkbox-outline.checkbox-outline-white
+           [:input#remember-me
+            {:type 'checkbox
+             :name 'remember-me}]
+           [:label {:for 'remember-me} "Remember me"]]]
+         [:div.forgot-password
+          [:a {:href "#"} "Forgot password"]]
+         ]]])))
 
 (defn login []
   (let []
     (fn []
-      [:div.content
-       [login-form]])))
+      [login-form])))
 
 (r/render [login]
           (.getElementById js/document "content"))
