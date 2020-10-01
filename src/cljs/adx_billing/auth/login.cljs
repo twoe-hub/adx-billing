@@ -28,6 +28,47 @@
   (when-let [error (id @errors)]
     [:p.has-text-danger (string/join error)]))
 
+(defn username-err-span []
+  [:span.form-icon-material.icon.is-medium
+   [:i.fa.fa-2x.fa-user-circle]])
+
+(defn pwd-err-span []
+  [:span.form-icon-material.icon.is-medium
+   [:span.fa-stack.fa-2x
+    [:i.fa.fa-stack-1x.fa-circle]
+    [:i.fa.fa-stack-1x.fa-lock]]])
+
+(defn render-input [fields errors m]
+  [:div.field.form-group-material.has-icons-right
+   [:input#username.form-input-material
+    {:type (:type m)
+     :name (:name m)
+     :pattern ".*\\S+.*"
+     :on-change #(swap! fields assoc (:name m) (-> % .-target .-value))
+     :value ((:name m) @fields)}]
+   [:label.form-placeholder-material
+    {:for (:id m)}
+    (:label m)]
+   (:awesome-span m)
+   [errors-component errors (:name m)]]
+  )
+
+(defn username-input [fields errors]
+  (render-input fields errors
+                {:type :text
+                 :id 'username
+                 :name :username
+                 :label "Username/Email"
+                 :awesome-span (username-err-span)}))
+
+(defn pwd-input [fields errors]
+  (render-input fields errors
+                {:type :password
+                 :id 'password
+                 :name :password
+                 :label "Password"
+                 :awesome-span (pwd-err-span)}))
+
 (defn login-form []
   (let [fields (r/atom {})
         errors (r/atom nil)]
@@ -36,36 +77,8 @@
        [:div.auth-errors
         [errors-component errors :server-error]]
        [:form#loginForm.auth-form {:method "post", :action "#"}
-        ;; username
-        [:div.field.form-group-material.has-icons-right
-         [:input#username.form-input-material
-          {:type :text
-           :name :username
-           :pattern ".*\\S+.*"
-           :on-change #(swap! fields assoc :username (-> % .-target .-value))
-           :value (:username @fields)}]
-         [:label.form-placeholder-material
-          {:for 'username}
-          "Username/Email"]
-         [:span.form-icon-material.icon.is-medium
-          [:i.fa.fa-2x.fa-user-circle]]
-         [errors-component errors :username]]
-        [:div.field.form-group-material.has-icons-right
-         [:input#password.form-input-material
-          {:type :password
-           :name :password
-           :pattern ".*\\S+.*"
-           :on-change #(swap! fields assoc :password (-> % .-target .-value))
-           :value (:password @fields)}]
-         [:label.form-placeholder-material
-          {:for 'password}
-          "Password"]
-         [:span.form-icon-material.icon.is-medium
-          [:span.fa-stack.fa-2x
-           [:i.fa.fa-stack-1x.fa-circle]
-           [:i.fa.fa-stack-1x.fa-lock]]]
-         [errors-component errors :password]]
-        ;; login
+        (username-input fields errors)
+        (pwd-input fields errors)
         [:div.field
          [:input.button.is-green.is-fullwidth
           {:type 'submit
@@ -82,12 +95,7 @@
           [:a {:href "#"} "Forgot password"]]
          ]]])))
 
-(defn login []
-  (let []
-    (fn []
-      [login-form])))
-
-(r/render [login]
+(r/render [login-form]
           (.getElementById js/document "content"))
 
 (loader/set-loaded! :auth)
