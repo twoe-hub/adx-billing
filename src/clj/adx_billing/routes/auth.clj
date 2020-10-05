@@ -30,6 +30,17 @@
       (response/internal-server-error
        {:errors {:server-error ["Incorrect username or password!"]}}))))
 
+(defn terms [request]
+  (response/content-type
+   (response/file-response "resources/html/terms.html")
+   "text/html; charset=utf-8")
+  )
+
+(defn policy [request]
+  (response/content-type
+   (response/file-response "resources/html/policy.html")
+   "text/html; charset=utf-8"))
+
 (defn login-page []
   (login-template {:title "Login | e-Billing"
                    :css ["/css/start.css"
@@ -47,8 +58,7 @@
       "text/html; charset=utf-8")
      (assoc :session upd-sess))))
 
-(defn logout
-  [request]
+(defn logout [request]
   (-> (redirect "/auth/login")
       (assoc :session {})))
 
@@ -57,6 +67,7 @@
    {:middleware [middleware/wrap-csrf
                  middleware/wrap-formats]}
    ["/auth/login" {:get login}]
+   ["/auth/policy" {:get policy}]
+   ["/auth/terms" {:get terms}]
    ["/auth/auth" {:post auth!}]
-   ["/logout" {:get logout}]]
-  )
+   ["/logout" {:get logout}]])

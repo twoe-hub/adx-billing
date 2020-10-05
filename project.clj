@@ -8,7 +8,7 @@
                  [cheshire "5.9.0"]
                  [clj-http/clj-http "3.10.0"]
                  [clojure.java-time "0.3.2"]
-                 [conman "0.8.4"]
+                 [conman "0.9.0"]
                  [cprop "0.1.15"]
                  [expound "0.8.3"]
                  [funcool/struct "1.4.0"]
