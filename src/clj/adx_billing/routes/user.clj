@@ -21,6 +21,17 @@
                                     :client_id "admin-cli"}})]
     (get (parse-string (:body resp)) "access_token")))
 
+(defn- transform-keys
+  "Recursively transforms all map keys from strings to keywords."
+  [m]
+  (let [f (fn [[kw v]]
+            (let [k (str kw)]
+              (if (re-find #"_" k)
+                [(keyword (string/replace (string/replace k "_" "-") ":" "")) v]
+                [kw v])))]
+    ;; only apply to maps
+    (walk/postwalk (fn [x] (if (map? x) (into {} (map f x)) x)) m)))
+
 (defn create-user [params]
   (let [token (extract-token)]
     (client/post "http://localhost:8080/auth/admin/realms/adx-billing/users"
@@ -51,16 +62,6 @@
 
 (defn render-form [request]
   (layout/render request "user/user-edit-form.html" {:tab "create"}))
-
-(defn transform-keys
-  "Recursively transforms all map keys from strings to keywords."
-  [m]
-  (let [f (fn [[kw v]]
-            (let [k (str kw)]
-              (if (re-find #"_" k) [(keyword (string/replace (string/replace k "_" "-") ":" "")) v] [kw v]))
-            )]
-    ;; only apply to maps
-    (walk/postwalk (fn [x] (if (map? x) (into {} (map f x)) x)) m)))
 
 (defn get-users [{:keys [params]}]
   (response/ok {:total (db/count-users)

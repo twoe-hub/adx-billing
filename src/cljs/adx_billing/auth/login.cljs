@@ -8,21 +8,15 @@
 
 (defn get-content! [e]
   (let [data (.-dataset (.-target e))
-        url (.-url data)
-        toggle (.-toggle data)
-        target (.-target data)]
-
-    (GET url
-         {:format :json
-          :headers {"Accept" "text/html"
-                    "Cache-Control" "max-age=1800"}
-          :handler #(do
-                      (-> js/document
-                          (.getElementById target)
-                          (.-innerHTML)
-                          (set! %))
-                      (toggle-modal toggle))
-          :error-handler #(.log js/console (str %))})))
+        elem (.getElementById js/document (.-target data))]
+    (when (= (.-innerHTML elem) "")
+      (GET (.-url data)
+           {:format :json
+            :headers {"Accept" "text/html"
+                      "Cache-Control" "max-age=1800"}
+            :handler #(set! (.-innerHTML elem) %)
+            :error-handler #(.log js/console (str %))}))
+    (toggle-modal (.-toggle data))))
 
 (defn auth! [e fields errors]
   (.preventDefault e)
