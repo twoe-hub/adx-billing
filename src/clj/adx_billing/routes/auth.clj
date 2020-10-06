@@ -41,20 +41,18 @@
    (response/file-response "resources/html/policy.html")
    "text/html; charset=utf-8"))
 
-(defn login-page []
-  (login-template {:title "Login | e-Billing"
-                   :css ["/css/start.css"
-                         "/css/views/login/login.css"]
-                   :js ["/js/app/cljs_base.js"
-                        "/js/app/adx_billing/auth/login.js"]}))
-
 (defn login [request]
   (let [next-url (get-in request [:params :next] "/")
         session (:session request)
         upd-sess (assoc session :next next-url)]
     (->
      (response/content-type
-      (response/ok (login-page))
+      (response/ok
+       (login-template {:title "Login | e-Billing"
+                        :css ["/css/start.css"
+                              "/css/views/login/login.css"]
+                        :js ["/js/app/cljs_base.js"
+                             "/js/app/adx_billing/auth/login.js"]}))
       "text/html; charset=utf-8")
      (assoc :session upd-sess))))
 

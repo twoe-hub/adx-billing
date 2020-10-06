@@ -236,6 +236,6 @@
         [modal-ui fields errors]
         ]])))
 
-(r/render [content] (.getElementById js/document "tab-content"))
+(r/render [content] (.getElementById js/document "content"))
 
 (loader/set-loaded! :user-list)
