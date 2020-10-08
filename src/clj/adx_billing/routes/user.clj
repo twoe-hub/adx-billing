@@ -45,20 +45,20 @@
                                              :limit (Integer. (:limit params))))))}))
 
 (defn user-list [request]
-  ;; (layout/render request "user/user-list.html" {:tab "list"})
   (response/content-type
    (response/ok
-    (base-template {:title "Users | e-Billing"
-                     :css ["/css/start.css"
-                           "/css/views/user/user.css"]
-                     :js ["/js/app/cljs_base.js"
-                          "/js/app/adx_billing/user/user.js"]}))
+    (base-template request {:title "Users | e-Billing"
+                            :css ["/css/start.css"
+                                  "/css/views/user/user.css"]
+                            :js ["/js/app/cljs_base.js"
+                                 "/js/app/adx_billing/user/user.js"]}))
    "text/html; charset=utf-8"))
 
 (defn user-routes []
   [""
    {:middleware [middleware/wrap-csrf
                  middleware/wrap-formats]}
+   ["/" {:get user-list}]
    ["/user/list" {:get user-list}]
    ["/user/users" {:get get-users}]
    ["/user/save" {:post save-user!}]])

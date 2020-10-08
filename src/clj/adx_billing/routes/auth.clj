@@ -5,6 +5,8 @@
    [adx-billing.html.templates :refer [login-template]]
    [adx-billing.db.core :as db]
    [adx-billing.middleware :as middleware]
+   [camel-snake-kebab.core :as csk]
+   [camel-snake-kebab.extras :as cske]
    [cheshire.core :refer [parse-string]]
    [clj-http.client :as client]
    [hiccup.page :as page]
@@ -16,6 +18,28 @@
 
 (def trusted-algs #{:bcrypt+sha512})
 
+(defn get-modules []
+  (let [items (cske/transform-keys csk/->kebab-case-keyword
+                                   (vec (db/get-modules)))]
+    (loop [f (first items)
+           r (rest items)
+           m {(keyword (str (:id f))) f}]
+      (if (empty? r)
+        m
+        (recur (first r)
+               (rest r)
+               (let [pid (:parent-id f)
+                     p-key (keyword (str pid))]
+                 (if (nil? pid)
+                   (conj m {(keyword (str (:id f))) f})
+                   (let [n (-> (p-key m)
+                               (assoc :children (conj (:children (p-key m)) f)))]
+                     (assoc m p-key n))
+                   ))
+               ))
+      )
+    ))
+
 (defn auth! [request]
   (let [username (get-in request [:params :username])
         plain-pwd(get-in request [:params :password])
@@ -23,7 +47,9 @@
         hashed-pwd (get-in (first (db/auth! {:username username})) [:password])]
     (if (and hashed-pwd (hashers/verify plain-pwd hashed-pwd {:limit trusted-algs}))
       (let [next-url (get-in session [:next] "/")
-            updated-session (assoc session :identity (keyword username))]
+            updated-session (assoc session
+                                   :identity (keyword username)
+                                   :menu (get-modules))]
         (-> (response/ok {:status :ok :next next-url})
             (assoc :session (dissoc session :next))
             (assoc :session updated-session)))

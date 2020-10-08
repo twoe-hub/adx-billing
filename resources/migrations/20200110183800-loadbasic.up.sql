@@ -708,27 +708,17 @@ insert into "public"."language" ("id", "code", "name", "eng_name") values
 (5, 'zh', '简体中文', 'Simplified Chinese');
 --;;
 insert into "module" ("id", "parent_id", "code", "ordinal", "basic_role", "blanket_role", "url", "menu_item") values
-(1, null, 'HOME', 0, 'isAuthenticated()', null, '/', '1'),
-(2, null, 'DOCUMENTS', 1, 'ROLE_DOCUMENTS_VIEW', null, '#', '1'),
-(3, null, 'ADMIN', 2, 'ROLE_ADMIN_VIEW', null, '#', '1'),
-(4, null, 'SETTINGS', 2, 'isAuthenticated()', null, '#', '1'),
-(5, null, 'AUDIT_LOG', 3, 'ROLE_AUDIT_VIEW', null, '/auditing/audit/list', '1'),
-(6, null, 'ABOUT', 4, 'isAuthenticated()', null, '/app/about', '1'),
-(7, null, 'LOGOUT', 5, 'isAuthenticated()', null, '/logoff', '1'),
-(8, 2, 'DOC_PO', 20, 'ROLE_PO_ALL', 'ROLE_PO_ALL', '/doc/purchaseOrder/list', '1'),
-(9, 2, 'DOC_DO', 21, 'ROLE_DO_ALL', 'ROLE_DO_ALL', '/doc/deliveryOrder/list', '1'),
-(10, 2, 'DOC_GR', 22, 'ROLE_GR_ALL', 'ROLE_GR_ALL', '/doc/goodsReceipt/list', '1'),
-(11, 2, 'DOC_INV', 23, 'ROLE_INV_ALL', 'ROLE_INV_ALL', '/doc/invoice/list', '1'),
-(12, 2, 'DOC_TTA', 24, 'ROLE_TTA_ALL', 'ROLE_TTA_ALL', '/doc/tradingTermsAgt/list', '1'),
-(13, 2, 'DOC_PA', 25, 'ROLE_PA_ALL', 'ROLE_PA_ALL', '/doc/promoAgt/list', '1'),
-(14, 2, 'DOC_EDC', 26, 'ROLE_EDC_ALL', 'ROLE_EDC_ALL', '/doc/eventDrivenClaim/list', '1'),
-(15, 3, 'USERS', 30, 'ROLE_USER_VIEW', 'ROLE_USER_ALL', '/admin/user/list', '1'),
-(16, 3, 'ROLES', 31, 'ROLE_ROLE_VIEW', 'ROLE_ROLE_ALL', '/admin/role/list', '1'),
-(17, 3, 'PWD_POLICY', 32, 'ROLE_PWD_POLICY_VIEW', 'ROLE_PWD_POLICY_ALL', '/admin/pwdPolicy', '1'),
-(18, 4, 'PERSONAL_SETTINGS', 40, 'isAuthenticated()', null, '/settings/user/editProfile', '1'),
-(19, 4, 'CHANGE_PWD', 41, 'isAuthenticated()', null, '/settings/user/editPwd', '1'),
-(20, 4, 'POLICY', 42, 'isAuthenticated()', null, '/settings/user/editPolicy', '1'),
-(21, 5, 'AUDIT_EXPORT', 51, 'ROLE_AUDIT_EXPORT', 'ROLE_AUDIT_EXPORT', '#', '0');
+(1, null, 'DASHBOARD', 0, 'isAuthenticated()', null, '/', '1'),
+(2, null, 'ORG_PROFILE', 1, 'ROLE_ORG_VIEW', null, '/org/profile', '1'),
+(3, null, 'AFFS', 2, 'ROLE_AFFS_VIEW', null, '#', '1'),
+(4, null, 'DOCS', 3, 'ROLE_DOCS_VIEW', null, '#', '1'),
+(5, null, 'ADMIN', 4, 'ROLE_ADMIN_VIEW', null, '#', '1'),
+(6, null, 'AUDIT_LOG', 5, 'ROLE_AUDIT_VIEW', null, '/auditing/audit/list', '1'),
+(7, null, 'ABOUT', 6, 'isAuthenticated()', null, '/app/about', '1'),
+(8, 4, 'DOC_QUOTE', 40, 'ROLE_QUOTE_ALL', 'ROLE_QUOTE_ALL', '/doc/quotaions', '1'),
+(9, 5, 'USER', 50, 'ROLE_USER_VIEW', 'ROLE_USER_ALL', '/admin/user', '1'),
+(10, 5, 'ROLE', 51, 'ROLE_ROLE_VIEW', 'ROLE_ROLE_ALL', '/admin/role', '1'),
+(11, 5, 'PWD_POLICY', 52, 'ROLE_PWD_POLICY_VIEW', 'ROLE_PWD_POLICY_ALL', '/admin/pwd-policy', '1');
 --;;
 insert into "public"."user" ("id", "aff_id", "username", "password", "first_name", "last_name", "email") values
 ('c9c93c10-c02d-445b-a05d-1a2f8501c9fe', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'circlek', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'CircleK', 'admin@circlek.com.my'),

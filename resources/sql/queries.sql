@@ -1,12 +1,17 @@
 -- :name save-message! :! :n
 -- :doc creates a new message
-INSERT INTO guestbook
+INSERT INTO public.guestbook
 (name, message, timestamp)
 VALUES (:name, :message, :timestamp)
 
 -- :name get-messages :? :*
 -- :doc selects all messages
-SELECT * FROM guestbook
+SELECT * FROM public.guestbook
+
+-- :name get-modules :? :*
+-- :doc selects all modules
+SELECT * FROM public.module
+order by ordinal
 
 -- :name auth! :? :*
 -- :doc select user for authentication

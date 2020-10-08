@@ -82,7 +82,6 @@
   [""
    {:middleware [middleware/wrap-csrf
                  middleware/wrap-formats]}
-   ["/" {:get listing-page}]
    ["/guest/list" {:get listing-page}]
    ["/guest/sign" {:get signing-page}]
    ["/messages" {:get message-list}]

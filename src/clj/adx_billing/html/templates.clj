@@ -75,14 +75,19 @@
    [:span {:aria-hidden "true"}]
    [:span {:aria-hidden "true"}]])
 
-(defn- menu [uri]
-  [:ul.menu-list
-   [:li
-    [:a.navbar-item {:class ["navbar-item" (when (= uri "/user/list") "is-active")]
-                     :href "/user/list"} "Users"]]
-   [:li
-    [:a.navbar-item {:class ["navbar-item" (when (= uri "/about") "is-active")]
-                     :href "/about"} "About"]]])
+(defn- menu [items]
+  (let [coll (vals items)]
+    [:ul.menu-list
+     (for [item coll]
+       [:li [:a {:class "navbar-item" :href (:url item)}
+             (:code item)]
+        (when-let [subitems (:children item)]
+          (for [subitem subitems]
+            [:ul
+             [:li
+              [:a
+               {:class "navbar-item" :href (:url subitem)}
+               (:code subitem)]]]))])]))
 
 (defn- tabs [l]
   [:div {:class "tabs is-pivot is-right"}
@@ -104,7 +109,7 @@
      [:div#content]]
     (for [e (:js m)] (page/include-js e))]))
 
-(defn base-template [m]
+(defn base-template [req m]
   (page/html5
    [:head
     [:meta {:charset "utf-8"}]
@@ -120,7 +125,7 @@
        (topbar-search)
        (topbar-right)]]]
     [:aside.menu.sidebar-menu.is-hidden-touch
-     (menu nil)]
+     (menu (:menu (:session req)))]
     [:section.section.main-section
      [:div.container.main-container.is-fluid
       [:div {:class "content-header columns is-vcentered"}
