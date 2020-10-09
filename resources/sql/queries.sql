@@ -10,8 +10,8 @@ SELECT * FROM public.guestbook
 
 -- :name get-modules :? :*
 -- :doc selects all modules
-SELECT * FROM public.module
-order by ordinal
+SELECT m.* FROM public.module m
+order by m.ordinal
 
 -- :name auth! :? :*
 -- :doc select user for authentication

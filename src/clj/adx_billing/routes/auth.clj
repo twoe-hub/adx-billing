@@ -18,27 +18,17 @@
 
 (def trusted-algs #{:bcrypt+sha512})
 
+(defn make-tree
+  ([coll] (for [x (remove :parent-id coll)]
+            {:self x :children (make-tree x coll)}))
+  ([root coll]
+   (for [x coll :when (= (:parent-id x) (:id root))]
+     {:self x :children (make-tree x coll)})))
+
 (defn get-modules []
-  (let [items (cske/transform-keys csk/->kebab-case-keyword
-                                   (vec (db/get-modules)))]
-    (loop [f (first items)
-           r (rest items)
-           m {(keyword (str (:id f))) f}]
-      (if (empty? r)
-        m
-        (recur (first r)
-               (rest r)
-               (let [pid (:parent-id f)
-                     p-key (keyword (str pid))]
-                 (if (nil? pid)
-                   (conj m {(keyword (str (:id f))) f})
-                   (let [n (-> (p-key m)
-                               (assoc :children (conj (:children (p-key m)) f)))]
-                     (assoc m p-key n))
-                   ))
-               ))
-      )
-    ))
+  (let [coll (cske/transform-keys csk/->kebab-case-keyword
+                                  (vec (db/get-modules)))]
+    (make-tree coll)))
 
 (defn auth! [request]
   (let [username (get-in request [:params :username])

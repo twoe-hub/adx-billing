@@ -1,5 +1,6 @@
 (ns adx-billing.html.templates
   (:require [hiccup.page :as page]
+            [clojure.pprint :refer [pprint]]
             [ring.util.anti-forgery :refer [anti-forgery-field]]))
 
 (def announcement false)
@@ -75,25 +76,25 @@
    [:span {:aria-hidden "true"}]
    [:span {:aria-hidden "true"}]])
 
-(defn- menu [items]
-  (let [coll (vals items)]
-    [:ul.menu-list
-     (for [item coll]
-       [:li [:a {:class "navbar-item" :href (:url item)}
-             (:code item)]
-        (when-let [subitems (:children item)]
-          (for [subitem subitems]
-            [:ul
-             [:li
-              [:a
-               {:class "navbar-item" :href (:url subitem)}
-               (:code subitem)]]]))])]))
+(defn- menu [coll]
+  [:ul.menu-list
+   (for [item coll]
+     (let [self (:self item)]
+       [:li [:a {:class "navbar-item" :href (:url self)}
+             (:code self)]
+        (when-let [coll (:children item)]
+          (for [item coll]
+            (let [self (:self item)]
+              [:ul [:li [:a
+                         {:class "navbar-item"
+                          :href (:url self)} (:code self)]]])))]))])
 
-(defn- tabs [l]
-  [:div {:class "tabs is-pivot is-right"}
-   [:ul
-    [:li {:class 'is-active}
-     [:a {:href "/user/list"} "Users"]]]])
+(defn- tabs [coll]
+  ;; [:div {:class "tabs is-pivot is-right"}
+  ;;  [:ul
+  ;;   [:li {:class 'is-active}
+  ;;    [:a {:href "/user/list"} "Users"]]]]
+  )
 
 (defn login-template [m]
   (page/html5
