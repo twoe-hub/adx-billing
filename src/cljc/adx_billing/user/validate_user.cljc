@@ -1,23 +1,23 @@
 (ns adx-billing.user.validate-user
-  (:require
-   [struct.core :as st]))
+  (:require [adx-billing.msg.bundle :refer [msg]]
+            [struct.core :as st]))
 
 (def user-schema
   [[:username
-    [st/required :message "Required"]
-    [st/email :message "Invalid email address"]
+    [st/required :message (msg :validation/required)]
+    [st/email :message (msg :validation/invalid-email)]
     ]
    [:email
-    [st/required :message "Required"]
-    [st/email :message "Invalid email address"]
+    [st/required :message (msg :validation/required)]
+    [st/email :message (msg :validation/invalid-email)]
     ]
    [:first-name
-    [st/required :message "Required"]
-    st/string {:message "Must not contain more than 40 characters"
+    [st/required :message (msg :validation/required)]
+    st/string {:message (msg :validation/char-limit-exceeded 40)
                  :validate (fn [v] (<= (count v) 40))}]
    [:last-name
-    [st/required :message "Required"]
-    st/string {:message "Must not contain more than 40 characters"
+    [st/required :message (msg :validation/required)]
+    st/string {:message (msg :validation/char-limit-exceeded 40)
                  :validate (fn [v] (<= (count v) 40))}]])
 
 (defn validate [params]

@@ -8,6 +8,7 @@
                  [cheshire "5.9.0"]
                  [clj-http/clj-http "3.10.0"]
                  [clojure.java-time "0.3.2"]
+                 [com.taoensso/tempura "1.2.1"]
                  [conman "0.9.0"]
                  [cprop "0.1.15"]
                  [expound "0.8.3"]
@@ -84,6 +85,7 @@
                                  [prone "2019-07-08"]
                                  [ring/ring-devel "1.8.0"]
                                  [ring/ring-mock "0.4.0"]
+                                 [com.taoensso/tempura "1.2.1"]
                                  ;; clojurescript
                                  [org.clojure/clojurescript "1.10.339"]
                                  [com.bhauman/figwheel-main "0.2.3"]

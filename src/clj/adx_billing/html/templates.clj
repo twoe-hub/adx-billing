@@ -1,7 +1,8 @@
 (ns adx-billing.html.templates
   (:require [hiccup.page :as page]
             [clojure.pprint :refer [pprint]]
-            [ring.util.anti-forgery :refer [anti-forgery-field]]))
+            [ring.util.anti-forgery :refer [anti-forgery-field]]
+            [adx-billing.msg.bundle :refer [msg]]))
 
 (def announcement false)
 (defn- render-ann []
@@ -80,14 +81,16 @@
   [:ul.menu-list
    (for [item coll]
      (let [self (:self item)]
+       (println (keyword (str "menu/" (:code self))))
        [:li [:a {:class "navbar-item" :href (:url self)}
-             (:code self)]
+             (msg (keyword (str "menu/" (:code self))))]
         (when-let [coll (:children item)]
           (for [item coll]
             (let [self (:self item)]
               [:ul [:li [:a
                          {:class "navbar-item"
-                          :href (:url self)} (:code self)]]])))]))])
+                          :href (:url self)} (msg (keyword (str "menu/" (:code self))))
+                         ]]])))]))])
 
 (defn- tabs [coll]
   ;; [:div {:class "tabs is-pivot is-right"}

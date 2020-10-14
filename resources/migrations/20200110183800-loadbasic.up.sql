@@ -708,17 +708,17 @@ insert into "public"."language" ("id", "code", "name", "eng_name") values
 (5, 'zh', '简体中文', 'Simplified Chinese');
 --;;
 insert into "module" ("id", "parent_id", "code", "ordinal", "basic_role", "blanket_role", "url", "menu_item") values
-(1, null, 'DASHBOARD', 0, 'isAuthenticated()', null, '/', '1'),
-(2, null, 'ORG_PROFILE', 1, 'ROLE_ORG_VIEW', null, '/org/profile', '1'),
-(3, null, 'AFFS', 2, 'ROLE_AFFS_VIEW', null, '#', '1'),
-(4, null, 'DOCS', 3, 'ROLE_DOCS_VIEW', null, '#', '1'),
-(5, null, 'ADMIN', 4, 'ROLE_ADMIN_VIEW', null, '#', '1'),
-(6, null, 'AUDIT_LOG', 5, 'ROLE_AUDIT_VIEW', null, '/auditing/audit/list', '1'),
-(7, null, 'ABOUT', 6, 'isAuthenticated()', null, '/app/about', '1'),
-(8, 4, 'DOC_QUOTE', 40, 'ROLE_QUOTE_ALL', 'ROLE_QUOTE_ALL', '/doc/quotaions', '1'),
-(9, 5, 'USER', 50, 'ROLE_USER_VIEW', 'ROLE_USER_ALL', '/admin/user', '1'),
-(10, 5, 'ROLE', 51, 'ROLE_ROLE_VIEW', 'ROLE_ROLE_ALL', '/admin/role', '1'),
-(11, 5, 'PWD_POLICY', 52, 'ROLE_PWD_POLICY_VIEW', 'ROLE_PWD_POLICY_ALL', '/admin/pwd-policy', '1');
+(1, null, 'dashboard', 0, 'isAuthenticated()', null, '/', '1'),
+(2, null, 'org-profile', 1, 'ROLE_ORG_VIEW', null, '/org/profile', '1'),
+(3, null, 'affs', 2, 'ROLE_AFFS_VIEW', null, '#', '1'),
+(4, null, 'docs', 3, 'ROLE_DOCS_VIEW', null, '#', '1'),
+(5, null, 'admin', 4, 'ROLE_ADMIN_VIEW', null, '#', '1'),
+(6, null, 'audit-log', 5, 'ROLE_AUDIT_VIEW', null, '/auditing/audit/list', '1'),
+(7, null, 'about', 6, 'isAuthenticated()', null, '/app/about', '1'),
+(8, 4, 'doc-quote', 40, 'ROLE_QUOTE_ALL', 'ROLE_QUOTE_ALL', '/doc/quotaions', '1'),
+(9, 5, 'user', 50, 'ROLE_USER_VIEW', 'ROLE_USER_ALL', '/admin/user', '1'),
+(10, 5, 'role', 51, 'ROLE_ROLE_VIEW', 'ROLE_ROLE_ALL', '/admin/role', '1'),
+(11, 5, 'pwd-policy', 52, 'ROLE_PWD_POLICY_VIEW', 'ROLE_PWD_POLICY_ALL', '/admin/pwd-policy', '1');
 --;;
 insert into "public"."user" ("id", "aff_id", "username", "password", "first_name", "last_name", "email") values
 ('c9c93c10-c02d-445b-a05d-1a2f8501c9fe', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'circlek', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'CircleK', 'admin@circlek.com.my'),
