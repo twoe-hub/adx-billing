@@ -26,10 +26,10 @@ VALUES (:username, :first-name, :last-name, :email)
 
 -- :name get-users :? :*
 -- :doc selects all users
-SELECT id, username, first_name, last_name, email
-FROM public.user OFFSET :offset LIMIT :limit
+SELECT u.id, u.username, u.first_name, u.last_name, u.email
+FROM public.user u OFFSET :offset LIMIT :limit
 
 -- :name count-users :? :n
 -- :doc count all users
-SELECT COUNT(id)
-FROM public.user
+SELECT COUNT(u.id)
+FROM public.user u

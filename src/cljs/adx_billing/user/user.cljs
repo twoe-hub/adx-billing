@@ -42,7 +42,7 @@
           :params {:offset (* (dec pg) pg-size) :limit pg-size}
           :handler #(do
                       (reset! users (:users %))
-                      (reset! last-pg (int (Math/ceil (/ (:count (:total %)) pg-size))))
+                      (reset! last-pg (int (Math/ceil (/ (:total %) pg-size))))
                       (reset! current-pg pg))})))
 
 (defn save-user [fields errors]                                        ;
@@ -63,7 +63,6 @@
 
 (defn prefix [v]
   (vec (let [sq (seq v)]
-         println sq
          (if (not= (first sq) 1)
            (if (not= (first sq) 2)
              (conj sq nil 1)

@@ -81,7 +81,6 @@
   [:ul.menu-list
    (for [item coll]
      (let [self (:self item)]
-       (println (keyword (str "menu/" (:code self))))
        [:li [:a {:class "navbar-item" :href (:url self)}
              (msg (keyword (str "menu/" (:code self))))]
         (when-let [coll (:children item)]
