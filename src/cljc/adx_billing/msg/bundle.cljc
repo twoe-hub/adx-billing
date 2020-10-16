@@ -4,17 +4,24 @@
 (def bundle
   {
    :en-GB {:missing "**Missing in en-GB**" ; Fallback for missing resources
-           :menu {:dashboard "Dashboard"
-                  :org-profile "Company Profile"
-                  :affs "Affiliates"
-                  :docs "Documents"
-                  :admin "Admin"
-                  :audit-log "Audit Log"
-                  :about "About"
-                  :doc-quote "Quotation"
-                  :user "Users"
-                  :role "Roles"
-                  :pwd-policy "Password Policy"}
+           :menu {:text {:dashboard "Dashboard"
+                         :org-profile "Company Profile"
+                         :affs "Affiliates"
+                         :docs "Documents"
+                         :admin "Admin"
+                         :audit-log "Audit Log"
+                         :about "About"
+                         :doc-quote "Quotation"
+                         :user "Users"
+                         :role "Roles"
+                         :pwd-policy "Password Policy"}
+                  :icon {:dashboard "fa-tachometer-alt"
+                         :org-profile "fa-building"
+                         :affs "fa-handshake"
+                         :docs "fa-file-alt"
+                         :admin "fa-user-shield"
+                         :audit-log "fa-list-alt"
+                         :about "fa-info-circle"}}
            :validation {:required "Required"
                         :invalid-email "Invalid email address"
                         :char-limit-exceeded "Must not contain more than %1 characters"}}
