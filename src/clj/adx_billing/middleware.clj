@@ -12,7 +12,7 @@
 
    [muuntaja.middleware :refer [wrap-format wrap-params]]
 
-   [ring.util.http-response :refer [forbidden unauthorized]]
+   [ring.util.http-response :refer [forbidden]]
    [ring.util.response :refer [redirect]]
    [ring.middleware.anti-forgery :refer [wrap-anti-forgery]]
    [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
@@ -58,19 +58,18 @@
 (defn authenticated-access [request]
   (authenticated? (:session request)))
 
-(defn on-error [request val]
-  (let [current-url (:uri request)]
-    (redirect (format "/auth/login?next=%s" current-url))))
-
 (defn handle-unauthorized [request metadata]
-  (if (authenticated? request)
-    (forbidden {})
+  (if (authenticated-access request)
+    (forbidden "Not authorised")
     (let [current-url (:uri request)]
-      (redirect (format "/auth/login?next=%s" current-url))
-      )))
+      (redirect (format "/auth/login?next=%s" current-url)))))
+
+(defn user-view-access [request]
+  (let [roles (:role (:session request))]
+    (or (contains? roles "user-view-access") (contains? roles "user-all-access"))))
 
 (defn wrap-auth [handler]
-  (let [backend (backends/session {:unauthorized-handler handle-unauthorized})]
+  (let [backend (backends/session)]
     (-> handler
         (wrap-authentication backend)
         (wrap-authorization backend)
@@ -86,10 +85,12 @@
                                      :handler permit-all}
                                     {:pattern #"^/auth/.*"
                                      :handler permit-all}
+                                    {:pattern #"^/user/.*"
+                                     :handler user-view-access}
                                     {:pattern #"^/.*"
                                      :handler authenticated-access}
                                     ]
-                            :on-error on-error})))
+                            :on-error handle-unauthorized})))
   )
 
 (defn wrap-base [handler]

@@ -1,7 +1,7 @@
 -- :disable-transaction
 drop table if exists "public"."guestbook" cascade;
 --;;
-drop table if exists "public"."user" cascade;
+drop table if exists "public"."access" cascade;
 --;;
 drop table if exists "public"."affiliate" cascade;
 --;;
@@ -44,3 +44,5 @@ drop table if exists "public"."password_policy" cascade;
 drop sequence if exists "public"."seq_pwd_policy" cascade;
 --;;
 drop table if exists "public"."audit_log" cascade;
+--;;
+drop table if exists "public"."user" cascade;

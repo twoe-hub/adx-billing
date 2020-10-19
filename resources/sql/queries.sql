@@ -13,6 +13,10 @@ SELECT * FROM public.guestbook
 SELECT m.* FROM public.module m
 order by m.ordinal
 
+-- :name get-roles :? :*
+-- :doc selects all access
+SELECT a.name FROM public.access a
+
 -- :name auth! :? :*
 -- :doc select user for authentication
 SELECT u.password FROM public.user u

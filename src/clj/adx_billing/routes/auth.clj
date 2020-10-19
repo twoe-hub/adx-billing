@@ -30,6 +30,9 @@
                                   (vec (db/get-modules)))]
     (make-tree coll)))
 
+(defn get-roles []
+  (set (map #(get % :name) (db/get-roles))))
+
 (defn auth! [request]
   (let [username (get-in request [:params :username])
         plain-pwd(get-in request [:params :password])
@@ -39,7 +42,8 @@
       (let [next-url (get-in session [:next] "/")
             updated-session (assoc session
                                    :identity (keyword username)
-                                   :menu (get-modules))]
+                                   :menu (get-modules)
+                                   :roles (get-roles))]
         (-> (response/ok {:status :ok :next next-url})
             (assoc :session (dissoc session :next))
             (assoc :session updated-session)))

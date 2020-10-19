@@ -1,4 +1,6 @@
 -- :disable-transaction
+alter table "public"."access" add constraint "pk_access_id" primary key ("id");
+--;;
 alter table "public"."contact" add constraint "pk_contact_id" primary key ("id");
 --;;
 alter table "public"."country" add constraint "pk_country_id" primary key ("id");

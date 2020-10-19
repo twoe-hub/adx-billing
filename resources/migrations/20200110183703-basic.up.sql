@@ -36,6 +36,11 @@ create table if not exists "public"."aff_doc" (
   "date_created" timestamp not null default now(),
   "last_updated" timestamp not null default now());
 --;;
+create table if not exists "public"."access" (
+"id" integer not null,
+"name" text not null,
+"desc" text);
+--;;
 create table if not exists "public"."bank_acc" (
   "id" uuid not null,
   "aff_id" uuid not null,
@@ -110,8 +115,7 @@ create table if not exists "public"."module" (
   "parent_id" integer,
   "code" text not null,
   "ordinal" integer not null,
-  "basic_role" text not null,
-  "blanket_role" text ,
+  "access" text,
   "url" text not null,
   "menu_item" boolean);
 --;;

@@ -707,18 +707,18 @@ insert into "public"."language" ("id", "code", "name", "eng_name") values
 (4, 'ms', 'Bahasa Malaysia', 'Malaysian'),
 (5, 'zh', '简体中文', 'Simplified Chinese');
 --;;
-insert into "module" ("id", "parent_id", "code", "ordinal", "basic_role", "blanket_role", "url", "menu_item") values
-(1, null, 'dashboard', 0, 'isAuthenticated()', null, '/', '1'),
-(2, null, 'org-profile', 1, 'ROLE_ORG_VIEW', null, '/org/profile', '1'),
-(3, null, 'affs', 2, 'ROLE_AFFS_VIEW', null, '#', '1'),
-(4, null, 'docs', 3, 'ROLE_DOCS_VIEW', null, '#', '1'),
-(5, null, 'admin', 4, 'ROLE_ADMIN_VIEW', null, '#', '1'),
-(6, null, 'audit-log', 5, 'ROLE_AUDIT_VIEW', null, '/auditing/audit/list', '1'),
-(7, null, 'about', 6, 'isAuthenticated()', null, '/app/about', '1'),
-(8, 4, 'doc-quote', 40, 'ROLE_QUOTE_ALL', 'ROLE_QUOTE_ALL', '/doc/quotaions', '1'),
-(9, 5, 'user', 50, 'ROLE_USER_VIEW', 'ROLE_USER_ALL', '/admin/user', '1'),
-(10, 5, 'role', 51, 'ROLE_ROLE_VIEW', 'ROLE_ROLE_ALL', '/admin/role', '1'),
-(11, 5, 'pwd-policy', 52, 'ROLE_PWD_POLICY_VIEW', 'ROLE_PWD_POLICY_ALL', '/admin/pwd-policy', '1');
+insert into "module" ("id", "parent_id", "code", "ordinal", "access", "url", "menu_item") values
+(1, null, 'dashboard', 0, null, '/', '1'),
+(2, null, 'org-profile', 1, null, '/', '1'),
+(3, null, 'affs', 2, null, '/', '1'),
+(4, null, 'docs', 3, null, '#', '1'),
+(5, null, 'admin', 4, null, '#', '1'),
+(6, null, 'audit-log', 5, null, '/', '1'),
+(7, null, 'about', 6, null, '/about', '1'),
+(8, 4, 'doc-quote', 40, null, '/', '1'),
+(9, 5, 'user', 50, null, '/user/list', '1'),
+(10, 5, 'role', 51, null, '/role/list', '1'),
+(11, 5, 'pwd-policy', 52, null, '/pwd-policy', '1');
 --;;
 insert into "public"."user" ("id", "aff_id", "username", "password", "first_name", "last_name", "email") values
 ('c9c93c10-c02d-445b-a05d-1a2f8501c9fe', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'circlek', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'CircleK', 'admin@circlek.com.my'),
@@ -728,3 +728,14 @@ insert into "public"."user" ("id", "aff_id", "username", "password", "first_name
 ('c9c93c10-c02d-445b-a05d-1a2f8501c9ff', 'fde78682-419e-423f-bdc6-32f48a7be64b', 'guardian', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'Guardian', 'admin@guardian.com.my'),
 ('c9c93c10-c02d-445b-a05d-1a2f8501cfff', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'arch', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'Both', 'admin@default.b2b.com.my'),
 ('c9c93c10-c02d-445b-a05d-1a2f8501cccc', 'fde78682-419e-423f-bdc6-32f48a7be64c', 'unilever', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'A.', 'Unilever', 'admin@unilever.com');
+--;;
+insert into "public"."access" ("id", "name", "desc") values
+(1, 'admin-access', 'Access to admin module'),
+(2, 'doc-view-access', 'View access to document module'),
+(3, 'doc-all-access', 'All access to document module'),
+(4, 'user-view-access', 'View access to user module'),
+(5, 'user-all-access', 'All access to user module'),
+(6, 'role-view-access', 'View access to document module'),
+(7, 'role-all-access', 'All access to document module'),
+(8, 'pwd-policy-view-access', 'View access to password policy module'),
+(9, 'pwd-policy-all-access', 'All access to password policy module');

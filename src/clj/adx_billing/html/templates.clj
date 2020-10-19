@@ -81,22 +81,19 @@
   [:ul.menu-list
    (for [item coll]
      (let [self (:self item)
-           url (:url self)
-           code (:code self)]
-       [:li [:a {:class "navbar-item" :href url}
+           icon (msg (keyword (str "menu.icon/" (:code self))))
+           text (msg (keyword (str "menu.text/" (:code self))))]
+       [:li [:a {:class "navbar-item" :href (:url self)}
              [:span.icon
-              [:i {:class (str "fa fa-lg " (msg (keyword (str "menu.icon/" code))))
-                            :aria-hidden 'true}]]
-             (msg (keyword (str "menu.text/" code)))]
+              [:i
+               {:class (str "fa fa-lg " icon)
+                            :aria-hidden 'true}]] text]
         (when-let [coll (:children item)]
           (for [item coll]
             (let [self (:self item)
-                  url (:url self)
-                  code (:code self)]
-              (println (keyword (str "menu.text/" code)))
+                  text (msg (keyword (str "menu.text/" (:code self))))]
               [:ul [:li [:a
-                         {:class "navbar-item" :href url}
-                         (msg (keyword (str "menu.text/" code)))]]])))]))])
+                         {:class "navbar-item" :href (:url self)} text]]])))]))])
 
 (defn- tabs [coll]
   ;; [:div {:class "tabs is-pivot is-right"}
