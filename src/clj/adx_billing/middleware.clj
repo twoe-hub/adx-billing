@@ -4,27 +4,14 @@
    [adx-billing.config :refer [env]]
    [adx-billing.layout :refer [error-page]]
    [adx-billing.middleware.formats :as formats]
-
-   [cheshire.generate :as cheshire]
-   [clojure.java.io :as io]
+   [adx-billing.middleware.access-rules :refer [wrap-authr]]
    [clojure.tools.logging :as log]
-   [cognitect.transit :as transit]
-
    [muuntaja.middleware :refer [wrap-format wrap-params]]
-
-   [ring.util.http-response :refer [forbidden]]
-   [ring.util.response :refer [redirect]]
    [ring.middleware.anti-forgery :refer [wrap-anti-forgery]]
    [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
    [ring.middleware.flash :refer [wrap-flash]]
    [ring.middleware.session :refer [wrap-session]]
-   [ring-ttl-session.core :refer [ttl-memory-store]]
-
-   [buddy.auth :refer [authenticated? throw-unauthorized]]
-   [buddy.auth.accessrules :refer [wrap-access-rules]]
-   [buddy.auth.backends :as backends]
-   [buddy.auth.backends.session :refer [session-backend]]
-   [buddy.auth.middleware :refer [wrap-authentication wrap-authorization]]))
+   [ring-ttl-session.core :refer [ttl-memory-store]]))
 
 (defn wrap-internal-error [handler]
   (fn [req]
@@ -52,47 +39,6 @@
       ;; since they're not compatible with this middleware
       ((if (:websocket? request) handler wrapped) request))))
 
-(defn permit-all [request]
-  true)
-
-(defn authenticated-access [request]
-  (authenticated? (:session request)))
-
-(defn handle-unauthorized [request metadata]
-  (if (authenticated-access request)
-    (forbidden "Not authorised")
-    (let [current-url (:uri request)]
-      (redirect (format "/auth/login?next=%s" current-url)))))
-
-(defn user-view-access [request]
-  (let [roles (:role (:session request))]
-    (or (contains? roles "user-view-access") (contains? roles "user-all-access"))))
-
-(defn wrap-auth [handler]
-  (let [backend (backends/session)]
-    (-> handler
-        (wrap-authentication backend)
-        (wrap-authorization backend)
-        (wrap-access-rules {:rules [{:pattern #"^/favicon.ico$"
-                                     :handler permit-all}
-                                    {:pattern #"^/css/.*"
-                                     :handler permit-all}
-                                    {:pattern #"^/fonts/.*"
-                                     :handler permit-all}
-                                    {:pattern #"^/js/.*"
-                                     :handler permit-all}
-                                    {:pattern #"^/img/.*"
-                                     :handler permit-all}
-                                    {:pattern #"^/auth/.*"
-                                     :handler permit-all}
-                                    {:pattern #"^/user/.*"
-                                     :handler user-view-access}
-                                    {:pattern #"^/.*"
-                                     :handler authenticated-access}
-                                    ]
-                            :on-error handle-unauthorized})))
-  )
-
 (defn wrap-base [handler]
   (->
    ((:middleware defaults) handler)
@@ -102,7 +48,7 @@
             ;; (assoc-in  [:session :store] (ttl-memory-store (* 60 30)))
             (dissoc :session)
             ))
-      wrap-auth
+      wrap-authr
       wrap-flash
       wrap-session
       wrap-internal-error))

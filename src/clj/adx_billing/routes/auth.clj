@@ -38,7 +38,7 @@
         plain-pwd(get-in request [:params :password])
         session (:session request)
         hashed-pwd (get-in (first (db/auth! {:username username})) [:password])]
-    (if (and hashed-pwd (hashers/verify plain-pwd hashed-pwd {:limit trusted-algs}))
+    (if (hashers/check plain-pwd hashed-pwd)
       (let [next-url (get-in session [:next] "/")
             updated-session (assoc session
                                    :identity (keyword username)
