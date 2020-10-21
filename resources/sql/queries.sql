@@ -14,13 +14,18 @@ SELECT m.* FROM public.module m
 order by m.ordinal
 
 -- :name get-roles :? :*
--- :doc selects all access
-SELECT a.name FROM public.access a
+-- :doc selects all access for given user
+SELECT a.name FROM public.user u
+join public.user_role ur on ur.user_id = u.id
+join public.role r on r.id = ur.role_id
+join public.role_access ra on ra.role_id = r.id
+join public.access a on a.id = ra.access_id
+where u.id = :username
 
 -- :name auth! :? :*
 -- :doc select user for authentication
 SELECT u.password FROM public.user u
-where u.username=:username
+where u.username = :username
 
 -- :name create-user! :! :n
 -- :doc creates a new user

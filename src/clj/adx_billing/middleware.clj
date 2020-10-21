@@ -5,6 +5,7 @@
    [adx-billing.layout :refer [error-page]]
    [adx-billing.middleware.formats :as formats]
    [adx-billing.middleware.access-rules :refer [wrap-authr]]
+   [adx-billing.msg.bundle :refer [msg]]
    [clojure.tools.logging :as log]
    [muuntaja.middleware :refer [wrap-format wrap-params]]
    [ring.middleware.anti-forgery :refer [wrap-anti-forgery]]
@@ -20,8 +21,8 @@
       (catch Throwable t
         (log/error t (.getMessage t))
         (error-page {:status 500
-                     :title "Something very bad has happened!"
-                     :message "We've dispatched a team of highly trained gnomes to take care of the problem."})))))
+                     :title (msg :error.very-bad/title)
+                     :message (msg :error.very-bad/msg)})))))
 
 (defn wrap-csrf [handler]
   (wrap-anti-forgery
@@ -29,7 +30,7 @@
     {:error-response
      (error-page
        {:status 403
-        :title "Invalid anti-forgery token"})}))
+        :title (msg :validation/invalid-token)})}))
 
 
 (defn wrap-formats [handler]

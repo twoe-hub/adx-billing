@@ -22,9 +22,12 @@
                          :admin "fa-user-shield"
                          :audit-log "fa-list-alt"
                          :about "fa-info-circle"}}
-           :validation {:required "Required"
+           :validation {:invalid-token "Invalid anti-forgery token"
+                        :required "Required"
                         :invalid-email "Invalid email address"
-                        :char-limit-exceeded "Must not contain more than %1 characters"}}
+                        :char-limit-exceeded "Must not contain more than %1 characters"}
+           :error {:very-bad {:title "Something very bad has happened!"
+                              :msg "We've dispatched a team of highly trained gnomes to take care of the problem."}}}
 
    :en {:missing "**Missing**"
         :copy-all :en-GB}})

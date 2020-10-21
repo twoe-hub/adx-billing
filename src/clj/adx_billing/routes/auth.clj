@@ -30,8 +30,8 @@
                                   (vec (db/get-modules)))]
     (make-tree coll)))
 
-(defn get-roles []
-  (set (map #(get % :name) (db/get-roles))))
+(defn get-roles [username]
+  (set (map #(get % :name) (db/get-roles {:username username}))))
 
 (defn auth! [request]
   (let [username (get-in request [:params :username])
@@ -43,7 +43,7 @@
             updated-session (assoc session
                                    :identity (keyword username)
                                    :menu (get-modules)
-                                   :roles (get-roles))]
+                                   :roles (get-roles username))]
         (-> (response/ok {:status :ok :next next-url})
             (assoc :session (dissoc session :next))
             (assoc :session updated-session)))

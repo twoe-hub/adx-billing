@@ -1,5 +1,15 @@
+insert into "public"."access" ("id", "name", "desc") values
+(1, 'doc-view-access', 'View access to document module'),
+(2, 'doc-all-access', 'All access to document module'),
+(3, 'user-view-access', 'View access to user module'),
+(4, 'user-all-access', 'All access to user module'),
+(5, 'role-view-access', 'View access to document module'),
+(6, 'role-all-access', 'All access to document module'),
+(7, 'pwd-policy-view-access', 'View access to password policy module'),
+(8, 'pwd-policy-all-access', 'All access to password policy module');
+--;;
 insert into "public"."affiliate" ("id", "code", "name", "entity_type", "industry_id", "aff_type", "reg_no", "date_est", "email", "website") values
-('fde78682-419e-423f-bdc6-32f48a7be64a', 'CRCLK', 'Circle-K limited', 'PVT_LTD', 5400, 'BUYER', 'CRCLK-A235', '2001-01-15', 'info@circlek.com', 'circlek.com'),
+('fde78682-419e-423f-bdc6-32f48a7be64a', 'WTSNS', 'Watsons Sdn. Bhd.', 'PVT_LTD', 5400, 'BUYER', 'WTSNS-A235', '2001-01-15', 'info@watsons.com.my', 'watsons.com.my'),
 ('fde78682-419e-423f-bdc6-32f48a7be64b', 'GRDN', 'Guardian(M) Sdn. Bhd.', 'PVT_LTD', 5400, 'BUYER', 'GRDN-12345', '2001-01-15', 'info@guardian.com.my', 'guardian.com.my'),
 ('fde78682-419e-423f-bdc6-32f48a7be64c', 'UNILEVER', 'Unilever Limited.', 'PVT_LTD', 5400, 'SUPPLIER', 'UNILEVER-12345', '2001-01-15', 'info@unilever.com', 'unilever.com');
 --;;
@@ -700,12 +710,12 @@ insert into "public"."industry" ("id", "name") values
 ('9721', 'International Affairs'),
 ('9995', 'Non-Operating Establishments');
 --;;
-insert into "public"."language" ("id", "code", "name", "eng_name") values
-(1, 'en_GB', 'English - UK', 'English - UK'),
-(2, 'en_US', 'English - US', 'English - US'),
-(3, 'in_ID', 'Bahasa Indonesia', 'Indonesian'),
-(4, 'ms', 'Bahasa Malaysia', 'Malaysian'),
-(5, 'zh', '简体中文', 'Simplified Chinese');
+insert into "public"."language" ("code", "name", "eng_name") values
+('en_GB', 'English - UK', 'English - UK'),
+('en_US', 'English - US', 'English - US'),
+('in_ID', 'Bahasa Indonesia', 'Indonesian'),
+('ms', 'Bahasa Malaysia', 'Malaysian'),
+('zh', '简体中文', 'Simplified Chinese');
 --;;
 insert into "module" ("id", "parent_id", "code", "ordinal", "access", "url", "menu_item") values
 (1, null, 'dashboard', 0, null, '/', '1'),
@@ -720,22 +730,49 @@ insert into "module" ("id", "parent_id", "code", "ordinal", "access", "url", "me
 (10, 5, 'role', 51, null, '/role/list', '1'),
 (11, 5, 'pwd-policy', 52, null, '/pwd-policy', '1');
 --;;
-insert into "public"."user" ("id", "aff_id", "username", "password", "first_name", "last_name", "email") values
-('c9c93c10-c02d-445b-a05d-1a2f8501c9fe', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'circlek', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'CircleK', 'admin@circlek.com.my'),
-('0696f9a0-339f-4a05-b1f6-dc5c86daf378', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'admin@suppla.b2b.com.my', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Rehman', 'admin@suppla.b2b.com.my'),
-('7907b471-99c0-4778-8dba-97493623bd7c', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'admin@reta.b2b.com.my', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Rashid', 'admin@reta.b2b.com.my'),
-('fd8ec1c3-59e2-49fe-bdff-c15537a02b3c', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'admin@retb.b2b.com.my', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Latif', 'admin@retb.b2b.com.my'),
-('c9c93c10-c02d-445b-a05d-1a2f8501c9ff', 'fde78682-419e-423f-bdc6-32f48a7be64b', 'guardian', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'Guardian', 'admin@guardian.com.my'),
-('c9c93c10-c02d-445b-a05d-1a2f8501cfff', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'arch', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'Both', 'admin@default.b2b.com.my'),
-('c9c93c10-c02d-445b-a05d-1a2f8501cccc', 'fde78682-419e-423f-bdc6-32f48a7be64c', 'unilever', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'A.', 'Unilever', 'admin@unilever.com');
+insert into "public"."role" ("id", "aff_id", "name", "desc", "created_by") values
+('b5ea41ba-dfbb-4ffd-b213-604267f27ffb', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'Admin', 'Administration group', 'SYSTEM'),
+('410eab04-9384-4d8c-be79-a0861aa76bca', 'fde78682-419e-423f-bdc6-32f48a7be64b', 'Admin', 'Administration group', 'SYSTEM'),
+('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 'fde78682-419e-423f-bdc6-32f48a7be64c', 'Admin', 'Administration group', 'SYSTEM');
 --;;
-insert into "public"."access" ("id", "name", "desc") values
-(1, 'admin-access', 'Access to admin module'),
-(2, 'doc-view-access', 'View access to document module'),
-(3, 'doc-all-access', 'All access to document module'),
-(4, 'user-view-access', 'View access to user module'),
-(5, 'user-all-access', 'All access to user module'),
-(6, 'role-view-access', 'View access to document module'),
-(7, 'role-all-access', 'All access to document module'),
-(8, 'pwd-policy-view-access', 'View access to password policy module'),
-(9, 'pwd-policy-all-access', 'All access to password policy module');
+insert into "public"."role_access" ("role_id", "access_id") values
+('b5ea41ba-dfbb-4ffd-b213-604267f27ffb', 1),
+('b5ea41ba-dfbb-4ffd-b213-604267f27ffb', 2),
+('b5ea41ba-dfbb-4ffd-b213-604267f27ffb', 3),
+('b5ea41ba-dfbb-4ffd-b213-604267f27ffb', 4),
+('b5ea41ba-dfbb-4ffd-b213-604267f27ffb', 5),
+('b5ea41ba-dfbb-4ffd-b213-604267f27ffb', 6),
+('b5ea41ba-dfbb-4ffd-b213-604267f27ffb', 7),
+('b5ea41ba-dfbb-4ffd-b213-604267f27ffb', 8),
+('410eab04-9384-4d8c-be79-a0861aa76bca', 1),
+('410eab04-9384-4d8c-be79-a0861aa76bca', 2),
+('410eab04-9384-4d8c-be79-a0861aa76bca', 3),
+('410eab04-9384-4d8c-be79-a0861aa76bca', 4),
+('410eab04-9384-4d8c-be79-a0861aa76bca', 5),
+('410eab04-9384-4d8c-be79-a0861aa76bca', 6),
+('410eab04-9384-4d8c-be79-a0861aa76bca', 7),
+('410eab04-9384-4d8c-be79-a0861aa76bca', 8),
+('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 1),
+('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 2),
+('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 3),
+('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 4),
+('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 5),
+('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 6),
+('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 7),
+('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 8);
+--;;
+insert into "public"."user" ("id", "aff_id", "username", "password", "first_name", "last_name", "email") values
+('c9c93c10-c02d-445b-a05d-1a2f8501c9fe', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'watsons', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'CircleK', 'admin.wtsns@adx.com.my'),
+('0696f9a0-339f-4a05-b1f6-dc5c86daf378', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'dummy.wtsns1@adx.com.my', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Rehman', 'dummy1@adx.com.my'),
+('7907b471-99c0-4778-8dba-97493623bd7c', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'dummy.wtsns2@adx.com.my', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Rashid', 'dummy.wtsns2@adx.com.my'),
+('fd8ec1c3-59e2-49fe-bdff-c15537a02b3c', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'dummy.wtsns3@adx.com.my', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Latif', 'dummy.wtsns3@adx.com.my'),
+('c9c93c10-c02d-445b-a05d-1a2f8501c9ff', 'fde78682-419e-423f-bdc6-32f48a7be64b', 'guardian', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'Guardian', 'dummy.grdn1@adx.com.my'),
+('c9c93c10-c02d-445b-a05d-1a2f8501cccc', 'fde78682-419e-423f-bdc6-32f48a7be64c', 'unilever', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'A.', 'Unilever', 'dummy.unilever1@adx.com.my');
+--;;
+insert into "public"."user_role" ("user_id", "role_id") values
+('c9c93c10-c02d-445b-a05d-1a2f8501c9fe', 'b5ea41ba-dfbb-4ffd-b213-604267f27ffb'),
+('0696f9a0-339f-4a05-b1f6-dc5c86daf378', 'b5ea41ba-dfbb-4ffd-b213-604267f27ffb'),
+('7907b471-99c0-4778-8dba-97493623bd7c', 'b5ea41ba-dfbb-4ffd-b213-604267f27ffb'),
+('fd8ec1c3-59e2-49fe-bdff-c15537a02b3c', 'b5ea41ba-dfbb-4ffd-b213-604267f27ffb'),
+('c9c93c10-c02d-445b-a05d-1a2f8501c9ff', '410eab04-9384-4d8c-be79-a0861aa76bca'),
+('c9c93c10-c02d-445b-a05d-1a2f8501cccc', 'cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1');
