@@ -18,32 +18,33 @@
 
 (def trusted-algs #{:bcrypt+sha512})
 
-(defn make-tree
+(defn- make-tree
   ([coll] (for [x (remove :parent-id coll)]
             {:self x :children (make-tree x coll)}))
   ([root coll]
    (for [x coll :when (= (:parent-id x) (:id root))]
      {:self x :children (make-tree x coll)})))
 
-(defn get-modules []
+(defn- get-modules [access]
   (let [coll (cske/transform-keys csk/->kebab-case-keyword
-                                  (vec (db/get-modules)))]
+                                  (vec (db/get-modules {:access access})))]
     (make-tree coll)))
 
-(defn get-roles [username]
-  (set (map #(get % :name) (db/get-roles {:username username}))))
+(defn- get-access [uid]
+  (set (map #(get % :name) (db/get-access {:uid uid}))))
 
 (defn auth! [request]
   (let [username (get-in request [:params :username])
         plain-pwd(get-in request [:params :password])
         session (:session request)
-        hashed-pwd (get-in (first (db/auth! {:username username})) [:password])]
+        {hashed-pwd :password :as user} (db/auth! {:username username})]
     (if (hashers/check plain-pwd hashed-pwd)
       (let [next-url (get-in session [:next] "/")
+            roles (get-access (:id user))
             updated-session (assoc session
-                                   :identity (keyword username)
-                                   :menu (get-modules)
-                                   :roles (get-roles username))]
+                                   :identity (dissoc user :password)
+                                   :roles roles
+                                   :menu (get-modules roles))]
         (-> (response/ok {:status :ok :next next-url})
             (assoc :session (dissoc session :next))
             (assoc :session updated-session)))

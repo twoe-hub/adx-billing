@@ -1,6 +1,8 @@
 -- :disable-transaction
 alter table "public"."access" add constraint "pk_access_id" primary key ("id");
 --;;
+alter table "public"."access" add constraint "uq_access_name" unique ("name");
+--;;
 alter table "public"."contact" add constraint "pk_contact_id" primary key ("id");
 --;;
 alter table "public"."country" add constraint "pk_country_id" primary key ("id");
@@ -60,6 +62,8 @@ alter table "public"."loc_contact" add constraint "fk_loc_contact_contact_id" fo
 alter table "public"."module" add constraint "pk_module_id" primary key ("id");
 --;;
 alter table "public"."module" add constraint "fk_module_parent_id" foreign key ("parent_id") references "public"."module" ("id") match full;
+--;;
+alter table "public"."module" add constraint "fk_module_access_name" foreign key ("access") references "public"."access" ("name") match full;
 --;;
 alter table "public"."user" add constraint "pk_user_id" primary key ("id");
 --;;

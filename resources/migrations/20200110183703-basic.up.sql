@@ -151,24 +151,24 @@ create table if not exists "public"."module" (
   "menu_item" boolean);
 --;;
 create table if not exists "public"."password_history" (
-"id" uuid not null,
-"user_id" uuid not null,
-"password" text,
-"version" integer not null default 0,
-"date_created" timestamp not null default now(),
-"last_updated" timestamp not null default now());
+  "id" uuid not null,
+  "user_id" uuid not null,
+  "password" text,
+  "version" integer not null default 0,
+  "date_created" timestamp not null default now(),
+  "last_updated" timestamp not null default now());
 --;;
 create table if not exists "public"."password_policy" (
-"id" integer not null,
-"min_length" integer not null default 4,
-"max_age" integer not null default 0,
-"hist_size" integer not null default 0,
-"lock_period" integer not null default 0,
-"max_attempts" integer not null default 0,
-"aff_id" uuid not null,
-"version" integer not null default 0,
-"date_created" timestamp not null default now(),
-"last_updated" timestamp not null default now());
+  "id" integer not null,
+  "min_length" integer not null default 4,
+  "max_age" integer not null default 0,
+  "hist_size" integer not null default 0,
+  "lock_period" integer not null default 0,
+  "max_attempts" integer not null default 0,
+  "aff_id" uuid not null,
+  "version" integer not null default 0,
+  "date_created" timestamp not null default now(),
+  "last_updated" timestamp not null default now());
 --;;
 create table if not exists "public"."registration" (
   "id" integer not null,
@@ -221,8 +221,8 @@ create table if not exists "public"."user" (
   "last_updated" timestamp not null default now());
 --;;
 create table if not exists "public"."user_contact" (
-    "user_id" uuid not null,
-    "contact_id" uuid not null);
+  "user_id" uuid not null,
+  "contact_id" uuid not null);
 --;;
 create table if not exists "public"."user_role"(
   "user_id" uuid not null,

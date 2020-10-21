@@ -1,12 +1,17 @@
 insert into "public"."access" ("id", "name", "desc") values
-(1, 'doc-view-access', 'View access to document module'),
-(2, 'doc-all-access', 'All access to document module'),
-(3, 'user-view-access', 'View access to user module'),
-(4, 'user-all-access', 'All access to user module'),
-(5, 'role-view-access', 'View access to document module'),
-(6, 'role-all-access', 'All access to document module'),
-(7, 'pwd-policy-view-access', 'View access to password policy module'),
-(8, 'pwd-policy-all-access', 'All access to password policy module');
+(1, 'org-profile-view-access', 'Access to view organisation profile'),
+(2, 'aff-view-access', 'Access to view affiliates'),
+(3, 'doc-access', 'Access to document module'),
+(4, 'admin-access', 'Access to admin modules'),
+(5, 'audit-view-access', 'Access to view audit logs'),
+(6, 'quote-view-access', 'Access to view quotations'),
+(7, 'quote-all-access', 'All access to quotations'),
+(8, 'user-view-access', 'Access to view users'),
+(9, 'user-all-access', 'All access to users'),
+(10, 'role-view-access', 'Access to view roles'),
+(11, 'role-all-access', 'All access to roles'),
+(12, 'pwd-policy-view-access', 'Access to view password policy'),
+(13, 'pwd-policy-all-access', 'All access to password policy');
 --;;
 insert into "public"."affiliate" ("id", "code", "name", "entity_type", "industry_id", "aff_type", "reg_no", "date_est", "email", "website") values
 ('fde78682-419e-423f-bdc6-32f48a7be64a', 'WTSNS', 'Watsons Sdn. Bhd.', 'PVT_LTD', 5400, 'BUYER', 'WTSNS-A235', '2001-01-15', 'info@watsons.com.my', 'watsons.com.my'),
@@ -719,16 +724,16 @@ insert into "public"."language" ("code", "name", "eng_name") values
 --;;
 insert into "module" ("id", "parent_id", "code", "ordinal", "access", "url", "menu_item") values
 (1, null, 'dashboard', 0, null, '/', '1'),
-(2, null, 'org-profile', 1, null, '/', '1'),
-(3, null, 'affs', 2, null, '/', '1'),
-(4, null, 'docs', 3, null, '#', '1'),
-(5, null, 'admin', 4, null, '#', '1'),
-(6, null, 'audit-log', 5, null, '/', '1'),
+(2, null, 'org-profile', 1, 'org-profile-view-access', '/', '1'),
+(3, null, 'affs', 2, 'aff-view-access', '/', '1'),
+(4, null, 'docs', 3, 'doc-access', '#', '1'),
+(5, null, 'admin', 4, 'admin-access', '#', '1'),
+(6, null, 'audit-log', 5, 'audit-view-access', '/', '1'),
 (7, null, 'about', 6, null, '/about', '1'),
-(8, 4, 'doc-quote', 40, null, '/', '1'),
-(9, 5, 'user', 50, null, '/user/list', '1'),
-(10, 5, 'role', 51, null, '/role/list', '1'),
-(11, 5, 'pwd-policy', 52, null, '/pwd-policy', '1');
+(8, 4, 'doc-quote', 40, 'quote-view-access', '/', '1'),
+(9, 5, 'user', 50, 'user-view-access', '/user/list', '1'),
+(10, 5, 'role', 51, 'role-view-access', '/role/list', '1'),
+(11, 5, 'pwd-policy', 52, 'pwd-policy-view-access', '/pwd-policy', '1');
 --;;
 insert into "public"."role" ("id", "aff_id", "name", "desc", "created_by") values
 ('b5ea41ba-dfbb-4ffd-b213-604267f27ffb', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'Admin', 'Administration group', 'SYSTEM'),
@@ -744,6 +749,11 @@ insert into "public"."role_access" ("role_id", "access_id") values
 ('b5ea41ba-dfbb-4ffd-b213-604267f27ffb', 6),
 ('b5ea41ba-dfbb-4ffd-b213-604267f27ffb', 7),
 ('b5ea41ba-dfbb-4ffd-b213-604267f27ffb', 8),
+('b5ea41ba-dfbb-4ffd-b213-604267f27ffb', 9),
+('b5ea41ba-dfbb-4ffd-b213-604267f27ffb', 10),
+('b5ea41ba-dfbb-4ffd-b213-604267f27ffb', 11),
+('b5ea41ba-dfbb-4ffd-b213-604267f27ffb', 12),
+('b5ea41ba-dfbb-4ffd-b213-604267f27ffb', 13),
 ('410eab04-9384-4d8c-be79-a0861aa76bca', 1),
 ('410eab04-9384-4d8c-be79-a0861aa76bca', 2),
 ('410eab04-9384-4d8c-be79-a0861aa76bca', 3),
@@ -752,6 +762,11 @@ insert into "public"."role_access" ("role_id", "access_id") values
 ('410eab04-9384-4d8c-be79-a0861aa76bca', 6),
 ('410eab04-9384-4d8c-be79-a0861aa76bca', 7),
 ('410eab04-9384-4d8c-be79-a0861aa76bca', 8),
+('410eab04-9384-4d8c-be79-a0861aa76bca', 9),
+('410eab04-9384-4d8c-be79-a0861aa76bca', 10),
+('410eab04-9384-4d8c-be79-a0861aa76bca', 11),
+('410eab04-9384-4d8c-be79-a0861aa76bca', 12),
+('410eab04-9384-4d8c-be79-a0861aa76bca', 13),
 ('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 1),
 ('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 2),
 ('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 3),
@@ -759,7 +774,12 @@ insert into "public"."role_access" ("role_id", "access_id") values
 ('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 5),
 ('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 6),
 ('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 7),
-('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 8);
+('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 8),
+('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 9),
+('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 10),
+('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 11),
+('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 12),
+('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 13);
 --;;
 insert into "public"."user" ("id", "aff_id", "username", "password", "first_name", "last_name", "email") values
 ('c9c93c10-c02d-445b-a05d-1a2f8501c9fe', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'watsons', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'CircleK', 'admin.wtsns@adx.com.my'),

@@ -11,20 +11,21 @@ SELECT * FROM public.guestbook
 -- :name get-modules :? :*
 -- :doc selects all modules
 SELECT m.* FROM public.module m
+where m.access in (:v*:access) or m.access is null
 order by m.ordinal
 
--- :name get-roles :? :*
+-- :name get-access :? :*
 -- :doc selects all access for given user
 SELECT a.name FROM public.user u
 join public.user_role ur on ur.user_id = u.id
 join public.role r on r.id = ur.role_id
 join public.role_access ra on ra.role_id = r.id
 join public.access a on a.id = ra.access_id
-where u.id = :username
+where u.id = :uid
 
--- :name auth! :? :*
+-- :name auth! :? :1
 -- :doc select user for authentication
-SELECT u.password FROM public.user u
+SELECT u.* FROM public.user u
 where u.username = :username
 
 -- :name create-user! :! :n
