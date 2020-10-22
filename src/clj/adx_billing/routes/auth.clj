@@ -1,6 +1,6 @@
 (ns adx-billing.routes.auth
   (:require
-   [adx-billing.auth.validate-login :refer [validate]]
+   [adx-billing.auth.validate :refer [validate]]
    [adx-billing.layout :as layout]
    [adx-billing.html.templates :refer [login-template]]
    [adx-billing.db.core :as db]

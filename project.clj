@@ -24,7 +24,7 @@
                  [mount "0.1.16"]
                  [nrepl "0.6.0"]
                  [org.clojure/clojure "1.10.1"]
-                 [org.clojure/clojurescript "1.10.238" :scope "provided"]
+                 [org.clojure/clojurescript "1.10.773" :scope "provided"]
                  [org.clojure/tools.cli "0.4.2"]
                  [org.clojure/tools.logging "0.5.0"]
                  [org.postgresql/postgresql "42.2.9"]
@@ -36,12 +36,12 @@
                  [buddy/buddy-auth "2.2.0"]
                  [buddy/buddy-hashers "1.6.0"]
                  [selmer "1.12.18"]
-                 [reagent "0.8.1"]
+                 [reagent "0.10.0"]
                  [cljs-ajax "0.7.3"]
                  [luminus-transit "0.1.2"]
                  [tick "0.4.23-alpha"]]
 
-  :min-lein-version "2.0.0"
+  :min-lein-version "2.7.1"
   :source-paths ["src/clj" "src/cljc"]
   :test-paths ["test/clj"]
   :resource-paths ["resources"]
@@ -51,8 +51,8 @@
   :plugins [[lein-immutant "2.1.0"]
             ;; Too slow
             ;; [yogthos/lein-sass "0.1.10"]
-            [lein-scss "0.3.0"]
-            ]
+            [lein-figwheel "0.5.20"]
+            [lein-scss "0.3.0"]]
 
   ;; Uncomment the block below, and comment out the next to use yogthos/lein-sass
   ;; :sass {:source "resources/sass" :target "resources/public/css"}
@@ -68,39 +68,40 @@
 
   :clean-targets ^{:protect false} [...targets...]
 
-  :profiles
-  {:uberjar {:omit-source true
-             :aot :all
-             :uberjar-name "adx-billing.jar"
-             :source-paths ["env/prod/clj" "src/cljs" "src/cljc"]
-             :resource-paths ["env/prod/resources"]
-             }
+  :profiles {:uberjar {:omit-source true
+                       :aot :all
+                       :uberjar-name "adx-billing.jar"
+                       :source-paths ["env/prod/clj" "src/cljs" "src/cljc"]
+                       :resource-paths ["target"]
+                       }
 
-   :dev           [:project/dev :profiles/dev]
-   :test          [:project/dev :project/test :profiles/test]
+             :dev {:jvm-opts ["-Dconf=dev-config.edn"]
+                   :dependencies [[expound "0.7.2"]
+                                  [pjstadig/humane-test-output "0.10.0"]
+                                  [prone "2019-07-08"]
+                                  [ring/ring-devel "1.8.0"]
+                                  [ring/ring-mock "0.4.0"]
+                                  [com.taoensso/tempura "1.2.1"]
+                                  ;; clojurescript
+                                  [org.clojure/clojurescript "1.10.339"]
+                                  [com.bhauman/figwheel-main "0.2.3"]
+                                  ;; optional but recommended
+                                  [com.bhauman/rebel-readline-cljs "0.1.4"]]
+                   :plugins      [[com.jakemccrary/lein-test-refresh "0.24.1"]
+                                  [jonase/eastwood "0.3.5"]]
+                   :source-paths ["env/dev/clj" "src/cljs" "src/cljc"]
+                   :resource-paths ["env/dev/resources" "target"]
+                   :repl-options {:init-ns user}
+                   :injections [(require 'pjstadig.humane-test-output)
+                                (pjstadig.humane-test-output/activate!)]}
 
-   :project/dev  {:jvm-opts ["-Dconf=dev-config.edn"]
-                  :dependencies [[expound "0.7.2"]
-                                 [pjstadig/humane-test-output "0.10.0"]
-                                 [prone "2019-07-08"]
-                                 [ring/ring-devel "1.8.0"]
-                                 [ring/ring-mock "0.4.0"]
-                                 [com.taoensso/tempura "1.2.1"]
-                                 ;; clojurescript
-                                 [org.clojure/clojurescript "1.10.339"]
-                                 [com.bhauman/figwheel-main "0.2.3"]
-                                 ;; optional but recommended
-                                 [com.bhauman/rebel-readline-cljs "0.1.4"]]
-                  :plugins      [[com.jakemccrary/lein-test-refresh "0.24.1"]
-                                 [jonase/eastwood "0.3.5"]]
-                  :source-paths ["env/dev/clj" "src/cljs" "src/cljc"]
-                  :resource-paths ["env/dev/resources", "target"]
-                  :repl-options {:init-ns user}
-                  :injections [(require 'pjstadig.humane-test-output)
-                               (pjstadig.humane-test-output/activate!)]}
-   :project/test {:jvm-opts ["-Dconf=test-config.edn"]
-                  :resource-paths ["env/test/resources"]}
-   :profiles/dev {}
-   :profiles/test {}}
+             :test {:jvm-opts ["-Dconf=test-config.edn"]
+                    :source-paths ["env/test/clj" "src/cljs" "src/cljc"]
+                    :resource-paths ["env/test/resources" "target"]}
 
-  :aliases {"fig" ["trampoline" "run" "-m" "figwheel.main"]})
+             :prod {:jvm-opts ["-Dconf=prod-config.edn"]
+                    :source-paths ["env/prod/clj" "src/cljs" "src/cljc"]
+                    :resource-paths ["env/prod/resources" "target"]}}
+
+  :aliases {"fig:dev" ["trampoline" "run" "-m" "figwheel.main" "-b" "app" "-r"]
+            "fig:prod"   ["run" "-m" "figwheel.main" "-O" "whitespace" "-bo" "app"]})

@@ -2,7 +2,9 @@
   (:require [ajax.core :refer [GET POST]]
             [cljs.loader :as loader]
             [clojure.string :as string]
-            [reagent.core :as r]
+            [goog.dom :as gdom]
+            [reagent.core :as rcore]
+            [reagent.dom :as rdom]
             [tick.alpha.api :as t]
             [tick.locale-en-us]))
 
@@ -23,14 +25,13 @@
       [:p " - " name]])])
 
 (defn guests []
-  (let [messages (r/atom nil)]
+  (let [messages (rcore/atom nil)]
     (get-messages messages)
-    (fn []
-      [:div.content>div.columns.is-multiline
-       [:div.column>div.is-horizontal
-        [:h4 "Messages"]
-        [message-list messages]]])))
+    [:div.content>div.columns.is-multiline
+     [:div.column>div.is-horizontal
+      [:h4 "Messages"]
+      [message-list messages]]]))
 
-(r/render [guests] (.getElementById js/document "tab-content"))
+(rdom/render [guests] (gdom/getElement "tab-content"))
 
 (loader/set-loaded! :guest-list)

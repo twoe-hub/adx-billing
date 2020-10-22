@@ -1,4 +1,4 @@
-(ns adx-billing.auth.validate-login
+(ns adx-billing.auth.validate
   (:require
    [struct.core :as st]))
 

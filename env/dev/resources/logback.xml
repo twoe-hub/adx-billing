@@ -30,7 +30,7 @@
     <logger name="org.eclipse.jetty" level="warn" />
     <logger name="org.keycloak" level="info" />
     <logger name="io.undertow" level="info" />
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
     </root>

@@ -2,15 +2,17 @@
   (:require [ajax.core :refer [GET POST]]
             [cljs.loader :as loader]
             [clojure.string :as string]
-            [reagent.core :as r]
+            [goog.dom :as gdom]
+            [reagent.core :as rcore]
+            [reagent.dom :as rdom]
             [tick.alpha.api :as t]
             [tick.locale-en-us]
             [adx-billing.user.validate-user :refer [validate]]))
 
 (defonce pg-size 15)
-(defonce current-pg (r/atom 1))
-(defonce last-pg (r/atom 1))
-(defonce users (r/atom nil))
+(defonce current-pg (rcore/atom 1))
+(defonce last-pg (rcore/atom 1))
+(defonce users (rcore/atom nil))
 
 (def cols
   ["Username" "First Name" "Last Name" "Email"])
@@ -152,7 +154,7 @@
 (defn modal-ui [fields errors]
   (let [modal-class "edit-modal"]
     [:div.modal.edit-modal
-     {:tabindex "0"
+     {:tab-index "0"
       :on-key-up #(toggle-modal % modal-class fields errors)
       :style {:justify-content "flex-start"
               :padding-top "150px"}}
@@ -224,8 +226,8 @@
 
 (defn content []
   (get-users @current-pg)
-  (let [fields (r/atom {})
-        errors (r/atom nil)]
+  (let [fields (rcore/atom {})
+        errors (rcore/atom nil)]
     (fn []
       [:div.content>div.columns.is-multiline
        [:div.column
@@ -235,6 +237,6 @@
         [modal-ui fields errors]
         ]])))
 
-(r/render [content] (.getElementById js/document "content"))
+(rdom/render [content] (gdom/getElement "content"))
 
-(loader/set-loaded! :user-list)
+(loader/set-loaded! :user)

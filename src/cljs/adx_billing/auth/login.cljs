@@ -2,9 +2,11 @@
   (:require [ajax.core :refer [GET POST]]
             [cljs.loader :as loader]
             [clojure.string :as string]
-            [reagent.core :as r]
-            [adx-billing.util.util :refer [toggle-modal hide-modal]]
-            [adx-billing.auth.validate-login :refer [validate]]))
+            [goog.dom :as gdom]
+            [reagent.core :as rcore]
+            [reagent.dom :as rdom]
+            [adx-billing.common.util :refer [toggle-modal hide-modal]]
+            [adx-billing.auth.validate :refer [validate]]))
 
 (defn get-content! [e]
   (let [data (.-dataset (.-target e))
@@ -143,8 +145,8 @@
                  :awesome-span (pwd-err-span)}))
 
 (defn login-form []
-  (let [fields (r/atom {})
-        errors (r/atom nil)]
+  (let [fields (rcore/atom {})
+        errors (rcore/atom nil)]
     (fn []
       [:div
        [:div.column.block.block-main
@@ -182,7 +184,6 @@
        (policy)
        (terms)])))
 
-(r/render [login-form]
-          (.getElementById js/document "content"))
+(rdom/render [login-form] (gdom/getElement "content"))
 
 (loader/set-loaded! :auth)

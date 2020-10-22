@@ -45,7 +45,7 @@
                                              :offset (Integer. (:offset params))
                                              :limit (Integer. (:limit params))))))}))
 
-(defn user-list [request]
+(defn list-user [request]
   (response/content-type
    (response/ok
     (base-template request {:title "Users | e-Billing"
@@ -59,7 +59,7 @@
   [""
    {:middleware [middleware/wrap-csrf
                  middleware/wrap-formats]}
-   ["/" {:get user-list}]
-   ["/user/list" {:get user-list}]
+   ["/" {:get list-user}]
+   ["/user/list" {:get list-user}]
    ["/user/users" {:get get-users}]
    ["/user/save" {:post save-user!}]])

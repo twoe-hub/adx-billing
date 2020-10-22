@@ -1,4 +1,4 @@
-(ns adx-billing.util.util
+(ns adx-billing.common.util
   (:require [ajax.core :refer [GET POST]]
             [cljs.loader :as loader]
             [clojure.string :as string]
