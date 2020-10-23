@@ -5,6 +5,7 @@
     [adx-billing.routes.guest :refer [guest-routes]]
     [adx-billing.routes.auth :refer [auth-routes]]
     [adx-billing.routes.user :refer [user-routes]]
+    [adx-billing.routes.profile :refer [profile-routes]]
     [reitit.ring :as ring]
     [ring.middleware.content-type :refer [wrap-content-type]]
     [ring.middleware.webjars :refer [wrap-webjars]]
@@ -22,6 +23,7 @@
      [(auth-routes)
       (guest-routes)
       (user-routes)
+      (profile-routes)
       ])
     (ring/routes
       (ring/create-resource-handler

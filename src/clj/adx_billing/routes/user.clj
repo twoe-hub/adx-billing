@@ -3,28 +3,12 @@
    [adx-billing.db.core :as db]
    [adx-billing.user.validate-user :refer [validate]]
    [adx-billing.html.templates :refer [base-template]]
-   [adx-billing.layout :as layout]
    [adx-billing.middleware :as middleware]
    [camel-snake-kebab.core :as csk]
    [camel-snake-kebab.extras :as cske]
-   [cheshire.core :refer [parse-string]]
-   [clj-http.client :as client]
    [clojure.pprint :refer [pprint]]
-   [clojure.string :as string]
-   [clojure.walk :as walk]
    [ring.util.http-response :as response]
    ))
-
-(defn- transform-keys
-  "Recursively transforms all map keys from strings to keywords."
-  [m]
-  (let [f (fn [[kw v]]
-            (let [k (str kw)]
-              (if (re-find #"_" k)
-                [(keyword (string/replace (string/replace k "_" "-") ":" "")) v]
-                [kw v])))]
-    ;; only apply to maps
-    (walk/postwalk (fn [x] (if (map? x) (into {} (map f x)) x)) m)))
 
 (defn save-user! [{:keys [params]}]
   (if-let [errors (validate params)]

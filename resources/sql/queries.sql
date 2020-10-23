@@ -25,7 +25,8 @@ where u.id = :uid
 
 -- :name auth! :? :1
 -- :doc select user for authentication
-SELECT u.* FROM public.user u
+SELECT u.*, a.name aff_name FROM public.user u
+join public.affiliate a on a.id = u.aff_id
 where u.username = :username
 
 -- :name create-user! :! :n

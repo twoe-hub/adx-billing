@@ -33,11 +33,14 @@
 (defn- get-access [uid]
   (set (map #(get % :name) (db/get-access {:uid uid}))))
 
+(defn- get-user [username]
+  (cske/transform-keys csk/->kebab-case-keyword (db/auth! {:username username})))
+
 (defn auth! [request]
   (let [username (get-in request [:params :username])
         plain-pwd(get-in request [:params :password])
         session (:session request)
-        {hashed-pwd :password :as user} (db/auth! {:username username})]
+        {hashed-pwd :password :as user} (get-user username)]
     (if (hashers/check plain-pwd hashed-pwd)
       (let [next-url (get-in session [:next] "/")
             roles (get-access (:id user))
