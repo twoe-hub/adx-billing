@@ -7,6 +7,7 @@
             [reagent.dom :as rdom]
             [tick.alpha.api :as t]
             [tick.locale-en-us]
+            [adx-billing.common.page-el :as page-el]
             [adx-billing.user.validate-user :refer [validate]]))
 
 (defonce pg-size 15)
@@ -237,6 +238,7 @@
         [modal-ui fields errors]
         ]])))
 
+(rdom/render [page-el/topbar] (gdom/getElement "topbar"))
 (rdom/render [content] (gdom/getElement "content"))
 
 (loader/set-loaded! :user)

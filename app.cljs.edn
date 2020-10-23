@@ -3,7 +3,8 @@
  :output-dir "target/public/js/app"
  :asset-path "/js/app"
 
- :modules {:common {:entries #{adx-billing.common.util}}
+ :modules {:util {:entries #{adx-billing.common.util}}
+           :page-el {:entries #{adx-billing.common.page-el}}
            :auth {:entries #{adx-billing.auth.login}}
            :auth-validate {:entries #{adx-billing.auth.validate}}
            :user {:entries #{adx-billing.user.user}}

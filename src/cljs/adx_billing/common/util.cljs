@@ -1,40 +1,39 @@
-(ns adx-billing.common.util
-  (:require [ajax.core :refer [GET POST]]
-            [cljs.loader :as loader]
-            [clojure.string :as string]
-            [reagent.core :as r]
-            [tick.alpha.api :as t]
-            [tick.locale-en-us]
-            [adx-billing.user.validate-user :refer [validate]]))
+(ns adx-billing.common.util)
 
-(defn show-modal [elem]
-  (.add (.-classList elem) "is-active")
-  (.focus elem))
+(defn show-modal [el]
+  (.add (.-classList el) "is-active")
+  (.focus el))
 
 (defn hide-modal
-  ([elem]
-   (.remove (.-classList elem) "is-active"))
+  ([el]
+   (.remove (.-classList el) "is-active"))
 
   ([e id]
-   (let [elem (.getElementById js/document id)]
-     (when (and (= (.-key e) "Escape") (.contains (.-classList elem) "is-active"))
-       (hide-modal elem))))
+   (let [el (.getElementById js/document id)]
+     (when (and (= (.-key e) "Escape") (.contains (.-classList el) "is-active"))
+       (hide-modal el))))
 
   ([e id fields errors]
-   (let [elem (.getElementById js/document id)]
-     (when (and (= (.-key e) "Escape") (.contains (.-classList elem) "is-active"))
+   (let [el (.getElementById js/document id)]
+     (when (and (= (.-key e) "Escape") (.contains (.-classList el) "is-active"))
        (do
          (reset! fields {})
          (reset! errors nil)
-         (hide-modal elem))))))
+         (hide-modal el))))))
 
 (defn toggle-modal
   ([id]
-   (let [elem (.getElementById js/document id)]
-     (if (.contains (.-classList elem) "is-active")
-       (hide-modal elem)
-       (show-modal elem))))
+   (let [el (.getElementById js/document id)]
+     (if (.contains (.-classList el) "is-active")
+       (hide-modal el)
+       (show-modal el))))
   ([id fields errors]
    (reset! fields {})
    (reset! errors nil)
    (toggle-modal id)))
+
+(defn toggle [el]
+  (let [el (.-currentTarget el)]
+    (if (.contains (.-classList el) "is-active")
+      (hide-modal el)
+      (show-modal el))))
