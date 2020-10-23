@@ -22,13 +22,19 @@ lein run migrate
 To start Figwheel go to the app root and run:
 
 ```bash
-lein fig -- -b app -r
+lein fig:dev # or, lein fig:prod
 ```
 
-To start a web server for the application, go to the app root directory and run:
+To start a the application server, fire another terminal, and go to the app root directory and run:
 
 ```bash
-lein run
+lein repl # you may use, lein run; but then you wouldn't be able to restart/reset-db/etc., quickly.
+```
+
+then at the prompt
+
+```clojure
+(start) ;; to stop use, (stop); to restart, use (restart), to reset db, use (reset-db)
 ```
 
 For sass run:
