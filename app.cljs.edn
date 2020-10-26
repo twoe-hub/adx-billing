@@ -8,5 +8,6 @@
            :auth {:entries #{adx-billing.auth.login}}
            :auth-validate {:entries #{adx-billing.auth.validate}}
            :user {:entries #{adx-billing.user.user}}
+           :user-validate {:entries #{adx-billing.user.validate}}
            }
  }

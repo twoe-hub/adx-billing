@@ -16,7 +16,6 @@
                  :session
                  :identity
                  )]
-    (pprint user)
     (response/ok
      {:name (str (:first-name user) " " (:last-name user))
       :org (:aff-name user)})))

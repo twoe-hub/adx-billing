@@ -1,7 +1,7 @@
 (ns adx-billing.routes.user
   (:require
    [adx-billing.db.core :as db]
-   [adx-billing.user.validate-user :refer [validate]]
+   [adx-billing.user.validate :refer [validate]]
    [adx-billing.html.templates :refer [base-template]]
    [adx-billing.middleware :as middleware]
    [camel-snake-kebab.core :as csk]

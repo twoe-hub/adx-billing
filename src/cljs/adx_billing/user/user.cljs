@@ -8,7 +8,7 @@
             [tick.alpha.api :as t]
             [tick.locale-en-us]
             [adx-billing.common.page-el :as page-el]
-            [adx-billing.user.validate-user :refer [validate]]))
+            [adx-billing.user.validate :refer [validate]]))
 
 (defonce pg-size 15)
 (defonce current-pg (rcore/atom 1))

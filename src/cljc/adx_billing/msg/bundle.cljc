@@ -22,6 +22,8 @@
                          :admin "fa-user-shield"
                          :audit-log "fa-list-alt"
                          :about "fa-info-circle"}}
+           :list {:user {:name "Name"
+                         }}
            :validation {:invalid-token "Invalid anti-forgery token"
                         :required "Required"
                         :invalid-email "Invalid email address"

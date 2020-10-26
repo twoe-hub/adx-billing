@@ -1,4 +1,4 @@
-(ns adx-billing.user.validate-user
+(ns adx-billing.user.validate
   (:require [adx-billing.msg.bundle :refer [msg]]
             [struct.core :as st]))
 
