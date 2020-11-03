@@ -81,7 +81,7 @@
   (page/html5
    [:head
     [:meta {:charset "utf-8"}]
-    [:title (:title m)]
+    [:title (str (:title m) " | e-Billing")]
     (for [e (:css m)] (page/include-css e))]
    [:body.has-navbar-fixed-top
     [:header
@@ -94,10 +94,10 @@
      (menu (:menu (:session req)))]
     [:section.section.main-section
      [:div.container.main-container.is-fluid
-      [:div {:class "content-header columns is-vcentered"}
-       [:div {:class "column is-narrow"}
-        [:h1 {:class "title"} ]]
-       [:div {:class "column"}
+      [:div.content-header.columns.is-vcentered
+       [:div.column.is-narrow
+        [:h1.title (:title m)]]
+       [:div.column
         (tabs (:tabs m))
         (anti-forgery-field)]]
       [:div#content]]]

@@ -27,7 +27,7 @@
 
 
 (extend-protocol jdbc/IResultSetReadColumn
-    java.sql.Timestamp
+  java.sql.Timestamp
   (result-set-read-column [v _2 _3]
     (.toLocalDateTime v))
   java.sql.Date
@@ -64,7 +64,7 @@
         (.setObject stmt idx (to-pg-json v))))))
 
 (extend-protocol jdbc/ISQLValue
-    java.util.Date
+  java.util.Date
   (sql-value [v]
     (java.sql.Timestamp. (.getTime v)))
   java.time.LocalTime

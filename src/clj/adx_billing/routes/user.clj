@@ -22,7 +22,7 @@
 
 (defn get-users [{:keys [params]}]
   (response/ok
-   {:total (db/count-users)
+   {:total (:count (db/count-users))
     :users (cske/transform-keys csk/->kebab-case-keyword
                                 (vec (db/get-users
                                       (assoc params
@@ -32,7 +32,7 @@
 (defn list-user [request]
   (response/content-type
    (response/ok
-    (base-template request {:title "Users | e-Billing"
+    (base-template request {:title "Users"
                             :css ["/css/start.css"
                                   "/css/views/user/user.css"]
                             :js ["/js/app/cljs_base.js"

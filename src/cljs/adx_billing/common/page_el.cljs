@@ -11,11 +11,10 @@
   (GET "/profile/welcome"
        {:headers {"Accept" "application/transit+json"}
         :handler #(do
-                    (.log js/console %)
                     (reset! display-name (:name %))
                     (reset! org (:org %)))}))
 
-(defn- topbar []
+(defn topbar []
   (get-user)
   [:div.navbar-menu
    [:div.navbar-start

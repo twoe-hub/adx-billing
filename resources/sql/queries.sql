@@ -37,10 +37,11 @@ VALUES (:username, :first-name, :last-name, :email)
 
 -- :name get-users :? :*
 -- :doc selects all users
-SELECT u.id, u.username, u.first_name, u.last_name, u.email
+SELECT u.id, u.username, u.first_name, u.last_name, u.email, u.designation, u.last_login,
+       u.date_created, u.enabled
 FROM public.user u OFFSET :offset LIMIT :limit
 
--- :name count-users :? :n
+-- :name count-users :? :1
 -- :doc count all users
 SELECT COUNT(u.id)
 FROM public.user u

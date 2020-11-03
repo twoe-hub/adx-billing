@@ -1,16 +1,11 @@
 (ns adx-billing.routes.auth
   (:require
    [adx-billing.auth.validate :refer [validate]]
-   [adx-billing.layout :as layout]
    [adx-billing.html.templates :refer [login-template]]
    [adx-billing.db.core :as db]
    [adx-billing.middleware :as middleware]
    [camel-snake-kebab.core :as csk]
    [camel-snake-kebab.extras :as cske]
-   [cheshire.core :refer [parse-string]]
-   [clj-http.client :as client]
-   [hiccup.page :as page]
-   [garden.core :refer [css]]
    [ring.util.http-response :as response]
    [ring.util.response :refer [redirect]]
    [buddy.hashers :as hashers]

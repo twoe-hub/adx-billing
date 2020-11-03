@@ -33,13 +33,14 @@
                  [ring-webjars "0.2.0"]
                  [ring/ring-core "1.8.0"]
                  [ring/ring-defaults "0.3.2"]
+                 [ring-middleware-format "0.7.0"]
                  [buddy/buddy-auth "2.2.0"]
                  [buddy/buddy-hashers "1.6.0"]
                  [selmer "1.12.18"]
                  [reagent "0.10.0"]
                  [cljs-ajax "0.7.3"]
                  [luminus-transit "0.1.2"]
-                 [tick "0.4.23-alpha"]]
+                 [tick "0.4.24-alpha"]]
 
   :min-lein-version "2.7.1"
   :source-paths ["src/clj" "src/cljc"]
@@ -76,15 +77,14 @@
                        }
 
              :dev {:jvm-opts ["-Dconf=dev-config.edn"]
-                   :dependencies [[expound "0.7.2"]
+                   :dependencies [[org.clojure/clojurescript "1.10.773"]
+                                  [com.bhauman/figwheel-main "0.2.12"]
+                                  [expound "0.7.2"]
                                   [pjstadig/humane-test-output "0.10.0"]
                                   [prone "2019-07-08"]
                                   [ring/ring-devel "1.8.0"]
                                   [ring/ring-mock "0.4.0"]
                                   [com.taoensso/tempura "1.2.1"]
-                                  ;; clojurescript
-                                  [org.clojure/clojurescript "1.10.339"]
-                                  [com.bhauman/figwheel-main "0.2.3"]
                                   ;; optional but recommended
                                   [com.bhauman/rebel-readline-cljs "0.1.4"]]
                    :plugins      [[com.jakemccrary/lein-test-refresh "0.24.1"]

@@ -2,7 +2,6 @@
   (:require
     [adx-billing.middleware :as middleware]
     [adx-billing.layout :refer [error-page]]
-    [adx-billing.routes.guest :refer [guest-routes]]
     [adx-billing.routes.auth :refer [auth-routes]]
     [adx-billing.routes.user :refer [user-routes]]
     [adx-billing.routes.profile :refer [profile-routes]]
@@ -21,7 +20,6 @@
   (ring/ring-handler
     (ring/router
      [(auth-routes)
-      (guest-routes)
       (user-routes)
       (profile-routes)
       ])
