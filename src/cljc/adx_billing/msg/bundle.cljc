@@ -22,8 +22,9 @@
                          :admin "fa-user-shield"
                          :audit-log "fa-list-alt"
                          :about "fa-info-circle"}}
-           :list {:user {:name "Name"
-                         }}
+           :user {:qf-label {:active "Active"
+                             :inactive "Inactive"
+                             :all "All"}}
            :validation {:invalid-token "Invalid anti-forgery token"
                         :required "Required"
                         :invalid-email "Invalid email address"

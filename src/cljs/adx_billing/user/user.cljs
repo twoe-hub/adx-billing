@@ -7,12 +7,17 @@
             [reagent.dom :as rdom]
             [adx-billing.common.util :as util]
             [adx-billing.common.page-el :as page-el]
+            [adx-billing.msg.bundle :refer [msg]]
             [adx-billing.user.validate :refer [validate]]))
 
 (defonce pg-size 15)
 (defonce current-pg (rcore/atom 1))
 (defonce last-pg (rcore/atom 1))
+
+(defonce status-counts (rcore/atom nil))
 (defonce users (rcore/atom nil))
+(defonce sort-on (rcore/atom nil))
+(defonce order-by (rcore/atom nil))
 
 (def cols
   ["Username" "First Name" "Last Name" "Email"])
@@ -48,6 +53,7 @@
          {:headers {"Accept" "application/transit+json"}
           :params {:offset (* (dec pg) pg-size) :limit pg-size}
           :handler #(do
+                      (reset! status-counts (:status-counts %))
                       (reset! users (map date-time-handler (:users %)))
                       (reset! last-pg (int (Math/ceil (/ (:total %) pg-size))))
                       (reset! current-pg pg))})))
@@ -109,7 +115,7 @@
   (fn []
     [:div.columns.is-multiline.is-centered>div.column
      [errors-component errors :server-error]
-     [:form {:method "post", :action "#"}
+     [:form {:method "POST", :action "#"}
       [:div.field.is-horizontal
        [:div.field-label.is-normal
         [:label.label "Username"]]
@@ -229,139 +235,134 @@
        [:td {:style {:border "none"}} last-name]
        [:td {:style {:border "none"}} email]])]])
 
+(defn quick-filter []
+  [:div#quick-filter.tabs.is-flex
+   [:ul
+    (map (fn [filter]
+           [:li.is-active {:key (:status filter)}
+            [:a {:on-click #(get-users 1)}
+             (str (msg (keyword (str "user.qf-label/" (:status filter)))) ": " (:count filter))]])
+         @status-counts)]])
+
 (defn content []
   (get-users @current-pg)
-  (let [fields (rcore/atom {})
-        errors (rcore/atom nil)]
-    [:div
-     [:div#notice]
-     [:div#quick-filter.tabs.is-flex
-      [:ul
-       [:li.is-active
-        [:a {:on-click #(get-users 1)} "All : 0"]]
-       [:li
-        [:a {:on-click #(get-users 1)} "Active : 0"]]
-       [:li
-        [:a {:on-click #(get-users 1)} "Inactive : 0"]]]]
-
-     [:div.listing.table-container.is-sortable
-      [:form.listing-filter-form
-       {:auto-complete "off",
-        :method "POST",
-        :action "/admin/userManagement/index"}
-       [:input.sort {:type "hidden"
-                     :name "aux.sort"
-                     :value "username"}]
-       [:input.order {:type "hidden"
-                      :name "aux.order"
-                      :value "asc"}]
-       [:table.listing-table.table.is-fullwidth.is-striped.is-hoverable
-        [:thead
-         [:tr
-          [:th
-           [:div.field
-            [:div.control
-             [:label.checkbox
-              [:input.table-checkbox-all {:id "checkall"
-                                          :type "checkbox"
-                                          :name "checkall"}]]]]]
-          [:th "No."]
-          [:th.is-sortable {:data-field "username"} "Username"]
-          [:th.is-sortable {:data-field "fname"} "First Name"]
-          [:th.is-sortable {:data-field "lname"} "Last Name"]
-          [:th.is-sortable {:data-field "email"} "Email"]
-          [:th.is-sortable {:data-field "designation"} "Designation"]
-          [:th.is-sortable {:data-field "last-login"} "Last Login"]
-          [:th.is-sortable {:data-field "date-created"} "Created On"]
-          [:th "Status"]
-          [:th.filter {:data-toggle "listing-filter"}
-           [:span.icon.is-small
-            [:i.fas.fa-filter]]]]
-         [:tr.listing-filters.is-hidden
-          [:th]
-          [:th]
-          [:th>div.field
-           [:div.control
-            [:input.input {:type "text"
-                           :id "filter-username"
-                           :name "filter.username"}]]]
-          [:th>div.field
-           [:div.control
-            [:input.input {:type "text"
-                           :id "filter-first-name"
-                           :name "filter.first-name"}]]]
-          [:th>div.field
-           [:div.control
-            [:input.input {:type "text"
-                           :id "filter-last-name"
-                           :name "filter.last-name"}]]]
-          [:th>div.field
-           [:div.control
-            [:input.input {:type "text"
-                           :id "filter-email"
-                           :name "filter.username"}]]]
-          [:th>div.field
-           [:div.control
-            [:input.input {:type "text"
-                           :id "filter-designation"
-                           :name "filter.designation"}]]]
-          [:th>div.field
-           [:div.control.is-expanded.has-icons-left
-            [:input.input.input-datepicker.date-from
-             {:type "text"
-              :id "filter-last-login-from"
-              :name "filter.last-login-from",
-              :size "10"
-              :placeholder "From"}]
-            [:span.icon.is-small.is-left.open-date-from
-             [:span.fas.fa-calendar]]]
-           [:div.field
-            [:div.control.is-expanded.has-icons-left
-             [:input.input.input-datepicker.date-to
-              {:type "text"
-               :id "filter-last-login-to"
-               :name "filter.last-login-to"
-               :size "10"
-               :placeholder "To"}]
-             [:span.icon.is-small.is-left.open-date-to
-              [:span.fas.fa-calendar]]]]]
-          [:th]
-          [:th {:col-span "2"}
-           [:div.buttons
-            [:button.clear-filter-button.button.is-fullwidth
-             {:type "button"} "Clear"]
-            [:button.filter-button.button.is-fullwidth.is-primary
-             {:type "button"} "Search"]]]]]
-        [:tbody.listing-content
-         (for [{:keys [id username first-name last-name email
-                       designation last-login date-created enabled]} @users]
-           ^{:key id}
+  (fn []
+    (let [fields (rcore/atom {})
+          errors (rcore/atom nil)]
+      [:div
+       [:div#notice]
+       [quick-filter]
+       [:div.listing.table-container.is-sortable
+        [:form.listing-filter-form {:auto-complete "off"
+                                    :method "POST",
+                                    :action "#"}
+         [:table.listing-table.table.is-fullwidth.is-striped.is-hoverable
+          [:thead
            [:tr
-            {:style {:border "none"}}
-            [:td {:style {:border "none"}}
-             [:label.checkbox
-              [:input {:type "checkbox" :name "id" :value id}]]
-             ]
-            [:td {:style {:border "none"}} 1]
-            [:td {:style {:border "none"}} username]
-            [:td {:style {:border "none"}} first-name]
-            [:td {:style {:border "none"}} last-name]
-            [:td {:style {:border "none"}} email]
-            [:td {:style {:border "none"}} designation]
-            [:td {:style {:border "none"}} (util/format-date-time last-login)]
-            [:td {:style {:border "none"}} (util/format-date-time date-created)]
-            [:td {:style {:border "none"}} enabled]])]]]]
+            [:th
+             [:div.field
+              [:div.control
+               [:label.checkbox
+                [:input.table-checkbox-all {:id "checkall"
+                                            :type "checkbox"
+                                            :name "checkall"}]]]]]
+            [:th "No."]
+            [:th.is-sortable {:data-field "username"} "Username"]
+            [:th.is-sortable {:data-field "fname"} "First Name"]
+            [:th.is-sortable {:data-field "lname"} "Last Name"]
+            [:th.is-sortable {:data-field "email"} "Email"]
+            [:th.is-sortable {:data-field "designation"} "Designation"]
+            [:th.is-sortable {:data-field "last-login"} "Last Login"]
+            [:th.is-sortable {:data-field "date-created"} "Created On"]
+            [:th "Status"]
+            [:th.filter {:data-toggle "listing-filter"}
+             [:span.icon.is-small
+              [:i.fas.fa-filter]]]]
+           [:tr.listing-filters.is-hidden
+            [:th]
+            [:th]
+            [:th>div.field
+             [:div.control
+              [:input.input {:type "text"
+                             :id "filter-username"
+                             :name "filter.username"}]]]
+            [:th>div.field
+             [:div.control
+              [:input.input {:type "text"
+                             :id "filter-first-name"
+                             :name "filter.first-name"}]]]
+            [:th>div.field
+             [:div.control
+              [:input.input {:type "text"
+                             :id "filter-last-name"
+                             :name "filter.last-name"}]]]
+            [:th>div.field
+             [:div.control
+              [:input.input {:type "text"
+                             :id "filter-email"
+                             :name "filter.username"}]]]
+            [:th>div.field
+             [:div.control
+              [:input.input {:type "text"
+                             :id "filter-designation"
+                             :name "filter.designation"}]]]
+            [:th>div.field
+             [:div.control.is-expanded.has-icons-left
+              [:input.input.input-datepicker.date-from
+               {:type "text"
+                :id "filter-last-login-from"
+                :name "filter.last-login-from",
+                :size "10"
+                :placeholder "From"}]
+              [:span.icon.is-small.is-left.open-date-from
+               [:span.fas.fa-calendar]]]
+             [:div.field
+              [:div.control.is-expanded.has-icons-left
+               [:input.input.input-datepicker.date-to
+                {:type "text"
+                 :id "filter-last-login-to"
+                 :name "filter.last-login-to"
+                 :size "10"
+                 :placeholder "To"}]
+               [:span.icon.is-small.is-left.open-date-to
+                [:span.fas.fa-calendar]]]]]
+            [:th]
+            [:th {:col-span "2"}
+             [:div.buttons
+              [:button.clear-filter-button.button.is-fullwidth
+               {:type "button"} "Clear"]
+              [:button.filter-button.button.is-fullwidth.is-primary
+               {:type "button"} "Search"]]]]]
+          [:tbody.listing-content
+           (for [{:keys [id username first-name last-name email
+                         designation last-login date-created enabled]} @users]
+             ^{:key id}
+             [:tr
+              {:style {:border "none"}}
+              [:td {:style {:border "none"}}
+               [:label.checkbox
+                [:input {:type "checkbox" :name "id" :value id}]]
+               ]
+              [:td {:style {:border "none"}} 1]
+              [:td {:style {:border "none"}} username]
+              [:td {:style {:border "none"}} first-name]
+              [:td {:style {:border "none"}} last-name]
+              [:td {:style {:border "none"}} email]
+              [:td {:style {:border "none"}} designation]
+              [:td {:style {:border "none"}} (util/format-date-time last-login)]
+              [:td {:style {:border "none"}} (util/format-date-time date-created)]
+              [:td {:style {:border "none"}} enabled]])]]]]
 
 
 
-     ;; [:div.content>div.columns.is-multiline
-     ;;  [:div.column
-     ;;   [table-ui users]
-     ;;   [pagination-ui current-pg last-pg]
-     ;;   [action-ui fields errors]
-     ;;   [modal-ui fields errors]
-     ;;   ]]
-     ]))
+       ;; [:div.content>div.columns.is-multiline
+       ;;  [:div.column
+       ;;   [table-ui users]
+       ;;   [pagination-ui current-pg last-pg]
+       ;;   [action-ui fields errors]
+       ;;   [modal-ui fields errors]
+       ;;   ]]
+       ])))
 
 (rdom/render [page-el/topbar] (gdom/getElement "topbar"))
 (rdom/render [content] (gdom/getElement "content"))

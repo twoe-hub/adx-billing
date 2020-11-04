@@ -1,13 +1,3 @@
--- :name save-message! :! :n
--- :doc creates a new message
-INSERT INTO public.guestbook
-(name, message, timestamp)
-VALUES (:name, :message, :timestamp)
-
--- :name get-messages :? :*
--- :doc selects all messages
-SELECT * FROM public.guestbook
-
 -- :name get-modules :? :*
 -- :doc selects all modules
 SELECT m.* FROM public.module m
@@ -25,9 +15,12 @@ where u.id = :uid
 
 -- :name auth! :? :1
 -- :doc select user for authentication
-SELECT u.*, a.name aff_name FROM public.user u
-join public.affiliate a on a.id = u.aff_id
-where u.username = :username
+SELECT u.*, a.name aff_name
+FROM public.user u
+JOIN public.affiliate a ON a.id = u.aff_id
+WHERE u.username = :username
+AND u.enabled = 't'
+
 
 -- :name create-user! :! :n
 -- :doc creates a new user
@@ -41,7 +34,9 @@ SELECT u.id, u.username, u.first_name, u.last_name, u.email, u.designation, u.la
        u.date_created, u.enabled
 FROM public.user u OFFSET :offset LIMIT :limit
 
--- :name count-users :? :1
+-- :name count-users :? :*
 -- :doc count all users
-SELECT COUNT(u.id)
+SELECT u.enabled status, count(*) count
 FROM public.user u
+GROUP BY u.enabled
+ORDER BY u.enabled desc;
