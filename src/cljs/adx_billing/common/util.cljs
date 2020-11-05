@@ -34,11 +34,17 @@
    (reset! errors nil)
    (toggle-modal id)))
 
-(defn toggle [el]
-  (let [el (.-currentTarget el)]
-    (if (.contains (.-classList el) "is-active")
-      (hide-modal el)
-      (show-modal el))))
+(defn show-el [el]
+  (.remove (.-classList el) "is-hidden"))
+
+(defn hide-el [el]
+  (.add (.-classList el) "is-hidden"))
+
+(defn toggle-el [id]
+  (let [el (.getElementById js/document id)]
+    (if (.contains (.-classList el) "is-hidden")
+      (show-el el)
+      (hide-el el))))
 
 (defn parse-date-time [s]
   (if (nil? s)

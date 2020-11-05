@@ -24,7 +24,15 @@
                          :about "fa-info-circle"}}
            :user {:qf-label {:active "Active"
                              :inactive "Inactive"
-                             :all "All"}}
+                             :all "All"}
+                  :cols {:username "Username"
+                         :first-name "First Name"
+                         :last-name "Last Name"
+                         :email "Email"
+                         :designation "Designation"
+                         :last-login "Last Login"
+                         :date-created "Created on"
+                         :enabled "Status"}}
            :validation {:invalid-token "Invalid anti-forgery token"
                         :required "Required"
                         :invalid-email "Invalid email address"

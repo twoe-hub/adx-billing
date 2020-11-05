@@ -1,7 +1,7 @@
 (ns adx-billing.common.page-el
   (:require [ajax.core :refer [GET POST]]
             [reagent.core :as rcore]
-            [adx-billing.common.util :refer [toggle]]))
+            [adx-billing.common.util :refer [toggle-modal]]))
 
 (defonce org (rcore/atom "<user>"))
 (defonce display-name (rcore/atom "<org>"))
@@ -35,7 +35,7 @@
       [:p @org]
       [:p [:strong (str "Welcome, " @display-name)]]]]
     [:div#olay.navbar-profile.navbar-item.has-dropdown
-     {:on-click #(toggle %)}
+     {:on-click #(toggle-modal "olay")}
      [:div.navbar-link.is-arrowless
       [:span.icon.is-medium
        [:span.fa.fa-2x.fa-user-circle]]]
