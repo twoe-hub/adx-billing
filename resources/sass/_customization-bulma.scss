@@ -39,9 +39,9 @@ $scheme-invert: $black !default;
 
 $hr-background-color: hsla(0, 0%, 0%, 0.14);
 
-$table-striped-row-even-background-color: hsla(0, 0%, 100%, 0.56) !default;
-$table-row-hover-background-color: hsla(0, 0%, 100%, 0.8) !default;
-$table-striped-row-even-hover-background-color: hsla(0, 0%, 100%, 0.76) !default;
+$table-row-hover-background-color: hsl(0, 0%, 96%) !default;
+$table-striped-row-even-background-color: hsl(0, 0%, 96%) !default;
+$table-striped-row-even-hover-background-color: hsl(0, 0%, 94%) !default;
 
 $card-header-color: hsl(0, 0%, 44%) !default;
 $card-header-weight: unset !default;
