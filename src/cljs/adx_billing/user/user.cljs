@@ -324,12 +324,10 @@
     (for [{:keys [id username first-name last-name email
                   designation last-login date-created enabled]} @users]
       ^{:key id}
-      [:tr
-       {:style {:border "none"}}
+      [:tr {:style {:border "none"}}
        [:td {:style {:border "none"}}
         [:label.checkbox
-         [:input {:type "checkbox" :name "id" :value id}]]
-        ]
+         [:input {:type "checkbox" :name "id" :value id}]]]
        [:td {:style {:border "none"}} 1]
        [:td {:style {:border "none"}} username]
        [:td {:style {:border "none"}} first-name]
@@ -356,15 +354,14 @@
   ;;   )
   (fn []
     [:div
-       [:div#notice]
-       [quick-filter]
-       [:div.listing.table-container.is-sortable
-        [:form.listing-filter-form {:auto-complete "off"
-                                    :method "POST",
-                                    :action "#"}
-         [table-ui]
-         ]]
-
+     [:div#notice]
+     [quick-filter]
+     [:div.listing.table-container.is-sortable
+      [:form.listing-filter-form {:auto-complete "off"
+                                  :method "POST",
+                                  :action "#"}
+       [table-ui]
+       ]]
 
 
        ;; [:div.content>div.columns.is-multiline
