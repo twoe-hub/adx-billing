@@ -25,7 +25,8 @@
            :user {:qf-label {:active "Active"
                              :inactive "Inactive"
                              :all "All"}
-                  :cols {:username "Username"
+                  :cols {:no "No."
+                         :username "Username"
                          :first-name "First Name"
                          :last-name "Last Name"
                          :email "Email"

@@ -21,19 +21,19 @@
          {:errors {:server-error ["Failed to save user!"]}})))))
 
 (defn get-users [{:keys [params]}]
-  (response/ok
-   {:status-counts (let [v1 (db/count-users)
-                         v2 (map #(-> (if (:status %)
-                                        (assoc % :status 'active)
-                                        (assoc % :status 'inactive))) v1)]
-                     (conj v2
-                           {:status 'all
-                            :count (reduce #(-> (+ %1 (:count %2))) 0 v2)}))
-    :users (cske/transform-keys csk/->kebab-case-keyword
-                                (vec (db/get-users
-                                      (assoc params
-                                             :offset (Integer. (:offset params))
-                                             :limit (Integer. (:limit params))))))}))
+  (let [params (assoc params
+                      :offset (Integer. (:offset params))
+                      :limit (Integer. (:limit params)))]
+    (response/ok
+     {:status-counts (let [v1 (db/count-users)
+                           v2 (map #(-> (if (:status %)
+                                          (assoc % :status 'active)
+                                          (assoc % :status 'inactive))) v1)]
+                       (conj v2
+                             {:status 'all
+                              :count (reduce #(-> (+ %1 (:count %2))) 0 v2)}))
+      :users (cske/transform-keys csk/->kebab-case-keyword
+                                  (vec (db/get-users params)))})))
 
 (defn list-user [request]
   (response/content-type
