@@ -2,8 +2,7 @@
   color: color('white', 'base');
 
   &:hover,
-  &:focus,
-  &:visited {
+  &:focus {
     color: white;
   }
 }
@@ -78,4 +77,41 @@
   font-family: 'RobotoBlackItalic';
   font-weight: 900;
   font-style: italic;
+}
+
+
+// Hyperlink styles
+
+%link-white {
+  text-decoration: none;
+  color: color('white', 'opacity', 0.8);
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+    color: color('white', 'base');
+  }
+
+  &:focus {
+    text-decoration: none;
+    outline: 0.25rem solid color('white', 'opacity', 0.2);
+  }
+}
+
+%link-blue {
+  text-decoration: none;
+  color: color('cold-blue', 'opacity', 0.8);
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+    color: color('cold-blue', 'base');
+  }
+
+  &:focus {
+    text-decoration: none;
+    outline: 0.25rem solid color('cold-blue', 'opacity', 0.2);
+  }
 }

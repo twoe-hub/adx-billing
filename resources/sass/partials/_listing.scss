@@ -1,4 +1,30 @@
-.table > thead > tr > th.filter {
-  text-align: right;
-  cursor: pointer;
+.table > thead > tr > th {
+  &.is-sortable,
+  &.filter {
+    cursor: pointer;
+  }
+
+  &.filter {
+    text-align: right;
+  }
+}
+
+.table > tbody {
+  a:not(.button) {
+    @extend %link-blue;
+    @extend %text-medium;
+  }
+
+  .is-empty > td {
+    color: color('white', 'darken', 24);
+    font-size: 2rem;
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+    text-align: center;
+  }
+
+  .is-end > td {
+    text-align: center;
+    padding: 1rem;
+  }
 }
