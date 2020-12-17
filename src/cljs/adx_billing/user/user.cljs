@@ -49,14 +49,15 @@
          :date-created (util/parse-date-time (:date-created m))
          :last-login (util/parse-date-time (:last-login m))))
 
+(defn clear [params]
+  (reset! params {:username "" :first-name "" :last-name "" :email "" :designation "" :offset (:offset @params) :limit (:limit @params)}))
+
 (defn get-users [params]
-  (.log js/console @params)
   ;; (when (and (>= pg 1) (<= pg @last-pg)))
   (GET "/user/users"
        {:headers {"Accept" "application/transit+json"}
         :params @params
         :handler #(do
-                    (.log js/console %)
                     (reset! status-counts (:status-counts %))
                     (reset! users (map date-time-handler (:users %)))
 
@@ -295,7 +296,8 @@
    [:th {:col-span "2"}
     [:div.buttons
      [:button.clear-filter-button.button.is-fullwidth
-      {:type "button"} "Clear"]
+      {:type "button"
+       :on-click #(clear params)} "Clear"]
      [:button.filter-button.button.is-fullwidth.is-primary
       {:type "button"
        :on-click #(get-users params)} "Search"]]]])
