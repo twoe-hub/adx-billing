@@ -60,9 +60,9 @@
         :handler #(do
                     (reset! status-counts (:status-counts %))
                     (reset! users (map date-time-handler (:users %)))
-                    (println @params)
-                    (when (reduce (fn [x y] (or x y))
-                                  (map empty? (vals (dissoc @params :limit :offset))))
+
+                    (when-let[st  (reduce (fn [x y] (and x y))
+                                          (map empty? (vals (dissoc @params :limit :offset))))]
                       (hide-el (.getElementById js/document "listing-filter")))
 
                     ;; (reset! last-pg (int (Math/ceil (/ (:total %) pg-size))))
