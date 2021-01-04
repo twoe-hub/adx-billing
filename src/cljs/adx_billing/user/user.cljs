@@ -11,18 +11,17 @@
             [adx-billing.user.validate :refer [validate]]
             [adx-billing.common.util :refer [toggle-el hide-el]]))
 
-(defonce pg-size 15)
+(defonce cols
+  ['id 'no 'username 'first-name 'last-name 'email 'designation 'last-login
+   'date-created 'enabled])
+(defonce pg-size 3)
 (defonce current-pg (rcore/atom 1))
 (defonce last-pg (rcore/atom 1))
 
 (defonce status-counts (rcore/atom nil))
-(defonce users (rcore/atom nil))
+(defonce users (rcore/atom {}))
 (defonce sort-on (rcore/atom nil))
 (defonce order-by (rcore/atom nil))
-
-(def cols
-  ['id 'no 'username 'first-name 'last-name 'email 'designation 'last-login
-   'date-created 'enabled])
 
 (defn show-modal [elem]
   (.add (.-classList elem) "is-active")
@@ -35,8 +34,7 @@
 
 (defn toggle-modal
   ([class fields errors]
-   (let [elem (first (array-seq
-                      (.getElementsByClassName js/document "edit-modal")))]
+   (let [elem (gdom/getElement "edit-modal")]
      (if (.contains (.-classList elem) "is-active")
        (hide-modal elem fields errors)
        (show-modal elem))))
@@ -52,8 +50,10 @@
 (defn clear [params]
   (reset! params {:username "" :first-name "" :last-name "" :email "" :designation "" :offset (:offset @params) :limit (:limit @params)}))
 
+(defn all-empty? [s]
+  (reduce (fn [x y] (and x y)) (map empty? s)))
+
 (defn get-users [params]
-  ;; (when (and (>= pg 1) (<= pg @last-pg)))
   (GET "/user/users"
        {:headers {"Accept" "application/transit+json"}
         :params @params
@@ -61,12 +61,13 @@
                     (reset! status-counts (:status-counts %))
                     (reset! users (map date-time-handler (:users %)))
 
-                    (when-let[st  (reduce (fn [x y] (and x y))
-                                          (map empty? (vals (dissoc @params :limit :offset))))]
+                    (let [cp (int (Math/ceil (/ (:offset %) pg-size)))]
+                      (if (= cp 0)
+                        (reset! current-pg 1)
+                        (reset! current-pg cp)))
+                    (reset! last-pg (int (Math/ceil (/ (:all (:status-counts %)) pg-size))))
+                    (when (all-empty? (vals (dissoc @params :limit :offset)))
                       (hide-el (.getElementById js/document "listing-filter")))
-
-                    ;; (reset! last-pg (int (Math/ceil (/ (:total %) pg-size))))
-                    ;; (reset! current-pg pg)
                     )}))
 
 (defn save-user [fields errors]                                        ;
@@ -135,7 +136,7 @@
                               (keyword param-name) (-> % .-target .-value))
            }])
 
-(defn login-form-ui [fields errors]
+(defn edit-form [fields errors]
   (fn []
     [:div.columns.is-multiline.is-centered>div.column
      [errors-component errors :server-error]
@@ -201,7 +202,7 @@
        [:button.delete
         {:aria-label "close"
          :on-click #(toggle-modal modal-id fields errors)}]]
-      [:section.modal-card-body [(login-form-ui fields errors)]]
+      [:section.modal-card-body [(edit-form fields errors)]]
       [:footer.modal-card-foot.is-right.pt-50.pb-20.pr-20
        {:style {:justify-content "right"}}
        [:button.button {:on-click #(toggle-modal modal-id fields errors)}
@@ -240,9 +241,9 @@
   [:div#quick-filter.tabs.is-flex
    [:ul
     (map (fn [filter]
-           [:li.is-active {:key (:status filter)}
+           [:li.is-active {:key (name (first filter))}
             [:a {:on-click #(get-users 1)}
-             (str (msg (keyword (str "user.qf-label/" (:status filter)))) ": " (:count filter))]])
+             (str (msg (keyword (str "user.qf-label/" (name (first filter))))) ": " (second filter))]])
          @status-counts)]])
 
 (defn table-head-row [params]
@@ -331,11 +332,10 @@
              :style {:border "none"}} enabled]])]])
 
 (defn content []
-  (let [params (rcore/atom {:offset 0 :limit 15})]
+  (let [params (rcore/atom {:offset 0 :limit pg-size})
+        fields (rcore/atom {})
+        errors (rcore/atom nil)]
     (get-users params)
-    ;; (let [fields (rcore/atom {})
-    ;;       errors (rcore/atom nil)]
-    ;;   )
     (fn []
       [:div
        [:div#notice]
@@ -347,17 +347,9 @@
          [input-el 'limit 'limit 'hidden "" "" "offset" params]
          [input-el 'offset 'offset 'hidden "" "" "offset" params]
          [table-ui params]
-         ]]
-
-
-       ;; [:div.content>div.columns.is-multiline
-       ;;  [:div.column
-       ;;   [table-ui users]
-       ;;   [pagination-ui current-pg last-pg]
-       ;;   [action-ui fields errors]
-       ;;   [modal-ui fields errors]
-       ;;   ]]
-       ])))
+         [pagination-ui current-pg last-pg]]
+        [action-ui fields errors]
+        [modal-ui fields errors]]])))
 
 (rdom/render [page-el/topbar] (gdom/getElement "topbar"))
 (rdom/render [content] (gdom/getElement "content"))
