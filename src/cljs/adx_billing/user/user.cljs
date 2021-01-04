@@ -9,7 +9,7 @@
             [adx-billing.common.page-el :as page-el]
             [adx-billing.msg.bundle :refer [msg]]
             [adx-billing.user.validate :refer [validate]]
-            [adx-billing.common.util :refer [toggle-el]]))
+            [adx-billing.common.util :refer [toggle-el hide-el]]))
 
 (defonce pg-size 15)
 (defonce current-pg (rcore/atom 1))
@@ -60,6 +60,10 @@
         :handler #(do
                     (reset! status-counts (:status-counts %))
                     (reset! users (map date-time-handler (:users %)))
+                    (println @params)
+                    (when (reduce (fn [x y] (or x y))
+                                  (map empty? (vals (dissoc @params :limit :offset))))
+                      (hide-el (.getElementById js/document "listing-filter")))
 
                     ;; (reset! last-pg (int (Math/ceil (/ (:total %) pg-size))))
                     ;; (reset! current-pg pg)
@@ -256,12 +260,12 @@
                    [:th.is-sortable
                     {:key col} (msg (keyword (str "user.cols/" (name col))))]))
                cols))
-   [:th.filter {:on-click #(toggle-el "listing-filters")}
+   [:th.filter {:on-click #(toggle-el "listing-filter")}
     [:span.icon.is-small
      [:i.fas.fa-filter]]]])
 
 (defn table-filter-row [params]
-  [:tr#listing-filters.is-hidden
+  [:tr#listing-filter.is-hidden
    [:th]
    [:th]
    [:th>div.field
