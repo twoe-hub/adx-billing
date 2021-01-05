@@ -44,5 +44,11 @@ OFFSET :offset LIMIT :limit
 -- :doc count all users
 SELECT u.enabled status, count(*) count
 FROM public.user u
+WHERE 1 = 1
+--~ (when (contains? params :username) (str "AND u.username LIKE '%" (params :username) "%'"))
+--~ (when (not (empty? (:first-name params))) (str "AND u.first_name LIKE '%" (params :first-name) "%'"))
+--~ (when (not (empty? (:last-name params))) (str "AND u.last_name LIKE '%" (params :last-name) "%'"))
+--~ (when (not (empty? (:email params))) (str "AND u.email LIKE '%" (params :email) "%'"))
+--~ (when (not (empty? (:designation params))) (str "AND u.designation LIKE '%" (params :designation) "%'"))
 GROUP BY u.enabled
 ORDER BY u.enabled desc;

@@ -25,10 +25,10 @@
                       :offset (Integer. (:offset params))
                       :limit (Integer. (:limit params)))]
     (response/ok
-     {:status-counts (let [s (db/count-users)
+     {:status-counts (let [sx (db/count-users params)
                            m (into {} (map #(-> (if (:status %)
                                                 {:active (:count %)}
-                                                {:inactive (:count %)})) s))]
+                                                {:inactive (:count %)})) sx))]
                        (conj m {:all (reduce + (vals m))}))
       :users (cske/transform-keys csk/->kebab-case-keyword
                                   (vec (db/get-users params)))})))

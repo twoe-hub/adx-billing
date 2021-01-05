@@ -14,7 +14,7 @@
 (defonce cols
   ['id 'no 'username 'first-name 'last-name 'email 'designation 'last-login
    'date-created 'enabled])
-(defonce pg-size 3)
+(defonce pg-size 1)
 (defonce current-pg (rcore/atom 1))
 (defonce last-pg (rcore/atom 1))
 
@@ -50,8 +50,8 @@
 (defn clear [params]
   (reset! params {:username "" :first-name "" :last-name "" :email "" :designation "" :offset (:offset @params) :limit (:limit @params)}))
 
-(defn all-empty? [s]
-  (reduce (fn [x y] (and x y)) (map empty? s)))
+(defn all-empty? [sx]
+  (reduce (fn [x y] (and x y)) (map empty? sx)))
 
 (defn get-users [params]
   (GET "/user/users"
@@ -85,39 +85,6 @@
            :error-handler #(do
                              (.log js/console (str %))
                              (reset! errors (get-in % [:response :errors])))})))
-
-(defn prefix [v]
-  (vec (let [sq (seq v)]
-         (if (not= (first sq) 1)
-           (if (not= (first sq) 2)
-             (conj sq nil 1)
-             (conj sq 1))
-           v))))
-
-(defn suffix [v last-pg]
-  (if (not= (last v) last-pg)
-    (if (not= (last v) (dec last-pg))
-      (conj v nil last-pg)
-      (conj v last-pg))
-     v))
-
-(defn neighbr [pg last-pg]
-  (cond
-    (== pg 1) (if (< last-pg 3)
-                [pg (inc pg)]
-                [pg (inc pg) (+ pg 2)])
-    (== pg last-pg) (if (< last-pg 3)
-                      [(dec pg) pg]
-                      [(- pg 2) (dec pg) pg])
-    :else [(dec pg) pg (inc pg)])
-  )
-
-(defn pages [pg last-pg]
-  (cond
-    (<= last-pg 1) []
-    :else (suffix (prefix (neighbr pg last-pg)) last-pg)
-    )
-  )
 
 (defn errors-component [errors id]
   (when-let [error (id @errors)]
@@ -210,24 +177,66 @@
        [:button.button {:on-click #(save-user fields errors)}
         "Save"]]]]))
 
-(defn pagination-ui [current-pg last-pg]
+(defn prefix [v]
+  (vec (let [sq (seq v)]
+         (if (not= (first sq) 1)
+           (if (not= (first sq) 2)
+             (conj sq nil 1)
+             (conj sq 1))
+           v))))
+
+(defn suffix [v last-pg]
+  (if (not= (last v) last-pg)
+    (if (not= (last v) (dec last-pg))
+      (conj v nil last-pg)
+      (conj v last-pg))
+    v))
+
+(defn neighbr [pg last-pg]
+  (cond
+    (== pg 1) (if (< last-pg 3)
+                [pg (inc pg)]
+                [pg (inc pg) (+ pg 2)])
+    (== pg last-pg) (if (< last-pg 3)
+                      [(dec pg) pg]
+                      [(- pg 2) (dec pg) pg])
+    :else [(dec pg) pg (inc pg)])
+  )
+
+(defn pages [pg last-pg]
+  (cond
+    (<= last-pg 1) []
+    :else (suffix (prefix (neighbr pg last-pg)) last-pg)
+    )
+  )
+
+(defn pagination-ui [params]
   (when (> @last-pg 1)
     [:nav.pagination.mr-30 {:role "navigation", :aria-label "pagination"}
      [:a.pagination-previous
-      {:on-click #(get-users (dec @current-pg))} "Previous"]
+      {:on-click #(do
+                    (swap! params assoc :offset (- (get @params :offset) pg-size))
+                    (get-users params))} "Previous"]
      [:a.pagination-next
-      {:on-click #(get-users (inc @current-pg))} "Next page"]
+      {:on-click #(do
+                     (swap! params assoc :offset (+ (get @params :offset) pg-size))
+                     (get-users params))} "Next page"]
      [:ul.pagination-list {:style {:list-style "none"}}
-      (for [pg (pages @current-pg @last-pg)]
-        (if (nil? pg)
-          [:li
-           [:span.pagination-list "…"]]
-          [:li
-           [:a.pagination-link
-            {:class (if (= pg @current-pg) "is-current" "")
-             :aria-label "Goto page 1"
-             :aria-current (if (= pg @current-pg) "page" "")
-             :on-click #(get-users pg)} (str pg)]]))]]))
+      (let [sx (pages @current-pg @last-pg)
+            indices (range (count sx))]
+        (doall
+         (for [m (zipmap indices sx)]
+           (if (nil? (val m))
+             [:li {:key (key m)}
+              [:span.pagination-list "…"]]
+             [:li {:key (key m)}
+              [:a.pagination-link
+               {:class (if (= (val m) @current-pg) "is-current" "")
+                :aria-label "Goto page 1"
+                :aria-current (if (= (val m) @current-pg) "page" "")
+                :on-click #(do
+                             (swap! params assoc :offset (* (val m) pg-size))
+                             (get-users params))} (str (val m))]]))))]]))
 
 (defn action-ui [fields errors]
   [:div.field.is-grouped.is-grouped-centered
@@ -346,10 +355,10 @@
                                     :action "#"}
          [input-el 'limit 'limit 'hidden "" "" "offset" params]
          [input-el 'offset 'offset 'hidden "" "" "offset" params]
-         [table-ui params]
-         [pagination-ui current-pg last-pg]]
-        [action-ui fields errors]
-        [modal-ui fields errors]]])))
+         [table-ui params]]]
+       [pagination-ui params]
+       [action-ui fields errors]
+       [modal-ui fields errors]])))
 
 (rdom/render [page-el/topbar] (gdom/getElement "topbar"))
 (rdom/render [content] (gdom/getElement "content"))
