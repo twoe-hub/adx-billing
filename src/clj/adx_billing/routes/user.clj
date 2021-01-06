@@ -20,16 +20,26 @@
         (response/internal-server-error
          {:errors {:server-error ["Failed to save user!"]}})))))
 
+(defn get-status-counts [params]
+  (let [sx (db/count-users params)
+        m (into {} (map #(-> (if (:status %)
+                               {:active (:count %)}
+                               {:inactive (:count %)})) sx))
+        m (if (contains? m :inactive) m (conj m {:inactive 0}))]
+    (conj {:all (reduce + (vals m))} m)))
+
 (defn get-users [{:keys [params]}]
   (let [params (assoc params
                       :offset (Integer. (:offset params))
-                      :limit (Integer. (:limit params)))]
+                      :limit (Integer. (:limit params)))
+        m (get-status-counts params)]
     (response/ok
-     {:status-counts (let [sx (db/count-users params)
-                           m (into {} (map #(-> (if (:status %)
-                                                {:active (:count %)}
-                                                {:inactive (:count %)})) sx))]
-                       (conj m {:all (reduce + (vals m))}))
+     {:status-counts m
+      :total (if (nil? (:enabled params))
+               (:all m)
+               (if (= (:enabled params) "true")
+                 (:active m)
+                 (:inactive m)))
       :users (cske/transform-keys csk/->kebab-case-keyword
                                   (vec (db/get-users params)))})))
 

@@ -15,13 +15,10 @@
   ['id 'no 'username 'first-name 'last-name 'email 'designation 'last-login
    'date-created 'enabled])
 (defonce pg-size 1)
-(defonce current-pg (rcore/atom 1))
-(defonce last-pg (rcore/atom 1))
 
-(defonce status-counts (rcore/atom nil))
+(defonce total (rcore/atom pg-size))
 (defonce users (rcore/atom {}))
-(defonce sort-on (rcore/atom nil))
-(defonce order-by (rcore/atom nil))
+(defonce status-counts (rcore/atom nil))
 
 (defn show-modal [elem]
   (.add (.-classList elem) "is-active")
@@ -58,14 +55,9 @@
        {:headers {"Accept" "application/transit+json"}
         :params @params
         :handler #(do
-                    (reset! status-counts (:status-counts %))
                     (reset! users (map date-time-handler (:users %)))
-
-                    (let [cp (int (Math/ceil (/ (:offset %) pg-size)))]
-                      (if (= cp 0)
-                        (reset! current-pg 1)
-                        (reset! current-pg cp)))
-                    (reset! last-pg (int (Math/ceil (/ (:all (:status-counts %)) pg-size))))
+                    (reset! status-counts (:status-counts %))
+                    (reset! total (:total %))
                     (when (all-empty? (vals (dissoc @params :limit :offset)))
                       (hide-el (.getElementById js/document "listing-filter")))
                     )}))
@@ -159,7 +151,7 @@
     [:div.modal
      {:id modal-id
       :tab-index "0"
-      :on-key-up #(toggle-modal % fields errors)
+      :on-key-up #(toggle-modal % modal-id fields errors)
       :style {:justify-content "flex-start"
               :padding-top "150px"}}
      [:div.modal-background]
@@ -177,66 +169,68 @@
        [:button.button {:on-click #(save-user fields errors)}
         "Save"]]]]))
 
-(defn prefix [v]
-  (vec (let [sq (seq v)]
-         (if (not= (first sq) 1)
-           (if (not= (first sq) 2)
-             (conj sq nil 1)
-             (conj sq 1))
-           v))))
+(defn prefix [sx]
+  (vec (let [sx (seq sx)]
+         (if (not= (first sx) 1)
+           (if (not= (first sx) 2)
+             (conj sx nil 1)
+             (conj sx 1))
+           sx))))
 
-(defn suffix [v last-pg]
-  (if (not= (last v) last-pg)
-    (if (not= (last v) (dec last-pg))
-      (conj v nil last-pg)
-      (conj v last-pg))
-    v))
+(defn suffix [sx last-pg]
+  (if (not= (last sx) last-pg)
+    (if (not= (last sx) (dec last-pg))
+      (conj sx nil last-pg)
+      (conj sx last-pg))
+    sx))
 
-(defn neighbr [pg last-pg]
+(defn neighbr [curr-pg last-pg]
   (cond
-    (== pg 1) (if (< last-pg 3)
-                [pg (inc pg)]
-                [pg (inc pg) (+ pg 2)])
-    (== pg last-pg) (if (< last-pg 3)
-                      [(dec pg) pg]
-                      [(- pg 2) (dec pg) pg])
-    :else [(dec pg) pg (inc pg)])
-  )
+    (== curr-pg 1) (if (< last-pg 3)
+                     [curr-pg (inc curr-pg)]
+                     [curr-pg (inc curr-pg) (+ curr-pg 2)])
+    (== curr-pg last-pg) (if (< last-pg 3)
+                      [(dec curr-pg) curr-pg]
+                      [(- curr-pg 2) (dec curr-pg) curr-pg])
+    :else [(dec curr-pg) curr-pg (inc curr-pg)]))
 
-(defn pages [pg last-pg]
+(defn pages [curr-pg last-pg]
   (cond
     (<= last-pg 1) []
-    :else (suffix (prefix (neighbr pg last-pg)) last-pg)
-    )
-  )
+    :else (suffix (prefix (neighbr curr-pg last-pg)) last-pg)))
 
 (defn pagination-ui [params]
-  (when (> @last-pg 1)
-    [:nav.pagination.mr-30 {:role "navigation", :aria-label "pagination"}
-     [:a.pagination-previous
-      {:on-click #(do
-                    (swap! params assoc :offset (- (get @params :offset) pg-size))
-                    (get-users params))} "Previous"]
-     [:a.pagination-next
-      {:on-click #(do
-                     (swap! params assoc :offset (+ (get @params :offset) pg-size))
-                     (get-users params))} "Next page"]
-     [:ul.pagination-list {:style {:list-style "none"}}
-      (let [sx (pages @current-pg @last-pg)
-            indices (range (count sx))]
-        (doall
-         (for [m (zipmap indices sx)]
-           (if (nil? (val m))
-             [:li {:key (key m)}
-              [:span.pagination-list "…"]]
-             [:li {:key (key m)}
-              [:a.pagination-link
-               {:class (if (= (val m) @current-pg) "is-current" "")
-                :aria-label "Goto page 1"
-                :aria-current (if (= (val m) @current-pg) "page" "")
-                :on-click #(do
-                             (swap! params assoc :offset (* (val m) pg-size))
-                             (get-users params))} (str (val m))]]))))]]))
+  (let [last-pg (int (Math/ceil (/ @total pg-size)))]
+    (when (> last-pg 1)
+      [:nav.pagination.mr-30 {:role "navigation", :aria-label "pagination"}
+       [:a.pagination-previous
+        {:on-click #(do
+                      (swap! params assoc :offset (- (get @params :offset) pg-size))
+                      (get-users params))} "Previous"]
+       [:a.pagination-next
+        {:on-click #(do
+                      (swap! params assoc :offset (+ (get @params :offset) pg-size))
+                      (get-users params))} "Next page"]
+       [:ul.pagination-list {:style {:list-style "none"}}
+        (let [curr-pg (inc (/ (@params :offset) pg-size))
+              sx (pages curr-pg last-pg)
+              indices (range (count sx))]
+          (doall
+           (for [m (zipmap indices sx)]
+             (if (nil? (val m))
+               [:li {:key (key m)}
+                [:span.pagination-list "…"]]
+               [:li {:key (key m)}
+                [:a.pagination-link
+                 {:class (if (= (val m) (inc (/ (get @params :offset) pg-size)))
+                           "is-current"
+                           "")
+                  :aria-label "Goto page 1"
+                  :aria-current (if (= (val m) curr-pg) "page" "")
+                  :on-click #(do
+                               (swap! params assoc :offset (* (dec (val m)) pg-size))
+                               (get-users params))}
+                 (str (val m))]]))))]])))
 
 (defn action-ui [fields errors]
   [:div.field.is-grouped.is-grouped-centered
@@ -249,11 +243,18 @@
 (defn quick-filter [params]
   [:div#quick-filter.tabs.is-flex
    [:ul
-    (map (fn [filter]
-           [:li.is-active {:key (name (first filter))}
-            [:a {:on-click #(get-users 1)}
-             (str (msg (keyword (str "user.qf-label/" (name (first filter))))) ": " (second filter))]])
-         @status-counts)]])
+    [:li {:key "all"}
+     [:a {:on-click #((swap! params dissoc :enabled)
+                      (get-users params))}
+      (str (msg (keyword (str "user.qf-label/" "all"))) ": " (:all @status-counts))]]
+    [:li {:key "active"}
+     [:a {:on-click #((swap! params assoc :enabled "true")
+                      (get-users params))}
+      (str (msg (keyword (str "user.qf-label/" "active"))) ": " (:active @status-counts))]]
+    [:li {:key "inactive"}
+     [:a {:on-click #((swap! params assoc :enabled "false")
+                      (get-users params))}
+      (str (msg (keyword (str "user.qf-label/" "inactive"))) ": " (:inactive @status-counts))]]]])
 
 (defn table-head-row [params]
   [:tr

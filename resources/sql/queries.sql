@@ -33,7 +33,8 @@ VALUES (:username, :first-name, :last-name, :email)
 SELECT row_number() over () as no, u.id, u.username, u.first_name, u.last_name, u.email, u.designation, u.last_login, u.date_created, u.enabled
 FROM public.user u
 WHERE 1 = 1
---~ (when (contains? params :username) (str "AND u.username LIKE '%" (params :username) "%'"))
+--~ (when (not (empty? (:enabled params))) (str "AND u.enabled = '" (params :enabled)  "'"))
+--~ (when (not (empty? (:username params))) (str "AND u.username LIKE '%" (params :username) "%'"))
 --~ (when (not (empty? (:first-name params))) (str "AND u.first_name LIKE '%" (params :first-name) "%'"))
 --~ (when (not (empty? (:last-name params))) (str "AND u.last_name LIKE '%" (params :last-name) "%'"))
 --~ (when (not (empty? (:email params))) (str "AND u.email LIKE '%" (params :email) "%'"))
@@ -45,7 +46,7 @@ OFFSET :offset LIMIT :limit
 SELECT u.enabled status, count(*) count
 FROM public.user u
 WHERE 1 = 1
---~ (when (contains? params :username) (str "AND u.username LIKE '%" (params :username) "%'"))
+--~ (when (not (empty? (:username params))) (str "AND u.username LIKE '%" (params :username) "%'"))
 --~ (when (not (empty? (:first-name params))) (str "AND u.first_name LIKE '%" (params :first-name) "%'"))
 --~ (when (not (empty? (:last-name params))) (str "AND u.last_name LIKE '%" (params :last-name) "%'"))
 --~ (when (not (empty? (:email params))) (str "AND u.email LIKE '%" (params :email) "%'"))
