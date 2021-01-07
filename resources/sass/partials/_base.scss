@@ -22,3 +22,8 @@ strong {
 a {
   color: color('lightblue', 'base');
 }
+
+a.disabled {
+  pointer-events: none;
+  color: rgb(180, 180, 180);
+}

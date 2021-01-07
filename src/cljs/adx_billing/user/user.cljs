@@ -200,37 +200,43 @@
     :else (suffix (prefix (neighbr curr-pg last-pg)) last-pg)))
 
 (defn pagination-ui [params]
-  (let [last-pg (int (Math/ceil (/ @total pg-size)))]
+  (let [last-pg (int (Math/ceil (/ @total pg-size)))
+        curr-pg (inc (/ (@params :offset) pg-size))
+        sx (pages curr-pg last-pg)
+        indices (range (count sx))]
     (when (> last-pg 1)
       [:nav.pagination.mr-30 {:role "navigation", :aria-label "pagination"}
-       [:a.pagination-previous
-        {:on-click #(do
+       [:a
+        {:class (str "pagination-previous" (when (= curr-pg 1) " disabled"))
+         :on-click #(do
                       (swap! params assoc :offset (- (get @params :offset) pg-size))
-                      (get-users params))} "Previous"]
-       [:a.pagination-next
-        {:on-click #(do
+                      (get-users params))}
+        [:span.icon.is-small
+         [:i.fa.fa-chevron-left]]]
+       [:a
+        {:class (str "pagination-next" (when (= curr-pg last-pg ) " disabled"))
+         :on-click #(do
                       (swap! params assoc :offset (+ (get @params :offset) pg-size))
-                      (get-users params))} "Next page"]
+                      (get-users params))}
+        [:span.icon.is-small
+         [:i.fa.fa-chevron-right]]]
        [:ul.pagination-list {:style {:list-style "none"}}
-        (let [curr-pg (inc (/ (@params :offset) pg-size))
-              sx (pages curr-pg last-pg)
-              indices (range (count sx))]
-          (doall
-           (for [m (zipmap indices sx)]
-             (if (nil? (val m))
-               [:li {:key (key m)}
-                [:span.pagination-list "…"]]
-               [:li {:key (key m)}
-                [:a.pagination-link
-                 {:class (if (= (val m) (inc (/ (get @params :offset) pg-size)))
-                           "is-current"
-                           "")
-                  :aria-label "Goto page 1"
-                  :aria-current (if (= (val m) curr-pg) "page" "")
-                  :on-click #(do
-                               (swap! params assoc :offset (* (dec (val m)) pg-size))
-                               (get-users params))}
-                 (str (val m))]]))))]])))
+        (doall
+         (for [m (zipmap indices sx)]
+           (if (nil? (val m))
+             [:li {:key (key m)}
+              [:span.pagination-ellipsis "…"]]
+             [:li {:key (key m)}
+              [:a.pagination-link
+               {:class (if (= (val m) (inc (/ (get @params :offset) pg-size)))
+                         "is-current"
+                         "")
+                :aria-label (str "Goto page " (val m))
+                :aria-current (str (val m))
+                :on-click #(do
+                             (swap! params assoc :offset (* (dec (val m)) pg-size))
+                             (get-users params))}
+               (str (val m))]])))]])))
 
 (defn action-ui [fields errors]
   [:div.field.is-grouped.is-grouped-centered
