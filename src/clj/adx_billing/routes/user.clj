@@ -34,7 +34,7 @@
                       :limit (Integer. (:limit params)))
         m (get-status-counts params)]
     (response/ok
-     {:status-counts m
+     {:counts m
       :total (if (nil? (:enabled params))
                (:all m)
                (if (= (:enabled params) "true")

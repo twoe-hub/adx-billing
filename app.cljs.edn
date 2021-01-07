@@ -5,6 +5,7 @@
 
  :modules {:util {:entries #{adx-billing.common.util}}
            :page-el {:entries #{adx-billing.common.page-el}}
+           :listing {:entries #{adx-billing.common.listing}}
            :auth {:entries #{adx-billing.auth.login}}
            :auth-validate {:entries #{adx-billing.auth.validate}}
            :user {:entries #{adx-billing.user.user}}

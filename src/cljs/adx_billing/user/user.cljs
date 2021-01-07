@@ -5,20 +5,15 @@
             [goog.dom :as gdom]
             [reagent.core :as rcore]
             [reagent.dom :as rdom]
+            [adx-billing.common.listing :as ls]
             [adx-billing.common.util :as util]
             [adx-billing.common.page-el :as page-el]
             [adx-billing.msg.bundle :refer [msg]]
             [adx-billing.user.validate :refer [validate]]
             [adx-billing.common.util :refer [toggle-el hide-el]]))
 
-(defonce cols
-  ['id 'no 'username 'first-name 'last-name 'email 'designation 'last-login
-   'date-created 'enabled])
-(defonce pg-size 1)
-
-(defonce total (rcore/atom pg-size))
-(defonce users (rcore/atom {}))
-(defonce status-counts (rcore/atom nil))
+(defonce url "user/users")
+(defonce cols ['id 'no 'username 'first-name 'last-name 'email 'designation 'last-login 'date-created 'enabled])
 
 (defn show-modal [elem]
   (.add (.-classList elem) "is-active")
@@ -39,30 +34,7 @@
    (when (= (.-key e) "Escape")
      (toggle-modal class fields errors))))
 
-(defn date-time-handler [m]
-  (assoc m
-         :date-created (util/parse-date-time (:date-created m))
-         :last-login (util/parse-date-time (:last-login m))))
-
-(defn clear [params]
-  (reset! params {:username "" :first-name "" :last-name "" :email "" :designation "" :offset (:offset @params) :limit (:limit @params)}))
-
-(defn all-empty? [sx]
-  (reduce (fn [x y] (and x y)) (map empty? sx)))
-
-(defn get-users [params]
-  (GET "/user/users"
-       {:headers {"Accept" "application/transit+json"}
-        :params @params
-        :handler #(do
-                    (reset! users (map date-time-handler (:users %)))
-                    (reset! status-counts (:status-counts %))
-                    (reset! total (:total %))
-                    (when (all-empty? (vals (dissoc @params :limit :offset)))
-                      (hide-el (.getElementById js/document "listing-filter")))
-                    )}))
-
-(defn save-user [fields errors]                                        ;
+(defn save-user [fields errors users]                                        ;
   (if-let [validation-errors (validate @fields)]
     (reset! errors validation-errors)
     (POST "/user/save"
@@ -146,7 +118,7 @@
         [errors-component errors :email]]]
       ]]))
 
-(defn modal-ui [fields errors]
+(defn modal-ui [fields errors users]
   (let [modal-id "edit-modal"]
     [:div.modal
      {:id modal-id
@@ -166,77 +138,8 @@
        {:style {:justify-content "right"}}
        [:button.button {:on-click #(toggle-modal modal-id fields errors)}
         "Cancel"]
-       [:button.button {:on-click #(save-user fields errors)}
+       [:button.button {:on-click #(save-user fields errors users)}
         "Save"]]]]))
-
-(defn prefix [sx]
-  (vec (let [sx (seq sx)]
-         (if (not= (first sx) 1)
-           (if (not= (first sx) 2)
-             (conj sx nil 1)
-             (conj sx 1))
-           sx))))
-
-(defn suffix [sx last-pg]
-  (if (not= (last sx) last-pg)
-    (if (not= (last sx) (dec last-pg))
-      (conj sx nil last-pg)
-      (conj sx last-pg))
-    sx))
-
-(defn neighbr [curr-pg last-pg]
-  (cond
-    (== curr-pg 1) (if (< last-pg 3)
-                     [curr-pg (inc curr-pg)]
-                     [curr-pg (inc curr-pg) (+ curr-pg 2)])
-    (== curr-pg last-pg) (if (< last-pg 3)
-                      [(dec curr-pg) curr-pg]
-                      [(- curr-pg 2) (dec curr-pg) curr-pg])
-    :else [(dec curr-pg) curr-pg (inc curr-pg)]))
-
-(defn pages [curr-pg last-pg]
-  (cond
-    (<= last-pg 1) []
-    :else (suffix (prefix (neighbr curr-pg last-pg)) last-pg)))
-
-(defn pagination-ui [params]
-  (let [last-pg (int (Math/ceil (/ @total pg-size)))
-        curr-pg (inc (/ (@params :offset) pg-size))
-        sx (pages curr-pg last-pg)
-        indices (range (count sx))]
-    (when (> last-pg 1)
-      [:nav.pagination.mr-30 {:role "navigation", :aria-label "pagination"}
-       [:a
-        {:class (str "pagination-previous" (when (= curr-pg 1) " disabled"))
-         :on-click #(do
-                      (swap! params assoc :offset (- (get @params :offset) pg-size))
-                      (get-users params))}
-        [:span.icon.is-small
-         [:i.fa.fa-chevron-left]]]
-       [:a
-        {:class (str "pagination-next" (when (= curr-pg last-pg ) " disabled"))
-         :on-click #(do
-                      (swap! params assoc :offset (+ (get @params :offset) pg-size))
-                      (get-users params))}
-        [:span.icon.is-small
-         [:i.fa.fa-chevron-right]]]
-       [:ul.pagination-list {:style {:list-style "none"}}
-        (doall
-         (for [m (zipmap indices sx)]
-           (if (nil? (val m))
-             [:li {:key (key m)}
-              [:span.pagination-ellipsis "…"]]
-             [:li {:key (key m)}
-              [:a.pagination-link
-               {:class (if (= (val m) (inc (/ (get @params :offset) pg-size)))
-                         "is-current"
-                         "")
-                :aria-label (str "Goto page " (val m))
-                :aria-current (str (val m))
-                :on-click #(do
-                             (swap! params assoc :offset (* (dec (val m)) pg-size))
-                             (get-users params))}
-               (str (val m))]])))]])))
 
 (defn action-ui [fields errors]
   [:div.field.is-grouped.is-grouped-centered
@@ -246,23 +149,23 @@
     [:button.button.pl-25.pr-25
      {:on-click #(toggle-modal "edit-modal" fields errors)} "Add"]]])
 
-(defn quick-filter [params]
+(defn quick-filter [params counts users counts]
   [:div#quick-filter.tabs.is-flex
    [:ul
     [:li {:key "all"}
      [:a {:on-click #((swap! params dissoc :enabled)
-                      (get-users params))}
-      (str (msg (keyword (str "user.qf-label/" "all"))) ": " (:all @status-counts))]]
+                      (ls/get-records "user/users" params users counts))}
+      (str (msg (keyword (str "user.qf-label/" "all"))) ": " (:all @counts))]]
     [:li {:key "active"}
      [:a {:on-click #((swap! params assoc :enabled "true")
-                      (get-users params))}
-      (str (msg (keyword (str "user.qf-label/" "active"))) ": " (:active @status-counts))]]
+                      (ls/get-records "user/users" params users counts))}
+      (str (msg (keyword (str "user.qf-label/" "active"))) ": " (:active @counts))]]
     [:li {:key "inactive"}
      [:a {:on-click #((swap! params assoc :enabled "false")
-                      (get-users params))}
-      (str (msg (keyword (str "user.qf-label/" "inactive"))) ": " (:inactive @status-counts))]]]])
+                      (ls/get-records "user/users" params users counts))}
+      (str (msg (keyword (str "user.qf-label/" "inactive"))) ": " (:inactive @counts))]]]])
 
-(defn table-head-row [params]
+(defn table-head-row []
   [:tr
    (doall (map (fn [col]
                  (if (= col 'id)
@@ -281,7 +184,7 @@
     [:span.icon.is-small
      [:i.fas.fa-filter]]]])
 
-(defn table-filter-row [params]
+(defn table-filter-row [params users counts]
   [:tr#listing-filter.is-hidden
    [:th]
    [:th]
@@ -318,18 +221,18 @@
     [:div.buttons
      [:button.clear-filter-button.button.is-fullwidth
       {:type "button"
-       :on-click #(clear params)} "Clear"]
+       :on-click #(ls/clear params)} "Clear"]
      [:button.filter-button.button.is-fullwidth.is-primary
       {:type "button"
-       :on-click #(get-users params)} "Search"]]]])
+       :on-click #(ls/get-records "user/users" params users counts)} "Search"]]]])
 
-(defn table-ui [params]
+(defn table-ui [params users counts]
   [:table.listing-table.table.is-fullwidth.is-striped.is-hoverable
    [:thead
-    [table-head-row params]
-    [table-filter-row params]]
+    [table-head-row]
+    [table-filter-row params users counts]]
    [:tbody.listing-content
-    (for [{:keys [no id username first-name last-name email
+    (for [{:keys [id no username first-name last-name email
                   designation last-login date-created enabled]} @users]
       ^{:key id}
       [:tr {:style {:border "none"}}
@@ -348,24 +251,26 @@
              :style {:border "none"}} enabled]])]])
 
 (defn content []
-  (let [params (rcore/atom {:offset 0 :limit pg-size})
+  (let [params (rcore/atom {:offset 0 :limit ls/pg-size})
+        counts (rcore/atom {})
+        users (rcore/atom {})
         fields (rcore/atom {})
         errors (rcore/atom nil)]
-    (get-users params)
+    (ls/get-records url params users counts)
     (fn []
       [:div
        [:div#notice]
-       [quick-filter params]
+       [quick-filter params counts users counts]
        [:div.listing.table-container.is-sortable
         [:form.listing-filter-form {:auto-complete "off"
                                     :method "POST",
                                     :action "#"}
          [input-el 'limit 'limit 'hidden "" "" "offset" params]
          [input-el 'offset 'offset 'hidden "" "" "offset" params]
-         [table-ui params]]]
-       [pagination-ui params]
+         [table-ui params users counts]]]
+       [ls/pagination-ui "user/users" params users counts]
        [action-ui fields errors]
-       [modal-ui fields errors]])))
+       [modal-ui fields errors users]])))
 
 (rdom/render [page-el/topbar] (gdom/getElement "topbar"))
 (rdom/render [content] (gdom/getElement "content"))
