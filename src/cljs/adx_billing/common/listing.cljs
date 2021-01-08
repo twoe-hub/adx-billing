@@ -6,24 +6,18 @@
 (defonce pg-size 1)
 (defonce total (rcore/atom pg-size))
 
-(defn date-time-handler [m]
-  (assoc m
-         :date-created (util/parse-date-time (:date-created m))
-         :last-login (util/parse-date-time (:last-login m))))
-
 (defn clear [params]
   (reset! params {:username "" :first-name "" :last-name "" :email "" :designation "" :offset (:offset @params) :limit (:limit @params)}))
 
 (defn all-empty? [sx]
   (reduce (fn [x y] (and x y)) (map empty? sx)))
 
-(defn get-records [url params model counts]
+(defn get-records [url params handler]
   (GET url
        {:headers {"Accept" "application/transit+json"}
         :params @params
         :handler #(do
-                    (reset! model (map date-time-handler (:users %)))
-                    (reset! counts (:counts %))
+                    (handler {:records (:records %) :counts (:counts %)})
                     (reset! total (:total %))
                     (when (all-empty? (vals (dissoc @params :limit :offset)))
                       (util/hide-el (.getElementById js/document "listing-filter")))
@@ -59,7 +53,7 @@
     (<= last-pg 1) []
     :else (suffix (prefix (neighbr curr-pg last-pg)) last-pg)))
 
-(defn pagination-ui [url params model counts]
+(defn pagination-ui [url params handler]
   (let [last-pg (int (Math/ceil (/ @total pg-size)))
         curr-pg (inc (/ (@params :offset) pg-size))
         sx (pages curr-pg last-pg)
@@ -70,14 +64,14 @@
         {:class (str "pagination-previous" (when (= curr-pg 1) " disabled"))
          :on-click #(do
                       (swap! params assoc :offset (- (get @params :offset) pg-size))
-                      (get-records url params model counts))}
+                      (get-records url params handler))}
         [:span.icon.is-small
          [:i.fa.fa-chevron-left]]]
        [:a
         {:class (str "pagination-next" (when (= curr-pg last-pg ) " disabled"))
          :on-click #(do
                       (swap! params assoc :offset (+ (get @params :offset) pg-size))
-                      (get-records url params model counts))}
+                      (get-records url params handler))}
         [:span.icon.is-small
          [:i.fa.fa-chevron-right]]]
        [:ul.pagination-list {:style {:list-style "none"}}
@@ -95,5 +89,5 @@
                 :aria-current (str (val m))
                 :on-click #(do
                              (swap! params assoc :offset (* (dec (val m)) pg-size))
-                             (get-records url params model counts))}
+                             (get-records url params handler))}
                (str (val m))]])))]])))

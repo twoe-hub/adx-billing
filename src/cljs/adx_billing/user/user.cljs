@@ -12,8 +12,19 @@
             [adx-billing.user.validate :refer [validate]]
             [adx-billing.common.util :refer [toggle-el hide-el]]))
 
-(defonce url "user/users")
+(defonce url "/user/users")
 (defonce cols ['id 'no 'username 'first-name 'last-name 'email 'designation 'last-login 'date-created 'enabled])
+(defonce users (rcore/atom {}))
+(defonce counts (rcore/atom {}))
+
+(defn handler [m]
+  (do
+    (reset! users (map
+                  #(assoc %
+                          :date-created (util/parse-date-time (:date-created %))
+                          :last-login (util/parse-date-time (:last-login %)))
+                  (:records m)))
+    (reset! counts (:counts m))))
 
 (defn show-modal [elem]
   (.add (.-classList elem) "is-active")
@@ -34,7 +45,7 @@
    (when (= (.-key e) "Escape")
      (toggle-modal class fields errors))))
 
-(defn save-user [fields errors users]                                        ;
+(defn save-user [fields errors users]
   (if-let [validation-errors (validate @fields)]
     (reset! errors validation-errors)
     (POST "/user/save"
@@ -118,7 +129,7 @@
         [errors-component errors :email]]]
       ]]))
 
-(defn modal-ui [fields errors users]
+(defn modal-ui [fields errors]
   (let [modal-id "edit-modal"]
     [:div.modal
      {:id modal-id
@@ -147,22 +158,22 @@
     [:button.button {:disabled true} "Delete"]]
    [:div.control
     [:button.button.pl-25.pr-25
-     {:on-click #(toggle-modal "edit-modal" fields errors)} "Add"]]])
+     {:on-click #(toggle-modal "edit-modal" fields errors)} "Create"]]])
 
-(defn quick-filter [params counts users counts]
+(defn quick-filter [params]
   [:div#quick-filter.tabs.is-flex
    [:ul
     [:li {:key "all"}
      [:a {:on-click #((swap! params dissoc :enabled)
-                      (ls/get-records "user/users" params users counts))}
+                      (ls/get-records url params handler))}
       (str (msg (keyword (str "user.qf-label/" "all"))) ": " (:all @counts))]]
     [:li {:key "active"}
      [:a {:on-click #((swap! params assoc :enabled "true")
-                      (ls/get-records "user/users" params users counts))}
+                      (ls/get-records url params handler))}
       (str (msg (keyword (str "user.qf-label/" "active"))) ": " (:active @counts))]]
     [:li {:key "inactive"}
      [:a {:on-click #((swap! params assoc :enabled "false")
-                      (ls/get-records "user/users" params users counts))}
+                      (ls/get-records url params handler))}
       (str (msg (keyword (str "user.qf-label/" "inactive"))) ": " (:inactive @counts))]]]])
 
 (defn table-head-row []
@@ -184,7 +195,7 @@
     [:span.icon.is-small
      [:i.fas.fa-filter]]]])
 
-(defn table-filter-row [params users counts]
+(defn table-filter-row [params]
   [:tr#listing-filter.is-hidden
    [:th]
    [:th]
@@ -224,13 +235,13 @@
        :on-click #(ls/clear params)} "Clear"]
      [:button.filter-button.button.is-fullwidth.is-primary
       {:type "button"
-       :on-click #(ls/get-records "user/users" params users counts)} "Search"]]]])
+       :on-click #(ls/get-records url params handler)} "Search"]]]])
 
-(defn table-ui [params users counts]
+(defn table-ui [params]
   [:table.listing-table.table.is-fullwidth.is-striped.is-hoverable
    [:thead
     [table-head-row]
-    [table-filter-row params users counts]]
+    [table-filter-row params]]
    [:tbody.listing-content
     (for [{:keys [id no username first-name last-name email
                   designation last-login date-created enabled]} @users]
@@ -252,25 +263,23 @@
 
 (defn content []
   (let [params (rcore/atom {:offset 0 :limit ls/pg-size})
-        counts (rcore/atom {})
-        users (rcore/atom {})
         fields (rcore/atom {})
         errors (rcore/atom nil)]
-    (ls/get-records url params users counts)
+    (ls/get-records url params handler)
     (fn []
       [:div
        [:div#notice]
-       [quick-filter params counts users counts]
+       [quick-filter params]
        [:div.listing.table-container.is-sortable
         [:form.listing-filter-form {:auto-complete "off"
                                     :method "POST",
                                     :action "#"}
          [input-el 'limit 'limit 'hidden "" "" "offset" params]
          [input-el 'offset 'offset 'hidden "" "" "offset" params]
-         [table-ui params users counts]]]
-       [ls/pagination-ui "user/users" params users counts]
+         [table-ui params]]]
+       [ls/pagination-ui url params handler]
        [action-ui fields errors]
-       [modal-ui fields errors users]])))
+       [modal-ui fields errors]])))
 
 (rdom/render [page-el/topbar] (gdom/getElement "topbar"))
 (rdom/render [content] (gdom/getElement "content"))

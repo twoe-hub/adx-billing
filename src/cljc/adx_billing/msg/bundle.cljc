@@ -22,6 +22,18 @@
                          :admin "fa-user-shield"
                          :audit-log "fa-list-alt"
                          :about "fa-info-circle"}}
+           :aff {:qf-label {:active "Active"
+                            :inactive "Inactive"
+                            :all "All"}
+                  :cols {:no "No."
+                         :code "Code"
+                         :name "Name"
+                         :reg-no "Reg. No."
+                         :tax-no "Tax No."
+                         :entity-type "Entity Type"
+                         :industry-id "Industry"
+                         :date-est "Established"
+                         :website "Website"}}
            :user {:qf-label {:active "Active"
                              :inactive "Inactive"
                              :all "All"}

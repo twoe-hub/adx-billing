@@ -781,13 +781,13 @@ insert into "public"."role_access" ("role_id", "access_id") values
 ('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 12),
 ('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 13);
 --;;
-insert into "public"."user" ("id", "aff_id", "username", "password", "first_name", "last_name", "email") values
-('c9c93c10-c02d-445b-a05d-1a2f8501c9fe', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'watsons', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Wadud', 'admin.wtsns@adx.com.my'),
-('0696f9a0-339f-4a05-b1f6-dc5c86daf378', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'dummy.wtsns1@adx.com.my', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Rehman', 'dummy1@adx.com.my'),
-('7907b471-99c0-4778-8dba-97493623bd7c', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'dummy.wtsns2@adx.com.my', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Rashid', 'dummy.wtsns2@adx.com.my'),
-('fd8ec1c3-59e2-49fe-bdff-c15537a02b3c', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'dummy.wtsns3@adx.com.my', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Latif', 'dummy.wtsns3@adx.com.my'),
-('c9c93c10-c02d-445b-a05d-1a2f8501c9ff', 'fde78682-419e-423f-bdc6-32f48a7be64b', 'guardian', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'Guardian', 'dummy.grdn1@adx.com.my'),
-('c9c93c10-c02d-445b-a05d-1a2f8501cccc', 'fde78682-419e-423f-bdc6-32f48a7be64c', 'unilever', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'A.', 'Unilever', 'dummy.unilever1@adx.com.my');
+insert into "public"."user" ("id", "aff_id", "username", "password", "first_name", "last_name", "email", "enabled") values
+('c9c93c10-c02d-445b-a05d-1a2f8501c9fe', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'watsons', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Wadud', 'admin.wtsns@adx.com.my', 't'),
+('0696f9a0-339f-4a05-b1f6-dc5c86daf378', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'dummy.wtsns1@adx.com.my', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Rehman', 'dummy1@adx.com.my', 'f'),
+('7907b471-99c0-4778-8dba-97493623bd7c', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'dummy.wtsns2@adx.com.my', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Rashid', 'dummy.wtsns2@adx.com.my', 'f'),
+('fd8ec1c3-59e2-49fe-bdff-c15537a02b3c', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'dummy.wtsns3@adx.com.my', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Latif', 'dummy.wtsns3@adx.com.my', 'f'),
+('c9c93c10-c02d-445b-a05d-1a2f8501c9ff', 'fde78682-419e-423f-bdc6-32f48a7be64b', 'guardian', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'Guardian', 'dummy.grdn1@adx.com.my', 't'),
+('c9c93c10-c02d-445b-a05d-1a2f8501cccc', 'fde78682-419e-423f-bdc6-32f48a7be64c', 'unilever', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'A.', 'Unilever', 'dummy.unilever1@adx.com.my','t');
 --;;
 insert into "public"."user_role" ("user_id", "role_id") values
 ('c9c93c10-c02d-445b-a05d-1a2f8501c9fe', 'b5ea41ba-dfbb-4ffd-b213-604267f27ffb'),

@@ -53,7 +53,7 @@ create table if not exists "public"."announcement" (
 "audience" text not null,
 "recur_type" text,
 "date_published" timestamp,
-"expiry_date" date,
+"expiry_date" timestamp,
 "last_announced" timestamp,
 "version" integer not null default 0,
 "date_created" timestamp not null default now(),

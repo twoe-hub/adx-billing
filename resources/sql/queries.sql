@@ -53,3 +53,29 @@ WHERE 1 = 1
 --~ (when (not (empty? (:designation params))) (str "AND u.designation LIKE '%" (params :designation) "%'"))
 GROUP BY u.enabled
 ORDER BY u.enabled desc;
+
+-- :name get-affs :? :*
+-- :doc selects all affiliates
+SELECT row_number() over () as no, a.id, a.code, a.name, a.reg_no, a.tax_no, a.entity_type, a.industry_id, a.date_est, a.website
+FROM public.affiliate a
+WHERE 1 = 1
+--~ (when (not (empty? (:enabled params))) (str "AND a.enabled = '" (params :enabled)  "'"))
+--~ (when (not (empty? (:username params))) (str "AND a.username LIKE '%" (params :username) "%'"))
+--~ (when (not (empty? (:first-name params))) (str "AND a.first_name LIKE '%" (params :first-name) "%'"))
+--~ (when (not (empty? (:last-name params))) (str "AND a.last_name LIKE '%" (params :last-name) "%'"))
+--~ (when (not (empty? (:email params))) (str "AND a.email LIKE '%" (params :email) "%'"))
+--~ (when (not (empty? (:designation params))) (str "AND a.designation LIKE '%" (params :designation) "%'"))
+OFFSET :offset LIMIT :limit
+
+-- :name count-affs :? :*
+-- :doc count all affiliates
+SELECT a.status status, count(*) count
+FROM public.affiliate a
+WHERE 1 = 1
+--~ (when (not (empty? (:username params))) (str "AND u.username LIKE '%" (params :username) "%'"))
+--~ (when (not (empty? (:first-name params))) (str "AND u.first_name LIKE '%" (params :first-name) "%'"))
+--~ (when (not (empty? (:last-name params))) (str "AND u.last_name LIKE '%" (params :last-name) "%'"))
+--~ (when (not (empty? (:email params))) (str "AND u.email LIKE '%" (params :email) "%'"))
+--~ (when (not (empty? (:designation params))) (str "AND u.designation LIKE '%" (params :designation) "%'"))
+GROUP BY a.status
+ORDER BY a.status desc;

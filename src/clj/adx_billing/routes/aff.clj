@@ -1,7 +1,7 @@
-(ns adx-billing.routes.user
+(ns adx-billing.routes.aff
   (:require
    [adx-billing.db.core :as db]
-   [adx-billing.user.validate :refer [validate]]
+   [adx-billing.aff.validate :refer [validate]]
    [adx-billing.html.templates :refer [base-template]]
    [adx-billing.middleware :as middleware]
    [camel-snake-kebab.core :as csk]
@@ -10,7 +10,7 @@
    [ring.util.http-response :as response]
    ))
 
-(defn save-user! [{:keys [params]}]
+(defn save-aff! [{:keys [params]}]
   (if-let [errors (validate params)]
     (response/bad-request {:errors errors})
     (try
@@ -21,14 +21,14 @@
          {:errors {:server-error ["Failed to save user!"]}})))))
 
 (defn get-status-counts [params]
-  (let [sx (db/count-users params)
-        m (into {} (map #(-> (if (:status %)
-                               {:active (:count %)}
-                               {:inactive (:count %)})) sx))
+  (let [sx (db/count-affs params)
+        m (into {} (map #(-> (cond
+                               (= (:status %) "ACTIVE") {:active (:count %)}
+                               (= (:status %) "INACTIVE") {:inactive (:count %)})) sx))
         m (if (contains? m :inactive) m (conj m {:inactive 0}))]
     (conj {:all (reduce + (vals m))} m)))
 
-(defn get-users [{:keys [params]}]
+(defn get-affs [{:keys [params]}]
   (let [params (assoc params
                       :offset (Integer. (:offset params))
                       :limit (Integer. (:limit params)))
@@ -41,22 +41,23 @@
                  (:active m)
                  (:inactive m)))
       :records (cske/transform-keys csk/->kebab-case-keyword
-                                    (vec (db/get-users params)))})))
+                                    (vec (db/get-affs params)))})))
 
-(defn list-user [request]
+(defn list-aff [request]
   (response/content-type
    (response/ok
-    (base-template request {:title "Users"
+    (base-template request {:title "Affiliates"
                             :css ["/css/start.css"
-                                  "/css/views/user/user.css"]
+                                  "/css/views/aff/aff.css"]
                             :js ["/js/app/cljs_base.js"
-                                 "/js/app/adx_billing/user/user.js"]}))
+                                 "/js/app/adx_billing/aff/aff.js"]}))
    "text/html; charset=utf-8"))
 
-(defn user-routes []
+(defn aff-routes []
   [""
    {:middleware [middleware/wrap-csrf
                  middleware/wrap-formats]}
-   ["/user/list" {:get list-user}]
-   ["/user/users" {:get get-users}]
-   ["/user/save" {:post save-user!}]])
+   ["/" {:get list-aff}]
+   ["/aff/list" {:get list-aff}]
+   ["/aff/affs" {:get get-affs}]
+   ["/aff/save" {:post save-aff!}]])
