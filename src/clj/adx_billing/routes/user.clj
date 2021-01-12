@@ -1,6 +1,6 @@
 (ns adx-billing.routes.user
   (:require
-   [adx-billing.db.core :as db]
+   [adx-billing.db.core :refer [query]]
    [adx-billing.user.validate :refer [validate]]
    [adx-billing.html.templates :refer [base-template]]
    [adx-billing.middleware :as middleware]
@@ -14,14 +14,14 @@
   (if-let [errors (validate params)]
     (response/bad-request {:errors errors})
     (try
-      (db/create-user! params)
+      (query :create-user! params)
       (response/ok {:status :ok})
       (catch Exception e
         (response/internal-server-error
          {:errors {:server-error ["Failed to save user!"]}})))))
 
 (defn get-status-counts [params]
-  (let [sx (db/count-users params)
+  (let [sx (query :count-users params)
         m (into {} (map #(-> (if (:status %)
                                {:active (:count %)}
                                {:inactive (:count %)})) sx))
@@ -41,7 +41,7 @@
                  (:active m)
                  (:inactive m)))
       :records (cske/transform-keys csk/->kebab-case-keyword
-                                    (vec (db/get-users params)))})))
+                                    (vec (query :get-users params)))})))
 
 (defn list-user [request]
   (response/content-type

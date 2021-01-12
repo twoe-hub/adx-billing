@@ -35,10 +35,10 @@
 (defn restart-db
   "Restarts database."
   []
-  (mount/stop #'adx-billing.db.core/*db*)
-  (mount/start #'adx-billing.db.core/*db*)
+  (mount/stop #'adx-billing.db.core/conn)
+  (mount/start #'adx-billing.db.core/conn)
   (binding [*ns* 'adx-billing.db.core]
-    (conman/bind-connection adx-billing.db.core/*db* "sql/queries.sql")))
+    (conman/bind-connection adx-billing.db.core/conn "sql/queries.sql")))
 
 (defn reset-db
   "Resets database."

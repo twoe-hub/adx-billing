@@ -2,7 +2,7 @@
   (:require
    [adx-billing.auth.validate :refer [validate]]
    [adx-billing.html.templates :refer [login-template]]
-   [adx-billing.db.core :as db]
+   [adx-billing.db.core :refer [query]]
    [adx-billing.middleware :as middleware]
    [camel-snake-kebab.core :as csk]
    [camel-snake-kebab.extras :as cske]
@@ -22,18 +22,18 @@
 
 (defn- get-modules [access]
   (let [coll (cske/transform-keys csk/->kebab-case-keyword
-                                  (vec (db/get-modules {:access access})))]
+                                  (vec (query :get-modules {:access access})))]
     (make-tree coll)))
 
 (defn- get-access [uid]
-  (set (map #(get % :name) (db/get-access {:uid uid}))))
+  (set (map #(get % :name) (query :get-access {:uid uid}))))
 
 (defn- get-user [username]
-  (cske/transform-keys csk/->kebab-case-keyword (db/auth! {:username username})))
+  (cske/transform-keys csk/->kebab-case-keyword (query :auth! {:username username})))
 
 (defn auth! [request]
   (let [username (get-in request [:params :username])
-        plain-pwd(get-in request [:params :password])
+        plain-pwd (get-in request [:params :password])
         session (:session request)
         {hashed-pwd :password :as user} (get-user username)]
     (if (hashers/check plain-pwd hashed-pwd)

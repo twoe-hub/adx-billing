@@ -1,6 +1,6 @@
 (ns adx-billing.routes.aff
   (:require
-   [adx-billing.db.core :as db]
+   [adx-billing.db.core :refer [query]]
    [adx-billing.aff.validate :refer [validate]]
    [adx-billing.html.templates :refer [base-template]]
    [adx-billing.middleware :as middleware]
@@ -10,18 +10,18 @@
    [ring.util.http-response :as response]
    ))
 
-(defn save-aff! [{:keys [params]}]
-  (if-let [errors (validate params)]
-    (response/bad-request {:errors errors})
-    (try
-      (db/create-user! params)
-      (response/ok {:status :ok})
-      (catch Exception e
-        (response/internal-server-error
-         {:errors {:server-error ["Failed to save user!"]}})))))
+;; (defn save-aff! [{:keys [params]}]
+;;   (if-let [errors (validate params)]
+;;     (response/bad-request {:errors errors})
+;;     (try
+;;       (query :create-user! params)
+;;       (response/ok {:status :ok})
+;;       (catch Exception e
+;;         (response/internal-server-error
+;;          {:errors {:server-error ["Failed to save user!"]}})))))
 
 (defn get-status-counts [params]
-  (let [sx (db/count-affs params)
+  (let [sx (query :count-affs params)
         m (into {} (map #(-> (cond
                                (= (:status %) "ACTIVE") {:active (:count %)}
                                (= (:status %) "INACTIVE") {:inactive (:count %)})) sx))
@@ -41,7 +41,7 @@
                  (:active m)
                  (:inactive m)))
       :records (cske/transform-keys csk/->kebab-case-keyword
-                                    (vec (db/get-affs params)))})))
+                                    (vec (query :get-affs params)))})))
 
 (defn list-aff [request]
   (response/content-type
@@ -60,4 +60,5 @@
    ["/" {:get list-aff}]
    ["/aff/list" {:get list-aff}]
    ["/aff/affs" {:get get-affs}]
-   ["/aff/save" {:post save-aff!}]])
+   ;; ["/aff/save" {:post save-aff!}]
+   ])

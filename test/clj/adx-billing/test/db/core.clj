@@ -1,6 +1,6 @@
 (ns adx-billing.test.db.core
   (:require
-   [adx-billing.db.core :refer [*db*] :as db]
+   [adx-billing.db.core :refer [conn] :as db]
    [luminus-migrations.core :as migrations]
    [clojure.test :refer :all]
    [clojure.java.jdbc :as jdbc]
@@ -12,12 +12,12 @@
   (fn [f]
     (mount/start
       #'adx-billing.config/env
-      #'adx-billing.db.core/*db*)
+      #'adx-billing.db.core/conn)
     (migrations/migrate ["migrate"] (select-keys env [:database-url]))
     (f)))
 
 (deftest test-message
-  (jdbc/with-db-transaction [t-conn *db*]
+  (jdbc/with-db-transaction [t-conn conn]
     (jdbc/db-set-rollback-only! t-conn)
     (let [timestamp (java.time.LocalDateTime/now)]
       (is (= 1 (db/save-message!

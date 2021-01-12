@@ -1,6 +1,6 @@
 (ns adx-billing.routes.profile
   (:require
-   [adx-billing.db.core :as db]
+   [adx-billing.db.core :refer [query]]
    [adx-billing.html.templates :refer [base-template]]
    [adx-billing.middleware :as middleware]
    [camel-snake-kebab.core :as csk]
@@ -23,7 +23,7 @@
 (defn get-user [{:keys [params]}]
   (response/ok
    {:users (cske/transform-keys csk/->kebab-case-keyword
-                                (vec (db/get-users
+                                (vec (query :get-users
                                       (assoc params
                                              :offset (Integer. (:offset params))
                                              :limit (Integer. (:limit params))))))}))

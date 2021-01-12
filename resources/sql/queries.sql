@@ -21,7 +21,6 @@ JOIN public.affiliate a ON a.id = u.aff_id
 WHERE u.username = :username
 AND u.enabled = 't'
 
-
 -- :name create-user! :! :n
 -- :doc creates a new user
 INSERT INTO public.user
@@ -29,28 +28,62 @@ INSERT INTO public.user
 VALUES (:username, :first-name, :last-name, :email)
 
 -- :name get-users :? :*
+-- :require [adx-billing.db.util :refer [str-regex]]
 -- :doc selects all users
 SELECT row_number() over () as no, u.id, u.username, u.first_name, u.last_name, u.email, u.designation, u.last_login, u.date_created, u.enabled
 FROM public.user u
 WHERE 1 = 1
---~ (when (not (empty? (:enabled params))) (str "AND u.enabled = '" (params :enabled)  "'"))
---~ (when (not (empty? (:username params))) (str "AND u.username LIKE '%" (params :username) "%'"))
---~ (when (not (empty? (:first-name params))) (str "AND u.first_name LIKE '%" (params :first-name) "%'"))
---~ (when (not (empty? (:last-name params))) (str "AND u.last_name LIKE '%" (params :last-name) "%'"))
---~ (when (not (empty? (:email params))) (str "AND u.email LIKE '%" (params :email) "%'"))
---~ (when (not (empty? (:designation params))) (str "AND u.designation LIKE '%" (params :designation) "%'"))
+/*~ (when (not (clojure.string/blank? (:enabled params))) */
+AND u.enabled = :enabled
+/*~ ) ~*/
+/*~ (when (not (clojure.string/blank? (:username params))) */
+AND u.username ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:username params))) (str-regex (:username params)))
+/*~ (when (not (clojure.string/blank? (:first-name params))) */
+AND u.first_name ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:first-name params))) (str-regex (:first-name params)))
+/*~ (when (not (clojure.string/blank? (:last-name params))) */
+AND u.last_name ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:last-name params))) (str-regex (:last-name params)))
+/*~ (when (not (clojure.string/blank? (:email params))) */
+AND u.email ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:email params))) (str-regex (:email params)))
+/*~ (when (not (clojure.string/blank? (:designation params))) */
+AND u.designation ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:designation params))) (str-regex (:designation params)))
 OFFSET :offset LIMIT :limit
 
 -- :name count-users :? :*
+-- :require [adx-billing.db.util :refer [str-regex]]
 -- :doc count all users
 SELECT u.enabled status, count(*) count
 FROM public.user u
 WHERE 1 = 1
---~ (when (not (empty? (:username params))) (str "AND u.username LIKE '%" (params :username) "%'"))
---~ (when (not (empty? (:first-name params))) (str "AND u.first_name LIKE '%" (params :first-name) "%'"))
---~ (when (not (empty? (:last-name params))) (str "AND u.last_name LIKE '%" (params :last-name) "%'"))
---~ (when (not (empty? (:email params))) (str "AND u.email LIKE '%" (params :email) "%'"))
---~ (when (not (empty? (:designation params))) (str "AND u.designation LIKE '%" (params :designation) "%'"))
+/*~ (when (not (clojure.string/blank? (:username params))) */
+AND u.username ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:username params))) (str-regex (:username params)))
+/*~ (when (not (clojure.string/blank? (:first-name params))) */
+AND u.first_name ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:first-name params))) (str-regex (:first-name params)))
+/*~ (when (not (clojure.string/blank? (:last-name params))) */
+AND u.last_name ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:last-name params))) (str-regex (:last-name params)))
+/*~ (when (not (clojure.string/blank? (:email params))) */
+AND u.email ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:email params))) (str-regex (:email params)))
+/*~ (when (not (clojure.string/blank? (:designation params))) */
+AND u.designation ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:designation params))) (str-regex (:designation params)))
 GROUP BY u.enabled
 ORDER BY u.enabled desc;
 
@@ -59,12 +92,6 @@ ORDER BY u.enabled desc;
 SELECT row_number() over () as no, a.id, a.code, a.name, a.reg_no, a.tax_no, a.entity_type, a.industry_id, a.date_est, a.website
 FROM public.affiliate a
 WHERE 1 = 1
---~ (when (not (empty? (:enabled params))) (str "AND a.enabled = '" (params :enabled)  "'"))
---~ (when (not (empty? (:username params))) (str "AND a.username LIKE '%" (params :username) "%'"))
---~ (when (not (empty? (:first-name params))) (str "AND a.first_name LIKE '%" (params :first-name) "%'"))
---~ (when (not (empty? (:last-name params))) (str "AND a.last_name LIKE '%" (params :last-name) "%'"))
---~ (when (not (empty? (:email params))) (str "AND a.email LIKE '%" (params :email) "%'"))
---~ (when (not (empty? (:designation params))) (str "AND a.designation LIKE '%" (params :designation) "%'"))
 OFFSET :offset LIMIT :limit
 
 -- :name count-affs :? :*
@@ -72,10 +99,5 @@ OFFSET :offset LIMIT :limit
 SELECT a.status status, count(*) count
 FROM public.affiliate a
 WHERE 1 = 1
---~ (when (not (empty? (:username params))) (str "AND u.username LIKE '%" (params :username) "%'"))
---~ (when (not (empty? (:first-name params))) (str "AND u.first_name LIKE '%" (params :first-name) "%'"))
---~ (when (not (empty? (:last-name params))) (str "AND u.last_name LIKE '%" (params :last-name) "%'"))
---~ (when (not (empty? (:email params))) (str "AND u.email LIKE '%" (params :email) "%'"))
---~ (when (not (empty? (:designation params))) (str "AND u.designation LIKE '%" (params :designation) "%'"))
 GROUP BY a.status
 ORDER BY a.status desc;
