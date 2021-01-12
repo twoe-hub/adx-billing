@@ -34,28 +34,9 @@ SELECT row_number() over () as no, u.id, u.username, u.first_name, u.last_name, 
 FROM public.user u
 WHERE 1 = 1
 /*~ (when (not (clojure.string/blank? (:enabled params))) */
-AND u.enabled = :v:enabled::boolean
+AND u.enabled = :enabled::boolean
 /*~ ) ~*/
-/*~ (when (not (clojure.string/blank? (:username params))) */
-AND u.username ~*
-/*~ ) ~*/
---~ (when (not (clojure.string/blank? (:username params))) (str-regex (:username params)))
-/*~ (when (not (clojure.string/blank? (:first-name params))) */
-AND u.first_name ~*
-/*~ ) ~*/
---~ (when (not (clojure.string/blank? (:first-name params))) (str-regex (:first-name params)))
-/*~ (when (not (clojure.string/blank? (:last-name params))) */
-AND u.last_name ~*
-/*~ ) ~*/
---~ (when (not (clojure.string/blank? (:last-name params))) (str-regex (:last-name params)))
-/*~ (when (not (clojure.string/blank? (:email params))) */
-AND u.email ~*
-/*~ ) ~*/
---~ (when (not (clojure.string/blank? (:email params))) (str-regex (:email params)))
-/*~ (when (not (clojure.string/blank? (:designation params))) */
-AND u.designation ~*
-/*~ ) ~*/
---~ (when (not (clojure.string/blank? (:designation params))) (str-regex (:designation params)))
+:snip:cond
 OFFSET :offset LIMIT :limit
 
 -- :name count-users :? :*
@@ -64,6 +45,11 @@ OFFSET :offset LIMIT :limit
 SELECT u.enabled status, count(*) count
 FROM public.user u
 WHERE 1 = 1
+:snip:cond
+GROUP BY u.enabled
+ORDER BY u.enabled desc;
+
+-- :snip cond-users
 /*~ (when (not (clojure.string/blank? (:username params))) */
 AND u.username ~*
 /*~ ) ~*/
@@ -84,8 +70,6 @@ AND u.email ~*
 AND u.designation ~*
 /*~ ) ~*/
 --~ (when (not (clojure.string/blank? (:designation params))) (str-regex (:designation params)))
-GROUP BY u.enabled
-ORDER BY u.enabled desc;
 
 -- :name get-affs :? :*
 -- :doc selects all affiliates

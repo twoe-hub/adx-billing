@@ -1,12 +1,13 @@
 (ns adx-billing.routes.user
   (:require
-   [adx-billing.db.core :refer [query]]
+   [adx-billing.db.core :refer [query queries]]
    [adx-billing.user.validate :refer [validate]]
    [adx-billing.html.templates :refer [base-template]]
    [adx-billing.middleware :as middleware]
    [camel-snake-kebab.core :as csk]
    [camel-snake-kebab.extras :as cske]
    [clojure.pprint :refer [pprint]]
+   [conman.core :refer [snip]]
    [ring.util.http-response :as response]
    ))
 
@@ -21,7 +22,7 @@
          {:errors {:server-error ["Failed to save user!"]}})))))
 
 (defn get-status-counts [params]
-  (let [sx (query :count-users params)
+  (let [sx (query :count-users {:cond  (snip queries :cond-users params)})
         m (into {} (map #(-> (if (:status %)
                                {:active (:count %)}
                                {:inactive (:count %)})) sx))
@@ -40,8 +41,13 @@
                (if (= (:enabled params) "true")
                  (:active m)
                  (:inactive m)))
-      :records (cske/transform-keys csk/->kebab-case-keyword
-                                    (vec (query :get-users params)))})))
+      :records (cske/transform-keys
+                csk/->kebab-case-keyword
+                (vec (query :get-users
+                            {:cond (snip queries :cond-users params)
+                             :enabled (:enabled params)
+                             :offset (:offset params)
+                             :limit (:limit params)})))})))
 
 (defn list-user [request]
   (response/content-type
