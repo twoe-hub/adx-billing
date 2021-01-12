@@ -235,7 +235,9 @@
        :on-click #(ls/clear params)} "Clear"]
      [:button.filter-button.button.is-fullwidth.is-primary
       {:type "button"
-       :on-click #(ls/get-records url params handler)} "Search"]]]])
+       :on-click #(do
+                    (swap! params assoc :offset 0)
+                    (ls/get-records url params handler))} "Search"]]]])
 
 (defn table-ui [params]
   [:table.listing-table.table.is-fullwidth.is-striped.is-hoverable

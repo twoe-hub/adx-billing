@@ -1,7 +1,8 @@
 (ns adx-billing.common.listing
   (:require [ajax.core :refer [GET POST]]
             [reagent.core :as rcore]
-            [adx-billing.common.util :as util]))
+            [adx-billing.common.util :refer [toggle-el hide-el]]
+            [adx-billing.msg.bundle :refer [msg]]))
 
 (defonce pg-size 1)
 (defonce total (rcore/atom pg-size))
@@ -12,6 +13,25 @@
 (defn all-empty? [sx]
   (reduce (fn [x y] (and x y)) (map empty? sx)))
 
+(defn table-head-row [cols]
+  [:tr
+   (doall (map (fn [col]
+                 (if (= col 'id)
+                   [:th
+                    {:key col}
+                    [:div.field
+                     [:div.control
+                      [:label.checkbox
+                       [:input.table-checkbox-all {:id "checkall"
+                                                   :type "checkbox"
+                                                   :name "checkall"}]]]]]
+                   [:th.is-sortable
+                    {:key col} (msg (keyword (str "aff.cols/" (name col))))]))
+               cols))
+   [:th.filter {:on-click #(toggle-el "listing-filter")}
+    [:span.icon.is-small
+     [:i.fas.fa-filter]]]])
+
 (defn get-records [url params handler]
   (GET url
        {:headers {"Accept" "application/transit+json"}
@@ -20,7 +40,7 @@
                     (handler {:records (:records %) :counts (:counts %)})
                     (reset! total (:total %))
                     (when (all-empty? (vals (dissoc @params :limit :offset)))
-                      (util/hide-el (.getElementById js/document "listing-filter")))
+                      (hide-el (.getElementById js/document "listing-filter")))
                     )}))
 
 (defn prefix [sx]

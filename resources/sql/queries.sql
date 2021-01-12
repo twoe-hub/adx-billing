@@ -34,7 +34,7 @@ SELECT row_number() over () as no, u.id, u.username, u.first_name, u.last_name, 
 FROM public.user u
 WHERE 1 = 1
 /*~ (when (not (clojure.string/blank? (:enabled params))) */
-AND u.enabled = :enabled
+AND u.enabled = :v:enabled::boolean
 /*~ ) ~*/
 /*~ (when (not (clojure.string/blank? (:username params))) */
 AND u.username ~*
