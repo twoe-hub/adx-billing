@@ -13,25 +13,6 @@
 (defn all-empty? [sx]
   (reduce (fn [x y] (and x y)) (map empty? sx)))
 
-(defn table-head-row [list-name cols]
-  [:tr
-   (doall (map (fn [col]
-                 (if (= col 'id)
-                   [:th
-                    {:key col}
-                    [:div.field
-                     [:div.control
-                      [:label.checkbox
-                       [:input.table-checkbox-all {:id "checkall"
-                                                   :type "checkbox"
-                                                   :name "checkall"}]]]]]
-                   [:th.is-sortable
-                    {:key col} (msg (keyword (str list-name ".cols/" (name col))))]))
-               cols))
-   [:th.filter {:on-click #(toggle-el "listing-filter")}
-    [:span.icon.is-small
-     [:i.fas.fa-filter]]]])
-
 (defn get-records [url params handler]
   (GET url
        {:headers {"Accept" "application/transit+json"}

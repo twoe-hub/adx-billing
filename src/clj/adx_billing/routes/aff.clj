@@ -31,7 +31,8 @@
 (defn get-affs [{:keys [params]}]
   (let [params (assoc params
                       :offset (Integer. (:offset params))
-                      :limit (Integer. (:limit params)))
+                      :limit (Integer. (:limit params))
+                      :sort (csk/->snake_case (:sort params)))
         m (get-status-counts params)]
     (response/ok
      {:counts m

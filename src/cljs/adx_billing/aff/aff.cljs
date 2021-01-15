@@ -60,6 +60,32 @@
                       (ls/get-records url params handler))}
       (str (msg (keyword (str "aff.qf-label/" "inactive"))) ": " (:inactive @counts))]]]])
 
+(defn table-head-row [params]
+  [:tr
+   (doall (map (fn [col]
+                 (if (= col 'id)
+                   [:th
+                    {:key col}
+                    [:div.field
+                     [:div.control
+                      [:label.checkbox
+                       [:input.table-checkbox-all {:id "checkall"
+                                                   :type "checkbox"
+                                                   :name "checkall"}]]]]]
+                   [:th.is-sortable
+                    {:key col
+                     :on-click #(do
+                                  (swap! params assoc :offset 0 :sort col)
+                                  (ls/get-records url params handler))}
+                    (msg (keyword (str "aff" ".cols/" (name col))))
+                    [:span {:class "icon is-small"}
+                     [:span {:class "fa fa-sort"}]]
+                    ]))
+               cols))
+   [:th.filter {:on-click #(toggle-el "listing-filter")}
+    [:span.icon.is-small
+     [:i.fas.fa-filter]]]])
+
 (defn table-filter-row [params]
   [:tr#listing-filter.is-hidden
    [:th]
@@ -105,7 +131,7 @@
 (defn table-ui [params]
   [:table.listing-table.table.is-fullwidth.is-striped.is-hoverable
    [:thead
-    [ls/table-head-row "aff" cols]
+    [table-head-row params]
     [table-filter-row params]]
    [:tbody.listing-content
     (for [{:keys [id no code name reg-no tax-no entity-type
