@@ -8,12 +8,12 @@
 (defonce total (rcore/atom pg-size))
 
 (defn clear [params]
-  (reset! params {:username "" :first-name "" :last-name "" :email "" :designation "" :offset (:offset @params) :limit (:limit @params)}))
+  (reset! params {:username "" :first-name "" :last-name "" :email "" :designation "" :offset (:offset @params) :limit (:limit @params) :sort (:sort @params) :order (:order @params)}))
 
 (defn all-empty? [sx]
   (reduce (fn [x y] (and x y)) (map empty? sx)))
 
-(defn table-head-row [cols]
+(defn table-head-row [list-name cols]
   [:tr
    (doall (map (fn [col]
                  (if (= col 'id)
@@ -26,7 +26,7 @@
                                                    :type "checkbox"
                                                    :name "checkall"}]]]]]
                    [:th.is-sortable
-                    {:key col} (msg (keyword (str "aff.cols/" (name col))))]))
+                    {:key col} (msg (keyword (str list-name ".cols/" (name col))))]))
                cols))
    [:th.filter {:on-click #(toggle-el "listing-filter")}
     [:span.icon.is-small
@@ -39,7 +39,7 @@
         :handler #(do
                     (handler {:records (:records %) :counts (:counts %)})
                     (reset! total (:total %))
-                    (when (all-empty? (vals (dissoc @params :limit :offset)))
+                    (when (all-empty? (vals (dissoc @params :limit :offset :sort :order)))
                       (hide-el (.getElementById js/document "listing-filter")))
                     )}))
 

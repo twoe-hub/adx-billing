@@ -44,10 +44,8 @@
       :records (cske/transform-keys
                 csk/->kebab-case-keyword
                 (vec (query :get-users
-                            {:cond (snip queries :cond-users params)
-                             :enabled (:enabled params)
-                             :offset (:offset params)
-                             :limit (:limit params)})))})))
+                            (assoc params
+                                   :cond (snip queries :cond-users params)))))})))
 
 (defn list-user [request]
   (response/content-type

@@ -176,25 +176,6 @@
                       (ls/get-records url params handler))}
       (str (msg (keyword (str "user.qf-label/" "inactive"))) ": " (:inactive @counts))]]]])
 
-(defn table-head-row []
-  [:tr
-   (doall (map (fn [col]
-                 (if (= col 'id)
-                   [:th
-                    {:key col}
-                    [:div.field
-                     [:div.control
-                      [:label.checkbox
-                       [:input.table-checkbox-all {:id "checkall"
-                                                   :type "checkbox"
-                                                   :name "checkall"}]]]]]
-                   [:th.is-sortable
-                    {:key col} (msg (keyword (str "user.cols/" (name col))))]))
-               cols))
-   [:th.filter {:on-click #(toggle-el "listing-filter")}
-    [:span.icon.is-small
-     [:i.fas.fa-filter]]]])
-
 (defn table-filter-row [params]
   [:tr#listing-filter.is-hidden
    [:th]
@@ -242,7 +223,7 @@
 (defn table-ui [params]
   [:table.listing-table.table.is-fullwidth.is-striped.is-hoverable
    [:thead
-    [table-head-row]
+    [ls/table-head-row "user" cols]
     [table-filter-row params]]
    [:tbody.listing-content
     (for [{:keys [id no username first-name last-name email
@@ -264,7 +245,7 @@
              :style {:border "none"}} enabled]])]])
 
 (defn content []
-  (let [params (rcore/atom {:offset 0 :limit ls/pg-size})
+  (let [params (rcore/atom {:sort "u.username" :order "asc" :offset 0 :limit ls/pg-size})
         fields (rcore/atom {})
         errors (rcore/atom nil)]
     (ls/get-records url params handler)

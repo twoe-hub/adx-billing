@@ -1,17 +1,17 @@
 -- :name get-modules :? :*
 -- :doc selects all modules
 SELECT m.* FROM public.module m
-where m.access in (:v*:access) or m.access is null
-order by m.ordinal
+WHERE m.access IN (:v*:access) OR m.access IS NULL
+ORDER BY m.ordinal
 
 -- :name get-access :? :*
 -- :doc selects all access for given user
 SELECT a.name FROM public.user u
-join public.user_role ur on ur.user_id = u.id
-join public.role r on r.id = ur.role_id
-join public.role_access ra on ra.role_id = r.id
-join public.access a on a.id = ra.access_id
-where u.id = :uid
+JOIN public.user_role ur ON ur.user_id = u.id
+JOIN public.role r ON r.id = ur.role_id
+JOIN public.role_access ra ON ra.role_id = r.id
+JOIN public.access a ON a.id = ra.access_id
+WHERE u.id = :uid
 
 -- :name auth! :? :1
 -- :doc select user for authentication
@@ -30,7 +30,11 @@ VALUES (:username, :first-name, :last-name, :email)
 -- :name get-users :? :*
 -- :require [adx-billing.db.util :refer [str-regex]]
 -- :doc selects all users
-SELECT row_number() over () as no, u.id, u.username, u.first_name, u.last_name, u.email, u.designation, u.last_login, u.date_created, u.enabled
+SELECT row_number() over (ORDER BY :i:sort
+/*~ (when (= (:order params) "desc") */
+DESC
+/*~ ) ~*/
+) as no, u.id, u.username, u.first_name, u.last_name, u.email, u.designation, u.last_login, u.date_created, u.enabled
 FROM public.user u
 WHERE 1 = 1
 /*~ (when (not (clojure.string/blank? (:enabled params))) */
@@ -47,7 +51,7 @@ FROM public.user u
 WHERE 1 = 1
 :snip:cond
 GROUP BY u.enabled
-ORDER BY u.enabled desc;
+ORDER BY u.enabled desc
 
 -- :snip cond-users
 /*~ (when (not (clojure.string/blank? (:username params))) */
@@ -73,7 +77,11 @@ AND u.designation ~*
 
 -- :name get-affs :? :*
 -- :doc selects all affiliates
-SELECT row_number() over () as no, a.id, a.code, a.name, a.reg_no, a.tax_no, a.entity_type, a.industry_id, a.date_est, a.website
+SELECT row_number() over (ORDER BY :i:sort
+/*~ (when (= (:order params) "desc") */
+DESC
+/*~ ) ~*/
+) as no, a.id, a.code, a.name, a.reg_no, a.tax_no, a.entity_type, a.industry_id, a.date_est, a.website
 FROM public.affiliate a
 WHERE 1 = 1
 OFFSET :offset LIMIT :limit
@@ -84,4 +92,4 @@ SELECT a.status status, count(*) count
 FROM public.affiliate a
 WHERE 1 = 1
 GROUP BY a.status
-ORDER BY a.status desc;
+ORDER BY a.status desc

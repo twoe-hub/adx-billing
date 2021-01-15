@@ -105,7 +105,7 @@
 (defn table-ui [params]
   [:table.listing-table.table.is-fullwidth.is-striped.is-hoverable
    [:thead
-    [ls/table-head-row cols]
+    [ls/table-head-row "aff" cols]
     [table-filter-row params]]
    [:tbody.listing-content
     (for [{:keys [id no code name reg-no tax-no entity-type
@@ -127,7 +127,7 @@
              :style {:border "none"}} website]])]])
 
 (defn content []
-  (let [params (rcore/atom {:offset 0 :limit ls/pg-size})
+  (let [params (rcore/atom {:sort "a.name" :order "asc" :offset 0 :limit ls/pg-size})
         fields (rcore/atom {})
         errors (rcore/atom nil)]
     (ls/get-records url params handler)
