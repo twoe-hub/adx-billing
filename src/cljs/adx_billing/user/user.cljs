@@ -14,6 +14,7 @@
 
 (defonce url "/user/users")
 (defonce cols ['id 'no 'username 'first-name 'last-name 'email 'designation 'last-login 'date-created 'enabled])
+(defonce params (rcore/atom {:sort "username" :order 1 :offset 0 :limit ls/pg-size}))
 (defonce users (rcore/atom {}))
 (defonce counts (rcore/atom {}))
 
@@ -67,7 +68,7 @@
 
 (defn input-el
   "An input element which updates its value on change"
-  [id name type class placeholder param-name params]
+  [id name type class placeholder param-name]
   [:input {:id id
            :name name
            :type type
@@ -160,7 +161,7 @@
     [:button.button.pl-25.pr-25
      {:on-click #(toggle-modal "edit-modal" fields errors)} "Create"]]])
 
-(defn quick-filter [params]
+(defn quick-filter []
   [:div#quick-filter.tabs.is-flex
    [:ul
     [:li {:key "all"}
@@ -176,62 +177,36 @@
                       (ls/get-records url params handler))}
       (str (msg (keyword (str "user.qf-label/" "inactive"))) ": " (:inactive @counts))]]]])
 
-(defn table-head-row [params]
-  [:tr
-   (doall (map (fn [col]
-                 (if (= col 'id)
-                   [:th
-                    {:key col}
-                    [:div.field
-                     [:div.control
-                      [:label.checkbox
-                       [:input.table-checkbox-all {:id "checkall"
-                                                   :type "checkbox"
-                                                   :name "checkall"}]]]]]
-                   [:th.is-sortable
-                    {:key col
-                     :on-click #(do
-                                  (swap! params assoc :offset 0 :sort col)
-                                  (ls/get-records url params handler))}
-                    (msg (keyword (str "user" ".cols/" (name col))))
-                    [:span {:class "icon is-small"}
-                     [:span {:class "fa fa-sort"}]]
-                    ]))
-               cols))
-   [:th.filter {:on-click #(toggle-el "listing-filter")}
-    [:span.icon.is-small
-     [:i.fas.fa-filter]]]])
-
-(defn table-filter-row [params]
+(defn table-filter-row []
   [:tr#listing-filter.is-hidden
    [:th]
    [:th]
    [:th>div.field
     [:div.control
-     [input-el 'username 'username 'text "input" "" "username" params]]]
+     [input-el 'username 'username 'text "input" "" "username"]]]
    [:th>div.field
     [:div.control
-     [input-el 'first-name 'first-name 'text "input" "" "first-name" params]]]
+     [input-el 'first-name 'first-name 'text "input" "" "first-name"]]]
    [:th>div.field
     [:div.control
-     [input-el 'last-name 'last-name 'text "input" "" "last-name" params]]]
+     [input-el 'last-name 'last-name 'text "input" "" "last-name"]]]
    [:th>div.field
     [:div.control
-     [input-el 'email 'email 'text "input" "" "email" params]]]
+     [input-el 'email 'email 'text "input" "" "email"]]]
    [:th>div.field
     [:div.control
-     [input-el 'designation 'designation 'text "input" "" "designation" params]]]
+     [input-el 'designation 'designation 'text "input" "" "designation"]]]
    [:th
     [:div.field
      [:div.control.is-expanded.has-icons-left
       [input-el "last-login-from" "last-login-from" "text"
-       "input input-datepicker date-from" "From" "last-login-from" params]
+       "input input-datepicker date-from" "From" "last-login-from"]
       [:span.icon.is-small.is-left.open-date-from
        [:span.fas.fa-calendar]]]]
     [:div.field
      [:div.control.is-expanded.has-icons-left
       [input-el "last-login-to" "last-login-to" "text"
-       "input input-datepicker date-to" "To" "last-login-to" params]
+       "input input-datepicker date-to" "To" "last-login-to"]
       [:span.icon.is-small.is-left.open-date-to
        [:span.fas.fa-calendar]]]]]
    [:th]
@@ -246,11 +221,11 @@
                     (swap! params assoc :offset 0)
                     (ls/get-records url params handler))} "Search"]]]])
 
-(defn table-ui [params]
+(defn table-ui []
   [:table.listing-table.table.is-fullwidth.is-striped.is-hoverable
    [:thead
-    [table-head-row params]
-    [table-filter-row params]]
+    [ls/table-head-row "user" cols url params handler]
+    (table-filter-row)]
    [:tbody.listing-content
     (for [{:keys [id no username first-name last-name email
                   designation last-login date-created enabled]} @users]
@@ -271,21 +246,20 @@
              :style {:border "none"}} enabled]])]])
 
 (defn content []
-  (let [params (rcore/atom {:sort "u.username" :order "asc" :offset 0 :limit ls/pg-size})
-        fields (rcore/atom {})
+  (let [fields (rcore/atom {})
         errors (rcore/atom nil)]
     (ls/get-records url params handler)
     (fn []
       [:div
        [:div#notice]
-       [quick-filter params]
+       (quick-filter)
        [:div.listing.table-container.is-sortable
         [:form.listing-filter-form {:auto-complete "off"
                                     :method "POST",
                                     :action "#"}
-         [input-el 'limit 'limit 'hidden "" "" "offset" params]
-         [input-el 'offset 'offset 'hidden "" "" "offset" params]
-         [table-ui params]]]
+         [input-el 'limit 'limit 'hidden "" "" "offset"]
+         [input-el 'offset 'offset 'hidden "" "" "offset"]
+         (table-ui)]]
        [ls/pagination-ui url params handler]
        [action-ui fields errors]
        [modal-ui fields errors]])))

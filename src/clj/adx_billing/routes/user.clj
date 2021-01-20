@@ -29,11 +29,18 @@
         m (if (contains? m :inactive) m (conj m {:inactive 0}))]
     (conj {:all (reduce + (vals m))} m)))
 
+(defn get-order [order]
+  (if (> order 0) "asc" "desc"))
+
+(defn parse-params [params]
+  (assoc params
+         :offset (Integer. (:offset params))
+         :limit (Integer. (:limit params))
+         :order (get-order (Integer. (:order params)))
+         :sort (csk/->snake_case (:sort params))))
+
 (defn get-users [{:keys [params]}]
-  (let [params (assoc params
-                      :offset (Integer. (:offset params))
-                      :limit (Integer. (:limit params))
-                      :sort (csk/->snake_case (:sort params)))
+  (let [params (parse-params params)
         m (get-status-counts params)]
     (response/ok
      {:counts m

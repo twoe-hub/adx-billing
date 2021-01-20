@@ -21,8 +21,42 @@
                     (handler {:records (:records %) :counts (:counts %)})
                     (reset! total (:total %))
                     (when (all-empty? (vals (dissoc @params :limit :offset :sort :order)))
-                      (hide-el (.getElementById js/document "listing-filter")))
-                    )}))
+                      (hide-el (.getElementById js/document "listing-filter"))))}))
+
+(defn sort [col url params handler]
+  (swap! params assoc
+         :offset 0
+         :sort (name col)
+         :order (* -1 (:order @params)))
+  (get-records url params handler))
+
+(defn table-head-row [list-name cols url params handler]
+  [:tr
+   (doall (map (fn [col]
+                 (if (= col 'id)
+                   [:th
+                    {:key col}
+                    [:div.field
+                     [:div.control
+                      [:label.checkbox
+                       [:input.table-checkbox-all {:id "checkall"
+                                                   :type "checkbox"
+                                                   :name "checkall"}]]]]]
+                   [:th.is-sortable
+                    {:key col
+                     :on-click #(sort col url params handler)}
+                    (msg (keyword (str list-name ".cols/" (name col))))
+                    [:span.icon.is-small
+                     [:span {:class (str "fa "
+                                         (if (= (name col) (:sort @params))
+                                           (if (> (:order @params) 0)
+                                             "fa-sort-up"
+                                             "fa-sort-down")
+                                           "fa-sort"))}]]]))
+               cols))
+   [:th.filter {:on-click #(toggle-el "listing-filter")}
+    [:span.icon.is-small
+     [:i.fas.fa-filter]]]])
 
 (defn prefix [sx]
   (vec (let [sx (seq sx)]
