@@ -1,10 +1,4 @@
 -- :disable-transaction
-create table if not exists "public"."guestbook"
-(id serial primary key,
-name text,
-message text,
-timestamp timestamp);
---;;
 create table if not exists "public"."access" (
 "id" integer not null,
 "name" text not null,
@@ -80,7 +74,7 @@ create table if not exists "public"."bank_acc" (
   "acc_no" text not null,
   "bank" text not null,
   "swift_code" text,
-  "currency_id" varchar(3) not null,
+  "currency_id" char(3) not null,
   "branch" text not null,
   "bank_proof" text,
   "version" integer not null default 0,
@@ -99,11 +93,11 @@ create table if not exists "public"."contact" (
   "last_updated" timestamp not null default now());
 --;;
 create table if not exists "public"."country" (
-  "id" varchar(2) not null,
+  "id" char(2) not null,
   "name" text not null);
 --;;
 create table if not exists "public"."currency" (
-  "id" varchar(3) not null,
+  "id" char(3) not null,
   "name" text not null);
 --;;
 create table if not exists "public"."industry" (
@@ -130,7 +124,7 @@ create table if not exists "public"."location" (
   "city" text not null,
   "postcode" text not null,
   "state" text,
-  "country_id" varchar(2) not null,
+  "country_id" char(2) not null,
   "type" text not null,
   "latitude" real,
   "longitude" real,
@@ -227,3 +221,75 @@ create table if not exists "public"."user_contact" (
 create table if not exists "public"."user_role"(
   "user_id" uuid not null,
   "role_id" uuid not null);
+  --;;
+create table if not exists "public"."quotation" (
+"id" uuid not null,
+"quote_no" text not null,
+"value" text not null,
+"status" text not null default 'DRAFT',
+"date_issued" text,
+"issued_to" uuid not null,
+"issued_by" uuid not null,
+"category_id" integer not null,
+"version" integer not null default 0,
+"date_created" timestamp not null default now(),
+"last_updated" timestamp not null default now());
+--;;
+create table if not exists "public"."party" (
+"id" uuid not null,
+"aff_name" text not null,
+"user_name" text,
+"user_email" text,
+"loc_name" text not null,
+"line1" text not null,
+"line2" text,
+"line3" text,
+"city" text not null,
+"postcode" text not null,
+"state" text,
+"country_id" char(2) not null,
+"contact" varchar(20),
+"issuer" boolean not null,
+"version" integer not null default 0,
+"date_created" timestamp not null default now(),
+"last_updated" timestamp not null default now());
+--;;
+create table if not exists "public"."quote_item" (
+"id" integer not null,
+"code" text not null,
+"name" text not null,
+"version" integer not null default 0,
+"date_created" timestamp not null default now(),
+"last_updated" timestamp not null default now());
+--;;
+create table if not exists "public"."quote_item" (
+"id" uuid not null,
+"quote_id" uuid not null,
+"desc" text not null,
+"recurring" boolean not null default '0',
+"recur_type" char(1) not null default 'M',
+"unit_price" decimal(12,2),
+"quantity" integer not null default 0,
+"version" integer not null default 0,
+"date_created" timestamp not null default now(),
+"last_updated" timestamp not null default now());
+--;;
+create table if not exists "public"."quote_misc" (
+"id" uuid not null,
+"quote_id" uuid not null,
+"desc" text not null,
+"value" decimal(12,2),
+"percent" boolean not null default '0',
+"version" integer not null default 0,
+"date_created" timestamp not null default now(),
+"last_updated" timestamp not null default now());
+--;;
+create table if not exists "public"."quote_discount" (
+"id" uuid not null,
+"quote_id" uuid not null,
+"desc" text not null,
+"value" decimal(12,2),
+"percent" boolean not null default '0',
+"version" integer not null default 0,
+"date_created" timestamp not null default now(),
+"last_updated" timestamp not null default now());
