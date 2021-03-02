@@ -1,22 +1,23 @@
 insert into "public"."access" ("id", "name", "desc") values
 (1, 'org-profile-view-access', 'Access to view organisation profile'),
 (2, 'aff-view-access', 'Access to view affiliates'),
-(3, 'doc-access', 'Access to document module'),
-(4, 'admin-access', 'Access to admin modules'),
-(5, 'audit-view-access', 'Access to view audit logs'),
-(6, 'quote-view-access', 'Access to view quotations'),
-(7, 'quote-all-access', 'All access to quotations'),
-(8, 'user-view-access', 'Access to view users'),
-(9, 'user-all-access', 'All access to users'),
-(10, 'role-view-access', 'Access to view roles'),
-(11, 'role-all-access', 'All access to roles'),
-(12, 'pwd-policy-view-access', 'Access to view password policy'),
-(13, 'pwd-policy-all-access', 'All access to password policy');
+(3, 'aff-all-access', 'Access to view affiliates'),
+(4, 'doc-access', 'Access to document module'),
+(5, 'admin-access', 'Access to admin modules'),
+(6, 'audit-view-access', 'Access to view audit logs'),
+(7, 'qutn-view-access', 'Access to view quotations'),
+(8, 'qutn-all-access', 'All access to quotations'),
+(9, 'user-view-access', 'Access to view users'),
+(10, 'user-all-access', 'All access to users'),
+(11, 'role-view-access', 'Access to view roles'),
+(12, 'role-all-access', 'All access to roles'),
+(13, 'pwd-policy-view-access', 'Access to view password policy'),
+(14, 'pwd-policy-all-access', 'All access to password policy');
 --;;
 insert into "public"."affiliate" ("id", "code", "name", "entity_type", "industry_id", "aff_type", "reg_no", "date_est", "email", "website") values
 ('fde78682-419e-423f-bdc6-32f48a7be64a', 'WTSNS', 'Watsons Sdn. Bhd.', 'PVT_LTD', 5400, 'BUYER', 'WTSNS-A235', '2001-01-15', 'info@watsons.com.my', 'watsons.com.my'),
 ('fde78682-419e-423f-bdc6-32f48a7be64b', 'GRDN', 'Guardian(M) Sdn. Bhd.', 'PVT_LTD', 5400, 'BUYER', 'GRDN-12345', '2001-01-15', 'info@guardian.com.my', 'guardian.com.my'),
-('fde78682-419e-423f-bdc6-32f48a7be64c', 'UNILEVER', 'Unilever Limited.', 'PVT_LTD', 5400, 'SUPPLIER', 'UNILEVER-12345', '2001-01-15', 'info@unilever.com', 'unilever.com');
+('fde78682-419e-423f-bdc6-32f48a7be64c', 'UNILEVER', 'Unilever Limited', 'PVT_LTD', 5400, 'SUPPLIER', 'UNILEVER-12345', '2001-01-15', 'info@unilever.com', 'unilever.com');
 --;;
 insert into "public"."country" ("id", "name") values
 ('ad', 'Andorra'),
@@ -726,11 +727,11 @@ insert into "module" ("id", "parent_id", "code", "ordinal", "access", "url", "me
 (1, null, 'dashboard', 0, null, '/', '1'),
 (2, null, 'org-profile', 1, 'org-profile-view-access', '/', '1'),
 (3, null, 'affs', 2, 'aff-view-access', '/', '1'),
-(4, null, 'docs', 3, 'doc-access', '#', '1'),
+(4, null, 'docs', 3, 'qutn-view-access', '#', '1'),
 (5, null, 'admin', 4, 'admin-access', '#', '1'),
 (6, null, 'audit-log', 5, 'audit-view-access', '/', '1'),
 (7, null, 'about', 6, null, '/about', '1'),
-(8, 4, 'doc-quote', 40, 'quote-view-access', '/', '1'),
+(8, 4, 'doc-quote', 40, 'qutn-view-access', '/qutn/list', '1'),
 (9, 5, 'user', 50, 'user-view-access', '/user/list', '1'),
 (10, 5, 'role', 51, 'role-view-access', '/role/list', '1'),
 (11, 5, 'pwd-policy', 52, 'pwd-policy-view-access', '/pwd-policy', '1');
@@ -754,6 +755,7 @@ insert into "public"."role_access" ("role_id", "access_id") values
 ('b5ea41ba-dfbb-4ffd-b213-604267f27ffb', 11),
 ('b5ea41ba-dfbb-4ffd-b213-604267f27ffb', 12),
 ('b5ea41ba-dfbb-4ffd-b213-604267f27ffb', 13),
+('b5ea41ba-dfbb-4ffd-b213-604267f27ffb', 14),
 ('410eab04-9384-4d8c-be79-a0861aa76bca', 1),
 ('410eab04-9384-4d8c-be79-a0861aa76bca', 2),
 ('410eab04-9384-4d8c-be79-a0861aa76bca', 3),
@@ -767,6 +769,7 @@ insert into "public"."role_access" ("role_id", "access_id") values
 ('410eab04-9384-4d8c-be79-a0861aa76bca', 11),
 ('410eab04-9384-4d8c-be79-a0861aa76bca', 12),
 ('410eab04-9384-4d8c-be79-a0861aa76bca', 13),
+('410eab04-9384-4d8c-be79-a0861aa76bca', 14),
 ('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 1),
 ('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 2),
 ('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 3),
@@ -779,15 +782,16 @@ insert into "public"."role_access" ("role_id", "access_id") values
 ('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 10),
 ('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 11),
 ('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 12),
-('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 13);
+('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 13),
+('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 14);
 --;;
 insert into "public"."user" ("id", "aff_id", "username", "password", "first_name", "last_name", "email", "enabled") values
-('c9c93c10-c02d-445b-a05d-1a2f8501c9fe', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'watsons', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Wadud', 'admin.wtsns@adx.com.my', 't'),
-('0696f9a0-339f-4a05-b1f6-dc5c86daf378', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'dummy.wtsns1@adx.com.my', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Rehman', 'dummy1@adx.com.my', 'f'),
-('7907b471-99c0-4778-8dba-97493623bd7c', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'dummy.wtsns2@adx.com.my', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Rashid', 'dummy.wtsns2@adx.com.my', 'f'),
-('fd8ec1c3-59e2-49fe-bdff-c15537a02b3c', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'dummy.wtsns3@adx.com.my', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Latif', 'dummy.wtsns3@adx.com.my', 'f'),
-('c9c93c10-c02d-445b-a05d-1a2f8501c9ff', 'fde78682-419e-423f-bdc6-32f48a7be64b', 'guardian', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'Guardian', 'dummy.grdn1@adx.com.my', 't'),
-('c9c93c10-c02d-445b-a05d-1a2f8501cccc', 'fde78682-419e-423f-bdc6-32f48a7be64c', 'unilever', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'A.', 'Unilever', 'dummy.unilever1@adx.com.my','t');
+('c9c93c10-c02d-445b-a05d-1a2f8501c9fe', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'watsons', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Wadud', 'admin.wtsns@adxios.com', 't'),
+('0696f9a0-339f-4a05-b1f6-dc5c86daf378', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'dummy.wtsns1@adxios.com', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Rehman', 'dummy1@adxios.com', 'f'),
+('7907b471-99c0-4778-8dba-97493623bd7c', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'dummy.wtsns2@adxios.com', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Rashid', 'dummy.wtsns2@adxios.com', 'f'),
+('fd8ec1c3-59e2-49fe-bdff-c15537a02b3c', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'dummy.wtsns3@adxios.com', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Latif', 'dummy.wtsns3@adxios.com', 'f'),
+('c9c93c10-c02d-445b-a05d-1a2f8501c9ff', 'fde78682-419e-423f-bdc6-32f48a7be64b', 'guardian', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'Guardian', 'dummy.grdn1@adxios.com', 't'),
+('c9c93c10-c02d-445b-a05d-1a2f8501cccc', 'fde78682-419e-423f-bdc6-32f48a7be64c', 'unilever', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'A.', 'Unilever', 'dummy.unilever1@adxios.com','t');
 --;;
 insert into "public"."user_role" ("user_id", "role_id") values
 ('c9c93c10-c02d-445b-a05d-1a2f8501c9fe', 'b5ea41ba-dfbb-4ffd-b213-604267f27ffb'),
@@ -796,3 +800,38 @@ insert into "public"."user_role" ("user_id", "role_id") values
 ('fd8ec1c3-59e2-49fe-bdff-c15537a02b3c', 'b5ea41ba-dfbb-4ffd-b213-604267f27ffb'),
 ('c9c93c10-c02d-445b-a05d-1a2f8501c9ff', '410eab04-9384-4d8c-be79-a0861aa76bca'),
 ('c9c93c10-c02d-445b-a05d-1a2f8501cccc', 'cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1');
+--;;
+insert into "public"."category" ("id", "name") values
+(1, 'Product A'),
+(2, 'Product B'),
+(3, 'Product C');
+--;;
+insert into "public"."sub_category" ("id", "cat_id", "name") values
+(1, 1, 'Project A'),
+(2, 1, 'Project B'),
+(3, 2, 'Project A'),
+(4, 2, 'Project B'),
+(5, 3, 'Project A'),
+(6, 3, 'Project B');
+--;;
+insert into "public"."party" ("id", "aff_name", "user_name", "user_email", "loc_name", "line1", "line2", "line3", "city", "postcode", "state", "country_id", "contact") values
+('fde78682-419e-423f-bdc6-32f48a7be64a', 'Watsons Sdn. Bhd.', 'watsons', 'admin.wtsns@adxios.com', 'Loc W', 'Building W', 'Street W', 'Town W', 'Kuala Lumpur', '55000', 'WP', 'my', '6038888888'),
+('fde78682-419e-423f-bdc6-32f48a7be64c', 'Unilever Limited', 'unilever', 'dummy.unilever1@adxios.com', 'Loc U', 'Building U', 'Street U', 'Town U', 'Kuala Lumpur', '56700', 'WP', 'my', '6038888888'),
+('a47f9d4c-25ea-47f4-9dba-dbacc1f85f98', 'Watsons Sdn. Bhd.', 'watsons', 'admin.wtsns@adxios.com', 'Loc W', 'Building W', 'Street W', 'Town W', 'Kuala Lumpur', '55000', 'WP', 'my', '6038888888'),
+('09995447-5f7e-496d-9015-891a6cd483a8', 'Unilever Limited', 'unilever', 'dummy.unilever1@adxios.com', 'Loc U', 'Building U', 'Street U', 'Town U', 'Kuala Lumpur', '56700', 'WP', 'my', '6038888888');
+--;;
+insert into "public"."quotation" ("id", "quote_no", "value", "status", "date_issued", "issued_to", "issued_by", "cat_id", "sub_cat_id") values
+('6b640f2d-34f2-4fd0-910a-2dfa70f977da', 'QUTN-0001', 150.00, 'DRAFT', now(), 'fde78682-419e-423f-bdc6-32f48a7be64c', 'fde78682-419e-423f-bdc6-32f48a7be64a', 1, 1),
+('6a9ab2ff-b861-4bb3-a32f-b9c12da37d82', 'QUTN-0002', 810.00, 'DRAFT', now(), 'a47f9d4c-25ea-47f4-9dba-dbacc1f85f98', '09995447-5f7e-496d-9015-891a6cd483a8', 2, 4);
+--;;
+insert into "public"."quote_item" ("id", "quote_id", "desc", "recurring", "recur_type", "unit_price", "quantity") values
+(uuid_generate_v4(), '6b640f2d-34f2-4fd0-910a-2dfa70f977da', 'Some text', '1', 'M', 90, 10),
+(uuid_generate_v4(), '6a9ab2ff-b861-4bb3-a32f-b9c12da37d82', 'Some text', '0', null, 510, 1);
+--;;
+insert into "public"."quote_misc" ("id", "quote_id", "desc", "value", "percent") values
+(uuid_generate_v4(), '6b640f2d-34f2-4fd0-910a-2dfa70f977da', 'Some text', 10, '1'),
+(uuid_generate_v4(), '6a9ab2ff-b861-4bb3-a32f-b9c12da37d82', 'Some text', 50, '0');
+--;;
+insert into "public"."quote_discount" ("id", "quote_id", "desc", "value", "percent") values
+(uuid_generate_v4(), '6b640f2d-34f2-4fd0-910a-2dfa70f977da', 'Some text', 5, '1'),
+(uuid_generate_v4(), '6a9ab2ff-b861-4bb3-a32f-b9c12da37d82', 'Some text', 90, '0');

@@ -3,8 +3,9 @@
     [adx-billing.middleware :as middleware]
     [adx-billing.layout :refer [error-page]]
     [adx-billing.routes.auth :refer [auth-routes]]
-    [adx-billing.routes.user :refer [user-routes]]
     [adx-billing.routes.aff :refer [aff-routes]]
+    [adx-billing.routes.qutn :refer [qutn-routes]]
+    [adx-billing.routes.user :refer [user-routes]]
     [adx-billing.routes.profile :refer [profile-routes]]
     [reitit.ring :as ring]
     [ring.middleware.content-type :refer [wrap-content-type]]
@@ -22,8 +23,9 @@
     (ring/router
      [(auth-routes)
       (profile-routes)
-      (user-routes)
       (aff-routes)
+      (qutn-routes)
+      (user-routes)
       ])
     (ring/routes
       (ring/create-resource-handler

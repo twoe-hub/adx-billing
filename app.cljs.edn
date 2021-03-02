@@ -10,6 +10,8 @@
            :auth-validate {:entries #{adx-billing.auth.validate}}
            :aff {:entries #{adx-billing.aff.aff}}
            :aff-validate {:entries #{adx-billing.aff.validate}}
+           :qutn {:entries #{adx-billing.qutn.qutn}}
+           :qutn-validate {:entries #{adx-billing.qutn.validate}}
            :user {:entries #{adx-billing.user.user}}
            :user-validate {:entries #{adx-billing.user.validate}}
            }

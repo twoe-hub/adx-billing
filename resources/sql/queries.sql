@@ -93,3 +93,51 @@ FROM public.affiliate a
 WHERE 1 = 1
 GROUP BY a.status
 ORDER BY a.status desc
+
+-- :name get-qutns :? :*
+-- :require [adx-billing.db.util :refer [str-regex]]
+-- :doc selects all quotations
+SELECT row_number() over (ORDER BY :i:sort
+/*~ (when (= (:order params) "desc") */
+DESC
+/*~ ) ~*/
+) as no, q.id, q.username, q.first_name, q.last_name, q.email, q.designation, q.last_login, q.date_created, q.enabled
+FROM public.quotation q
+WHERE 1 = 1
+/*~ (when (not (clojure.string/blank? (:enabled params))) */
+AND q.enabled = :enabled::boolean
+/*~ ) ~*/
+:snip:cond
+OFFSET :offset LIMIT :limit
+
+-- :name count-qutns :? :*
+-- :require [adx-billing.db.util :refer [str-regex]]
+-- :doc count all quotations
+SELECT q.enabled status, count(*) count
+FROM public.quotation q
+WHERE 1 = 1
+:snip:cond
+GROUP BY q.enabled
+ORDER BY q.enabled desc
+
+-- :snip cond-qutns
+/*~ (when (not (clojure.string/blank? (:username params))) */
+AND q.username ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:username params))) (str-regex (:username params)))
+/*~ (when (not (clojure.string/blank? (:first-name params))) */
+AND q.first_name ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:first-name params))) (str-regex (:first-name params)))
+/*~ (when (not (clojure.string/blank? (:last-name params))) */
+AND q.last_name ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:last-name params))) (str-regex (:last-name params)))
+/*~ (when (not (clojure.string/blank? (:email params))) */
+AND q.email ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:email params))) (str-regex (:email params)))
+/*~ (when (not (clojure.string/blank? (:designation params))) */
+AND q.designation ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:designation params))) (str-regex (:designation params)))

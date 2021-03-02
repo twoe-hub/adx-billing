@@ -191,9 +191,9 @@ create table if not exists "public"."role_access"(
   "role_id" uuid not null,
   "access_id" integer not null);
 --;;
-create sequence "public"."seq_pwd_policy" as integer start 1;
+create sequence if not exists "public"."seq_pwd_policy" as integer start 1;
 --;;
-create sequence "public"."seq_registration" as integer start 1;
+create sequence if not exists "public"."seq_registration" as integer start 1;
 --;;
 create table if not exists "public"."user" (
   "id" uuid not null,
@@ -225,12 +225,13 @@ create table if not exists "public"."user_role"(
 create table if not exists "public"."quotation" (
 "id" uuid not null,
 "quote_no" text not null,
-"value" text not null,
+"value" decimal(12,2),
 "status" text not null default 'DRAFT',
-"date_issued" text,
+"date_issued" timestamp not null default now(),
 "issued_to" uuid not null,
 "issued_by" uuid not null,
-"category_id" integer not null,
+"cat_id" integer not null,
+"sub_cat_id" integer not null,
 "version" integer not null default 0,
 "date_created" timestamp not null default now(),
 "last_updated" timestamp not null default now());
@@ -249,14 +250,24 @@ create table if not exists "public"."party" (
 "state" text,
 "country_id" char(2) not null,
 "contact" varchar(20),
-"issuer" boolean not null,
 "version" integer not null default 0,
 "date_created" timestamp not null default now(),
 "last_updated" timestamp not null default now());
 --;;
-create table if not exists "public"."quote_item" (
+create sequence if not exists "public"."seq_category" as integer start 1;
+--;;
+create sequence if not exists "public"."seq_sub_category" as integer start 1;
+--;;
+create table if not exists "public"."category" (
 "id" integer not null,
-"code" text not null,
+"name" text not null,
+"version" integer not null default 0,
+"date_created" timestamp not null default now(),
+"last_updated" timestamp not null default now());
+--;;
+create table if not exists "public"."sub_category" (
+"id" integer not null,
+"cat_id" integer not null,
 "name" text not null,
 "version" integer not null default 0,
 "date_created" timestamp not null default now(),
@@ -267,9 +278,9 @@ create table if not exists "public"."quote_item" (
 "quote_id" uuid not null,
 "desc" text not null,
 "recurring" boolean not null default '0',
-"recur_type" char(1) not null default 'M',
+"recur_type" char(1),
 "unit_price" decimal(12,2),
-"quantity" integer not null default 0,
+"quantity" integer not null,
 "version" integer not null default 0,
 "date_created" timestamp not null default now(),
 "last_updated" timestamp not null default now());

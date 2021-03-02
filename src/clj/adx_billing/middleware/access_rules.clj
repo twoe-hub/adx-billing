@@ -40,6 +40,18 @@
                                      :handler permit-all}
                                     {:pattern #"^/auth/.*"
                                      :handler permit-all}
+                                    {:pattern #"^/aff/.*"
+                                     :handler #(has-access? % "aff-view-access")
+                                     :request-method :get}
+                                    {:pattern #"^/aff/*"
+                                     :handler #(has-access? % "aff-all-access")
+                                     :request-method :post}
+                                    {:pattern #"^/qutn/.*"
+                                     :handler #(has-access? % "qutn-view-access")
+                                     :request-method :get}
+                                    {:pattern #"^/qutn/*"
+                                     :handler #(has-access? % "qutn-all-access")
+                                     :request-method :post}
                                     {:pattern #"^/user/.*"
                                      :handler #(has-access? % "user-view-access")
                                      :request-method :get}
