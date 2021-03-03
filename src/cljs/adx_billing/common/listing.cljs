@@ -7,11 +7,11 @@
 (defonce pg-size 1)
 (defonce total (rcore/atom pg-size))
 
+(defn- all-empty? [sx]
+  (reduce (fn [x y] (and x y)) (map empty? sx)))
+
 (defn clear [params]
   (reset! params {:username "" :first-name "" :last-name "" :email "" :designation "" :offset (:offset @params) :limit (:limit @params) :sort (:sort @params) :order (:order @params)}))
-
-(defn all-empty? [sx]
-  (reduce (fn [x y] (and x y)) (map empty? sx)))
 
 (defn get-records [url params handler]
   (GET url
@@ -23,7 +23,7 @@
                     (when (all-empty? (vals (dissoc @params :limit :offset :sort :order)))
                       (hide-el (.getElementById js/document "listing-filter"))))}))
 
-(defn sort [col url params handler]
+(defn- sort-list [col url params handler]
   (swap! params assoc
          :offset 0
          :sort (name col)
@@ -44,7 +44,7 @@
                                                    :name "checkall"}]]]]]
                    [:th.is-sortable
                     {:key col
-                     :on-click #(sort col url params handler)}
+                     :on-click #(sort-list col url params handler)}
                     (msg (keyword (str list-name ".cols/" (name col))))
                     [:span.icon.is-small
                      [:span {:class (str "fa "
@@ -58,7 +58,7 @@
     [:span.icon.is-small
      [:i.fas.fa-filter]]]])
 
-(defn prefix [sx]
+(defn- prefix [sx]
   (vec (let [sx (seq sx)]
          (if (not= (first sx) 1)
            (if (not= (first sx) 2)
@@ -66,14 +66,14 @@
              (conj sx 1))
            sx))))
 
-(defn suffix [sx last-pg]
+(defn- suffix [sx last-pg]
   (if (not= (last sx) last-pg)
     (if (not= (last sx) (dec last-pg))
       (conj sx nil last-pg)
       (conj sx last-pg))
     sx))
 
-(defn neighbr [curr-pg last-pg]
+(defn- neighbr [curr-pg last-pg]
   (cond
     (== curr-pg 1) (if (< last-pg 3)
                      [curr-pg (inc curr-pg)]
@@ -83,7 +83,7 @@
                       [(- curr-pg 2) (dec curr-pg) curr-pg])
     :else [(dec curr-pg) curr-pg (inc curr-pg)]))
 
-(defn pages [curr-pg last-pg]
+(defn- pages [curr-pg last-pg]
   (cond
     (<= last-pg 1) []
     :else (suffix (prefix (neighbr curr-pg last-pg)) last-pg)))

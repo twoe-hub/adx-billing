@@ -13,8 +13,8 @@
             [adx-billing.common.util :refer [toggle-el hide-el]]))
 
 (defonce url "/qutn/qutns")
-(defonce cols ['id 'no 'username 'first-name 'last-name 'email 'designation 'last-login 'date-created 'enabled])
-(defonce params (rcore/atom {:sort "username" :order 1 :offset 0 :limit ls/pg-size}))
+(defonce cols ['id 'no 'quote-no 'value 'cat 'sub-cat 'issued-to 'issued-by 'date-issued])
+(defonce params (rcore/atom {:sort "date-issued" :order 1 :offset 0 :limit ls/pg-size}))
 (defonce qutns (rcore/atom {}))
 (defonce counts (rcore/atom {}))
 
@@ -22,8 +22,8 @@
   (do
     (reset! qutns (map
                   #(assoc %
-                          :date-created (util/parse-date-time (:date-created %))
-                          :last-login (util/parse-date-time (:last-login %)))
+                          :date-issued (util/parse-date-time (:date-issued %))
+                          :value (.-rep (:value %)))
                   (:records m)))
     (reset! counts (:counts m))))
 
@@ -227,23 +227,21 @@
     [ls/table-head-row "qutn" cols url params handler]
     (table-filter-row)]
    [:tbody.listing-content
-    (for [{:keys [id no username first-name last-name email
-                  designation last-login date-created enabled]} @qutns]
+    (for [{:keys [id no quote-no issued-to value issued-by date-issued cat sub-cat]} @qutns]
       ^{:key id}
       [:tr {:style {:border "none"}}
        [:td {:style {:border "none"}}
         [:label.checkbox
          [:input {:type "checkbox" :name "id" :value id}]]]
        [:td {:style {:border "none"}} no]
-       [:td {:style {:border "none"}} username]
-       [:td {:style {:border "none"}} first-name]
-       [:td {:style {:border "none"}} last-name]
-       [:td {:style {:border "none"}} email]
-       [:td {:style {:border "none"}} designation]
-       [:td {:style {:border "none"}} (util/format-date-time last-login)]
-       [:td {:style {:border "none"}} (util/format-date-time date-created)]
+       [:td {:style {:border "none"}} quote-no]
+       [:td {:style {:border "none"}} value]
+       [:td {:style {:border "none"}} cat]
+       [:td {:style {:border "none"}} sub-cat]
+       [:td {:style {:border "none"}} issued-to]
+       [:td {:style {:border "none"}} issued-by]
        [:td {:col-span "2"
-             :style {:border "none"}} enabled]])]])
+             :style {:border "none"}} (util/format-date-time date-issued)]])]])
 
 (defn content []
   (let [fields (rcore/atom {})

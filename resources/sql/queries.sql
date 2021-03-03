@@ -46,7 +46,7 @@ OFFSET :offset LIMIT :limit
 -- :name count-users :? :*
 -- :require [adx-billing.db.util :refer [str-regex]]
 -- :doc count all users
-SELECT u.enabled status, count(*) count
+SELECT u.enabled status, count(u.*) count
 FROM public.user u
 WHERE 1 = 1
 :snip:cond
@@ -88,7 +88,7 @@ OFFSET :offset LIMIT :limit
 
 -- :name count-affs :? :*
 -- :doc count all affiliates
-SELECT a.status status, count(*) count
+SELECT a.status status, count(a.id) count
 FROM public.affiliate a
 WHERE 1 = 1
 GROUP BY a.status
@@ -101,24 +101,24 @@ SELECT row_number() over (ORDER BY :i:sort
 /*~ (when (= (:order params) "desc") */
 DESC
 /*~ ) ~*/
-) as no, q.id, q.username, q.first_name, q.last_name, q.email, q.designation, q.last_login, q.date_created, q.enabled
+) AS no, q.id, q.quote_no, p_to.aff_name AS issued_to, q.value, p_by.aff_name AS issued_by, q.date_issued, c.name AS cat, sc.name AS sub_cat
 FROM public.quotation q
+JOIN public.category c on c.id = q.cat_id
+JOIN public.sub_category sc on sc.id = q.sub_cat_id
+JOIN public.party p_to on p_to.id = q.issued_to
+JOIN public.party p_by on p_by.id = q.issued_by
 WHERE 1 = 1
-/*~ (when (not (clojure.string/blank? (:enabled params))) */
-AND q.enabled = :enabled::boolean
-/*~ ) ~*/
 :snip:cond
 OFFSET :offset LIMIT :limit
 
 -- :name count-qutns :? :*
 -- :require [adx-billing.db.util :refer [str-regex]]
 -- :doc count all quotations
-SELECT q.enabled status, count(*) count
+SELECT q.status, count(q.id) count
 FROM public.quotation q
 WHERE 1 = 1
 :snip:cond
-GROUP BY q.enabled
-ORDER BY q.enabled desc
+GROUP BY q.status
 
 -- :snip cond-qutns
 /*~ (when (not (clojure.string/blank? (:username params))) */

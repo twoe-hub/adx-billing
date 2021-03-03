@@ -1,7 +1,7 @@
 (ns adx-billing.routes.qutn
   (:require
    [adx-billing.db.core :refer [query queries]]
-   [adx-billing.user.validate :refer [validate]]
+   [adx-billing.qutn.validate :refer [validate]]
    [adx-billing.html.templates :refer [base-template]]
    [adx-billing.middleware :as middleware]
    [camel-snake-kebab.core :as csk]
@@ -22,7 +22,7 @@
          {:errors {:server-error ["Failed to save user!"]}})))))
 
 (defn get-status-counts [params]
-  (let [sx (query :count-users {:cond  (snip queries :cond-users params)})
+  (let [sx (query :count-qutns {:cond  (snip queries :cond-qutns params)})
         m (into {} (map #(-> (if (:status %)
                                {:active (:count %)}
                                {:inactive (:count %)})) sx))
@@ -53,7 +53,7 @@
                 csk/->kebab-case-keyword
                 (vec (query :get-qutns
                             (assoc params
-                                   :cond (snip queries :cond-users params)))))})))
+                                   :cond (snip queries :cond-qutns params)))))})))
 
 (defn list-qutn [request]
   (response/content-type

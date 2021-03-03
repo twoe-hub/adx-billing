@@ -34,6 +34,17 @@
                          :industry-id "Industry"
                          :date-est "Established"
                          :website "Website"}}
+           :qutn {:qf-label {:active "Active"
+                            :inactive "Inactive"
+                            :all "All"}
+                 :cols {:no "No."
+                        :quote-no "Quote No."
+                        :issued-to "Issued To"
+                        :value "Value"
+                        :issued-by "Issued By"
+                        :date-issued "Date Issued"
+                        :cat "Category"
+                        :sub-cat "Sub-category"}}
            :user {:qf-label {:active "Active"
                              :inactive "Inactive"
                              :all "All"}
