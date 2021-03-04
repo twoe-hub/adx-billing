@@ -25,8 +25,7 @@
   (let [sx (query :count-users {:cond  (snip queries :cond-users params)})
         m (into {} (map #(-> (if (:status %)
                                {:active (:count %)}
-                               {:inactive (:count %)})) sx))
-        m (if (contains? m :inactive) m (conj m {:inactive 0}))]
+                               {:inactive (:count %)})) sx))]
     (conj {:all (reduce + (vals m))} m)))
 
 (defn get-order [order]

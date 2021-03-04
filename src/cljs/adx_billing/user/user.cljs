@@ -167,15 +167,15 @@
     [:li {:key "all"}
      [:a {:on-click #((swap! params dissoc :enabled)
                       (ls/get-records url params handler))}
-      (str (msg (keyword (str "user.qf-label/" "all"))) ": " (:all @counts))]]
+      (str (msg (keyword (str "user.qf-label/" "all"))) ": " (@counts :all 0))]]
     [:li {:key "active"}
      [:a {:on-click #((swap! params assoc :enabled "true")
                       (ls/get-records url params handler))}
-      (str (msg (keyword (str "user.qf-label/" "active"))) ": " (:active @counts))]]
+      (str (msg (keyword (str "user.qf-label/" "active"))) ": " (@counts :active 0))]]
     [:li {:key "inactive"}
      [:a {:on-click #((swap! params assoc :enabled "false")
                       (ls/get-records url params handler))}
-      (str (msg (keyword (str "user.qf-label/" "inactive"))) ": " (:inactive @counts))]]]])
+      (str (msg (keyword (str "user.qf-label/" "inactive"))) ": " (@counts :inactive 0))]]]])
 
 (defn table-filter-row []
   [:tr#listing-filter.is-hidden

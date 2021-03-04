@@ -165,17 +165,26 @@
   [:div#quick-filter.tabs.is-flex
    [:ul
     [:li {:key "all"}
-     [:a {:on-click #((swap! params dissoc :enabled)
+     [:a {:on-click #((swap! params dissoc :status)
                       (ls/get-records url params handler))}
-      (str (msg (keyword (str "qutn.qf-label/" "all"))) ": " (:all @counts))]]
-    [:li {:key "active"}
-     [:a {:on-click #((swap! params assoc :enabled "true")
+      (str (msg (keyword (str "qutn.qf-label/" "all"))) ": " (@counts :all 0))]]
+    [:li {:key "draft"}
+     [:a {:on-click #((swap! params assoc :status "DRAFT")
                       (ls/get-records url params handler))}
-      (str (msg (keyword (str "qutn.qf-label/" "active"))) ": " (:active @counts))]]
-    [:li {:key "inactive"}
-     [:a {:on-click #((swap! params assoc :enabled "false")
+      (str (msg (keyword (str "qutn.qf-label/" "draft"))) ": " (@counts :draft 0))]]
+    [:li {:key "sent"}
+     [:a {:on-click #((swap! params assoc :status "SENT")
                       (ls/get-records url params handler))}
-      (str (msg (keyword (str "qutn.qf-label/" "inactive"))) ": " (:inactive @counts))]]]])
+      (str (msg (keyword (str "qutn.qf-label/" "sent"))) ": " (@counts :sent 0))]]
+    [:li {:key "approved"}
+     [:a {:on-click #((swap! params assoc :status "APPROVED")
+                      (ls/get-records url params handler))}
+      (str (msg (keyword (str "qutn.qf-label/" "approved"))) ": " (@counts :approved 0))]]
+    [:li {:key "completed"}
+     [:a {:on-click #((swap! params assoc :status "COMPLETED")
+                      (ls/get-records url params handler))}
+      (str (msg (keyword (str "qutn.qf-label/" "completed"))) ": " (@counts :completed 0))]]
+    ]])
 
 (defn table-filter-row []
   [:tr#listing-filter.is-hidden
@@ -183,33 +192,33 @@
    [:th]
    [:th>div.field
     [:div.control
-     [input-el 'username 'username 'text "input" "" "username"]]]
+     [input-el 'quote-no 'quote-no 'text "input" "" "quote-no"]]]
+   [:th]
    [:th>div.field
     [:div.control
-     [input-el 'first-name 'first-name 'text "input" "" "first-name"]]]
+     [input-el 'cat 'cat 'text "input" "" "cat"]]]
    [:th>div.field
     [:div.control
-     [input-el 'last-name 'last-name 'text "input" "" "last-name"]]]
+     [input-el 'sub-cat 'sub-cat 'text "input" "" "sub-cat"]]]
    [:th>div.field
     [:div.control
-     [input-el 'email 'email 'text "input" "" "email"]]]
+     [input-el 'issued-to 'issued-to 'text "input" "" "issued-to"]]]
    [:th>div.field
     [:div.control
-     [input-el 'designation 'designation 'text "input" "" "designation"]]]
+     [input-el 'issued-by 'issued-by 'text "input" "" "issued-by"]]]
    [:th
     [:div.field
      [:div.control.is-expanded.has-icons-left
-      [input-el "last-login-from" "last-login-from" "text"
-       "input input-datepicker date-from" "From" "last-login-from"]
+      [input-el "date-issued-from" "date-issued-from" "text"
+       "input input-datepicker date-from" "From" "date-issued-from"]
       [:span.icon.is-small.is-left.open-date-from
        [:span.fas.fa-calendar]]]]
     [:div.field
      [:div.control.is-expanded.has-icons-left
-      [input-el "last-login-to" "last-login-to" "text"
-       "input input-datepicker date-to" "To" "last-login-to"]
+      [input-el "date-issued" "date-issued" "text"
+       "input input-datepicker date-to" "To" "date-issued-to"]
       [:span.icon.is-small.is-left.open-date-to
        [:span.fas.fa-calendar]]]]]
-   [:th]
    [:th {:col-span "2"}
     [:div.buttons
      [:button.clear-filter-button.button.is-fullwidth

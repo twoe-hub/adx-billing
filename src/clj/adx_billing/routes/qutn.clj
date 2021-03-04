@@ -6,10 +6,10 @@
    [adx-billing.middleware :as middleware]
    [camel-snake-kebab.core :as csk]
    [camel-snake-kebab.extras :as cske]
+   [clojure.string :as cljstr]
    [clojure.pprint :refer [pprint]]
    [conman.core :refer [snip]]
-   [ring.util.http-response :as response]
-   ))
+   [ring.util.http-response :as response]))
 
 (defn save-qutns! [{:keys [params]}]
   (if-let [errors (validate params)]
@@ -23,10 +23,9 @@
 
 (defn get-status-counts [params]
   (let [sx (query :count-qutns {:cond  (snip queries :cond-qutns params)})
-        m (into {} (map #(-> (if (:status %)
-                               {:active (:count %)}
-                               {:inactive (:count %)})) sx))
-        m (if (contains? m :inactive) m (conj m {:inactive 0}))]
+        m (into {} (map #(->
+                          {(keyword (cljstr/lower-case (% :status))) (% :count)}
+                          ) sx))]
     (conj {:all (reduce + (vals m))} m)))
 
 (defn get-order [order]

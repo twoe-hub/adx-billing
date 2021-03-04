@@ -108,6 +108,9 @@ JOIN public.sub_category sc on sc.id = q.sub_cat_id
 JOIN public.party p_to on p_to.id = q.issued_to
 JOIN public.party p_by on p_by.id = q.issued_by
 WHERE 1 = 1
+/*~ (when (not (clojure.string/blank? (:status params))) */
+AND q.status =
+/*~ ) ~*/
 :snip:cond
 OFFSET :offset LIMIT :limit
 
@@ -116,28 +119,32 @@ OFFSET :offset LIMIT :limit
 -- :doc count all quotations
 SELECT q.status, count(q.id) count
 FROM public.quotation q
+JOIN public.category c on c.id = q.cat_id
+JOIN public.sub_category sc on sc.id = q.sub_cat_id
+JOIN public.party p_to on p_to.id = q.issued_to
+JOIN public.party p_by on p_by.id = q.issued_by
 WHERE 1 = 1
 :snip:cond
 GROUP BY q.status
 
 -- :snip cond-qutns
-/*~ (when (not (clojure.string/blank? (:username params))) */
-AND q.username ~*
+/*~ (when (not (clojure.string/blank? (:quote-no params))) */
+AND q.quote_no ~*
 /*~ ) ~*/
---~ (when (not (clojure.string/blank? (:username params))) (str-regex (:username params)))
-/*~ (when (not (clojure.string/blank? (:first-name params))) */
-AND q.first_name ~*
+--~ (when (not (clojure.string/blank? (:quote-no params))) (str-regex (:quote-no params)))
+/*~ (when (not (clojure.string/blank? (:issued-to params))) */
+AND p_to.aff_name ~*
 /*~ ) ~*/
---~ (when (not (clojure.string/blank? (:first-name params))) (str-regex (:first-name params)))
-/*~ (when (not (clojure.string/blank? (:last-name params))) */
-AND q.last_name ~*
+--~ (when (not (clojure.string/blank? (:issued-to params))) (str-regex (:issued-to params)))
+/*~ (when (not (clojure.string/blank? (:issued-by params))) */
+AND p_by.aff_name ~*
 /*~ ) ~*/
---~ (when (not (clojure.string/blank? (:last-name params))) (str-regex (:last-name params)))
-/*~ (when (not (clojure.string/blank? (:email params))) */
-AND q.email ~*
+--~ (when (not (clojure.string/blank? (:issued-by params))) (str-regex (:issued-by params)))
+/*~ (when (not (clojure.string/blank? (:cat params))) */
+AND c.name ~*
 /*~ ) ~*/
---~ (when (not (clojure.string/blank? (:email params))) (str-regex (:email params)))
-/*~ (when (not (clojure.string/blank? (:designation params))) */
-AND q.designation ~*
+--~ (when (not (clojure.string/blank? (:cat params))) (str-regex (:cat params)))
+/*~ (when (not (clojure.string/blank? (:sub-cat params))) */
+AND sc.name ~*
 /*~ ) ~*/
---~ (when (not (clojure.string/blank? (:designation params))) (str-regex (:designation params)))
+--~ (when (not (clojure.string/blank? (:sub-cat params))) (str-regex (:sub-cat params)))
