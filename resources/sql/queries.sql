@@ -81,18 +81,51 @@ SELECT row_number() over (ORDER BY :i:sort
 /*~ (when (= (:order params) "desc") */
 DESC
 /*~ ) ~*/
-) as no, a.id, a.code, a.name, a.reg_no, a.tax_no, a.entity_type, a.industry_id, a.date_est, a.website
+) as no, a.id, a.code, a.name, a.reg_no, a.tax_no, a.entity_type, i.name AS industry, a.date_est, a.website
 FROM public.affiliate a
+JOIN public.industry i on i.id = a.industry_id
 WHERE 1 = 1
+/*~ (when (not (clojure.string/blank? (:status params))) */
+AND a.status = :status
+/*~ ) ~*/
+:snip:cond
 OFFSET :offset LIMIT :limit
 
 -- :name count-affs :? :*
 -- :doc count all affiliates
 SELECT a.status status, count(a.id) count
 FROM public.affiliate a
+JOIN public.industry i on i.id = a.industry_id
 WHERE 1 = 1
+:snip:cond
 GROUP BY a.status
 ORDER BY a.status desc
+
+-- :snip cond-affs
+/*~ (when (not (clojure.string/blank? (:code params))) */
+AND a.code ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:code params))) (str-regex (:code params)))
+/*~ (when (not (clojure.string/blank? (:name params))) */
+AND a.name ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:name params))) (str-regex (:name params)))
+/*~ (when (not (clojure.string/blank? (:reg-no params))) */
+AND a.reg_no ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:reg-no params))) (str-regex (:reg-no params)))
+/*~ (when (not (clojure.string/blank? (:tax-no params))) */
+AND a.tax_no ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:tax-no params))) (str-regex (:tax-no params)))
+/*~ (when (not (clojure.string/blank? (:entity-type params))) */
+AND a.entity_type ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:entity-type params))) (str-regex (:entity-type params)))
+/*~ (when (not (clojure.string/blank? (:industry params))) */
+AND i.name ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:industry params))) (str-regex (:industry params)))
 
 -- :name get-qutns :? :*
 -- :require [adx-billing.db.util :refer [str-regex]]

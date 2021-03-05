@@ -1,16 +1,17 @@
 (ns adx-billing.routes.aff
   (:require
-   [adx-billing.db.core :refer [query]]
+   [adx-billing.db.core :refer [query queries]]
    [adx-billing.aff.validate :refer [validate]]
    [adx-billing.html.templates :refer [base-template]]
    [adx-billing.middleware :as middleware]
    [camel-snake-kebab.core :as csk]
    [camel-snake-kebab.extras :as cske]
    [clojure.pprint :refer [pprint]]
+   [conman.core :refer [snip]]
    [ring.util.http-response :as response]
    ))
 
-(defonce sort-cols {:code "a.code" :name "a.name" :reg-no "a.reg-no" :tax-no "a.tax-no" :entity-type "a.entity-type" :industry-id "a.industry-id" :date-est "a.date-est" :website "a.website"})
+(defonce sort-cols {:code "a.code" :name "a.name" :reg-no "a.reg-no" :tax-no "a.tax-no" :entity-type "a.entity-type" :industry "i.name" :date-est "a.date-est" :website "a.website"})
 
 ;; (defn save-aff! [{:keys [params]}]
 ;;   (if-let [errors (validate params)]
@@ -23,7 +24,7 @@
 ;;          {:errors {:server-error ["Failed to save user!"]}})))))
 
 (defn get-status-counts [params]
-  (let [sx (query :count-affs params)
+  (let [sx (query :count-affs {:cond (snip queries :cond-affs params)})
         m (into {} (map #(-> (cond
                                (= (:status %) "ACTIVE") {:active (:count %)}
                                (= (:status %) "INACTIVE") {:inactive (:count %)})) sx))
@@ -50,8 +51,11 @@
                (if (= (:enabled params) "true")
                  (:active m)
                  (:inactive m)))
-      :records (cske/transform-keys csk/->kebab-case-keyword
-                                    (vec (query :get-affs params)))})))
+      :records (cske/transform-keys
+                csk/->kebab-case-keyword
+                (vec (query :get-affs
+                            (assoc params
+                                   :cond (snip queries :cond-affs params)))))})))
 
 (defn list-aff [request]
   (response/content-type

@@ -13,7 +13,7 @@
             [adx-billing.common.util :refer [toggle-el hide-el]]))
 
 (defonce url "/aff/affs")
-(defonce cols ['id 'no 'code 'name 'reg-no 'tax-no 'entity-type 'industry-id 'date-est 'website])
+(defonce cols ['id 'no 'code 'name 'reg-no 'tax-no 'entity-type 'industry 'date-est 'website])
 (defonce no-sort-cols ['no 'website])
 (defonce params (rcore/atom {:sort "name" :order 1 :offset 0 :limit ls/pg-size}))
 (defonce affs (rcore/atom {}))
@@ -68,20 +68,22 @@
    [:th]
    [:th>div.field
     [:div.control
-     [input-el 'username 'username 'text "input" "" "username"]]]
+     [input-el 'code 'code 'text "input" "" "code"]]]
    [:th>div.field
     [:div.control
-     [input-el 'first-name 'first-name 'text "input" "" "first-name"]]]
+     [input-el 'name 'name 'text "input" "" "name"]]]
    [:th>div.field
     [:div.control
-     [input-el 'last-name 'last-name 'text "input" "" "last-name"]]]
+     [input-el 'reg-no 'reg-no 'text "input" "" "reg-no"]]]
    [:th>div.field
     [:div.control
-     [input-el 'email 'email 'text "input" "" "email"]]]
+     [input-el 'tax-no 'tax-no 'text "input" "" "tax-no"]]]
    [:th>div.field
     [:div.control
-     [input-el 'designation 'designation 'text "input" "" "designation"]]]
-   [:th
+     [input-el 'entity-type 'entity-type 'text "input" "" "entity-type"]]]
+   [:th>div.field
+    [:div.control
+     [input-el 'industry 'industry 'text "input" "" "industry"]]]   [:th
     [:div.field
      [:div.control.is-expanded.has-icons-left
       [input-el "last-login-from" "last-login-from" "text"
@@ -102,7 +104,9 @@
        :on-click #(ls/clear params)} "Clear"]
      [:button.filter-button.button.is-fullwidth.is-primary
       {:type "button"
-       :on-click #(ls/get-records url params handler)} "Search"]]]])
+       :on-click #(do
+                    (swap! params assoc :offset 0)
+                    (ls/get-records url params handler))} "Search"]]]])
 
 (defn table-ui []
   [:table.listing-table.table.is-fullwidth.is-striped.is-hoverable
@@ -111,7 +115,7 @@
     (table-filter-row)]
    [:tbody.listing-content
     (for [{:keys [id no code name reg-no tax-no entity-type
-                  industry-id date-est website]} @affs]
+                  industry date-est website]} @affs]
       ^{:key id}
       [:tr {:style {:border "none"}}
        [:td {:style {:border "none"}}
@@ -123,7 +127,7 @@
        [:td {:style {:border "none"}} reg-no]
        [:td {:style {:border "none"}} tax-no]
        [:td {:style {:border "none"}} entity-type]
-       [:td {:style {:border "none"}} industry-id]
+       [:td {:style {:border "none"}} industry]
        [:td {:style {:border "none"}} (util/format-date-time date-est)]
        [:td {:col-span "2"
              :style {:border "none"}} website]])]])

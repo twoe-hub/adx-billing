@@ -31,7 +31,7 @@
                          :reg-no "Reg. No."
                          :tax-no "Tax No."
                          :entity-type "Entity Type"
-                         :industry-id "Industry"
+                         :industry "Industry"
                          :date-est "Established"
                          :website "Website"}}
            :qutn {:qf-label {:draft "Draft"
