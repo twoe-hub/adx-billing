@@ -10,6 +10,8 @@
    [ring.util.http-response :as response]
    ))
 
+(defonce sort-cols {:code "a.code" :name "a.name" :reg-no "a.reg-no" :tax-no "a.tax-no" :entity-type "a.entity-type" :industry-id "a.industry-id" :date-est "a.date-est" :website "a.website"})
+
 ;; (defn save-aff! [{:keys [params]}]
 ;;   (if-let [errors (validate params)]
 ;;     (response/bad-request {:errors errors})
@@ -36,7 +38,7 @@
          :offset (Integer. (:offset params))
          :limit (Integer. (:limit params))
          :order (get-order (Integer. (:order params)))
-         :sort (csk/->snake_case (:sort params))))
+         :sort (csk/->snake_case (sort-cols (keyword (:sort params))))))
 
 (defn get-affs [{:keys [params]}]
   (let [params (parse-params params)

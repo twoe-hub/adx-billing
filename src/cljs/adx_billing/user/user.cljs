@@ -14,6 +14,7 @@
 
 (defonce url "/user/users")
 (defonce cols ['id 'no 'username 'first-name 'last-name 'email 'designation 'last-login 'date-created 'enabled])
+(defonce no-sort-cols ['no])
 (defonce params (rcore/atom {:sort "username" :order 1 :offset 0 :limit ls/pg-size}))
 (defonce users (rcore/atom {}))
 (defonce counts (rcore/atom {}))
@@ -224,7 +225,7 @@
 (defn table-ui []
   [:table.listing-table.table.is-fullwidth.is-striped.is-hoverable
    [:thead
-    [ls/table-head-row "user" cols url params handler]
+    [ls/table-head-row "user" cols no-sort-cols url params handler]
     (table-filter-row)]
    [:tbody.listing-content
     (for [{:keys [id no username first-name last-name email

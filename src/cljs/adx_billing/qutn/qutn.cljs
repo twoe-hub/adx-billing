@@ -14,6 +14,7 @@
 
 (defonce url "/qutn/qutns")
 (defonce cols ['id 'no 'quote-no 'value 'cat 'sub-cat 'issued-to 'issued-by 'date-issued])
+(defonce no-sort-cols ['no])
 (defonce params (rcore/atom {:sort "date-issued" :order 1 :offset 0 :limit ls/pg-size}))
 (defonce qutns (rcore/atom {}))
 (defonce counts (rcore/atom {}))
@@ -233,7 +234,7 @@
 (defn table-ui []
   [:table.listing-table.table.is-fullwidth.is-striped.is-hoverable
    [:thead
-    [ls/table-head-row "qutn" cols url params handler]
+    [ls/table-head-row "qutn" cols no-sort-cols url params handler]
     (table-filter-row)]
    [:tbody.listing-content
     (for [{:keys [id no quote-no issued-to value issued-by date-issued cat sub-cat]} @qutns]

@@ -30,7 +30,7 @@
          :order (* -1 (:order @params)))
   (get-records url params handler))
 
-(defn table-head-row [list-name cols url params handler]
+(defn table-head-row [list-name cols no-sort-cols url params handler]
   [:tr
    (doall (map (fn [col]
                  (if (= col 'id)
@@ -42,17 +42,21 @@
                        [:input.table-checkbox-all {:id "checkall"
                                                    :type "checkbox"
                                                    :name "checkall"}]]]]]
-                   [:th.is-sortable
-                    {:key col
-                     :on-click #(sort-list col url params handler)}
-                    (msg (keyword (str list-name ".cols/" (name col))))
-                    [:span.icon.is-small
-                     [:span {:class (str "fa "
-                                         (if (= (name col) (:sort @params))
-                                           (if (> (:order @params) 0)
-                                             "fa-sort-up"
-                                             "fa-sort-down")
-                                           "fa-sort"))}]]]))
+                   (if (some #{col} no-sort-cols)
+                     [:th
+                      {:key col}
+                      (msg (keyword (str list-name ".cols/" (name col))))]
+                     [:th.is-sortable
+                      {:key col
+                       :on-click #(sort-list col url params handler)}
+                      (msg (keyword (str list-name ".cols/" (name col))))
+                      [:span.icon.is-small
+                       [:span {:class (str "fa "
+                                           (if (= (name col) (:sort @params))
+                                             (if (> (:order @params) 0)
+                                               "fa-sort-up"
+                                               "fa-sort-down")
+                                             "fa-sort"))}]]])))
                cols))
    [:th.filter {:on-click #(toggle-el "listing-filter")}
     [:span.icon.is-small

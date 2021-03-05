@@ -14,6 +14,7 @@
 
 (defonce url "/aff/affs")
 (defonce cols ['id 'no 'code 'name 'reg-no 'tax-no 'entity-type 'industry-id 'date-est 'website])
+(defonce no-sort-cols ['no 'website])
 (defonce params (rcore/atom {:sort "name" :order 1 :offset 0 :limit ls/pg-size}))
 (defonce affs (rcore/atom {}))
 (defonce counts (rcore/atom {}))
@@ -106,7 +107,7 @@
 (defn table-ui []
   [:table.listing-table.table.is-fullwidth.is-striped.is-hoverable
    [:thead
-    [ls/table-head-row "aff" cols url params handler]
+    [ls/table-head-row "aff" cols no-sort-cols url params handler]
     (table-filter-row)]
    [:tbody.listing-content
     (for [{:keys [id no code name reg-no tax-no entity-type

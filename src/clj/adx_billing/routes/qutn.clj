@@ -11,6 +11,8 @@
    [conman.core :refer [snip]]
    [ring.util.http-response :as response]))
 
+(defonce sort-cols {:quote-no "q.quote-no" :value "q.value" :cat "c.name" :sub-cat "sc.name" :issued-to "q.issued-to" :issued-by "q.issued-by" :date-issued "q.date-issued"})
+
 (defn save-qutns! [{:keys [params]}]
   (if-let [errors (validate params)]
     (response/bad-request {:errors errors})
@@ -36,7 +38,7 @@
          :offset (Integer. (:offset params))
          :limit (Integer. (:limit params))
          :order (get-order (Integer. (:order params)))
-         :sort (csk/->snake_case (:sort params))))
+         :sort (csk/->snake_case (sort-cols (keyword (:sort params))))))
 
 (defn get-qutns [{:keys [params]}]
   (let [params (parse-params params)

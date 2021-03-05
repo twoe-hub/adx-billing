@@ -11,6 +11,8 @@
    [ring.util.http-response :as response]
    ))
 
+(defonce sort-cols {:username "u.username" :first-name "u.first-name" :last-name "u.last-name" :email "u.email" :designation "u.designation" :last-login "u.last-login" :date-created "u.date-created" :enabled "u.enabled"})
+
 (defn save-user! [{:keys [params]}]
   (if-let [errors (validate params)]
     (response/bad-request {:errors errors})
@@ -36,7 +38,7 @@
          :offset (Integer. (:offset params))
          :limit (Integer. (:limit params))
          :order (get-order (Integer. (:order params)))
-         :sort (csk/->snake_case (:sort params))))
+         :sort (csk/->snake_case (sort-cols (keyword (:sort params))))))
 
 (defn get-users [{:keys [params]}]
   (let [params (parse-params params)

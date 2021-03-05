@@ -109,7 +109,7 @@ JOIN public.party p_to on p_to.id = q.issued_to
 JOIN public.party p_by on p_by.id = q.issued_by
 WHERE 1 = 1
 /*~ (when (not (clojure.string/blank? (:status params))) */
-AND q.status =
+AND q.status = :status
 /*~ ) ~*/
 :snip:cond
 OFFSET :offset LIMIT :limit
