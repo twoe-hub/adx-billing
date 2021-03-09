@@ -221,7 +221,7 @@ create table if not exists "public"."user_contact" (
 create table if not exists "public"."user_role"(
   "user_id" uuid not null,
   "role_id" uuid not null);
-  --;;
+--;;
 create table if not exists "public"."quotation" (
 "id" uuid not null,
 "quote_no" text not null,
@@ -298,6 +298,52 @@ create table if not exists "public"."quote_misc" (
 create table if not exists "public"."quote_discount" (
 "id" uuid not null,
 "quote_id" uuid not null,
+"desc" text not null,
+"value" decimal(12,2),
+"percent" boolean not null default '0',
+"version" integer not null default 0,
+"date_created" timestamp not null default now(),
+"last_updated" timestamp not null default now());
+--;;
+create table if not exists "public"."invoice" (
+"id" uuid not null,
+"inv_no" text not null,
+"value" decimal(12,2),
+"status" text not null default 'DRAFT',
+"date_issued" timestamp not null default now(),
+"issued_to" uuid not null,
+"issued_by" uuid not null,
+"cat_id" integer not null,
+"sub_cat_id" integer not null,
+"version" integer not null default 0,
+"date_created" timestamp not null default now(),
+"last_updated" timestamp not null default now());
+--;;
+create table if not exists "public"."invoice_item" (
+"id" uuid not null,
+"inv_id" uuid not null,
+"desc" text not null,
+"recurring" boolean not null default '0',
+"recur_type" char(1),
+"unit_price" decimal(12,2),
+"quantity" integer not null,
+"version" integer not null default 0,
+"date_created" timestamp not null default now(),
+"last_updated" timestamp not null default now());
+--;;
+create table if not exists "public"."invoice_misc" (
+"id" uuid not null,
+"inv_id" uuid not null,
+"desc" text not null,
+"value" decimal(12,2),
+"percent" boolean not null default '0',
+"version" integer not null default 0,
+"date_created" timestamp not null default now(),
+"last_updated" timestamp not null default now());
+--;;
+create table if not exists "public"."invoice_discount" (
+"id" uuid not null,
+"inv_id" uuid not null,
 "desc" text not null,
 "value" decimal(12,2),
 "percent" boolean not null default '0',

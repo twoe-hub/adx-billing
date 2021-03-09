@@ -835,3 +835,25 @@ insert into "public"."quote_misc" ("id", "quote_id", "desc", "value", "percent")
 insert into "public"."quote_discount" ("id", "quote_id", "desc", "value", "percent") values
 (uuid_generate_v4(), '6b640f2d-34f2-4fd0-910a-2dfa70f977da', 'Some text', 5, '1'),
 (uuid_generate_v4(), '6a9ab2ff-b861-4bb3-a32f-b9c12da37d82', 'Some text', 90, '0');
+--;;
+insert into "public"."party" ("id", "aff_name", "user_name", "user_email", "loc_name", "line1", "line2", "line3", "city", "postcode", "state", "country_id", "contact") values
+('7f59f78f-723d-4add-af36-cc59ce945fae', 'Watsons Sdn. Bhd.', 'watsons', 'admin.wtsns@adxios.com', 'Loc W', 'Building W', 'Street W', 'Town W', 'Kuala Lumpur', '55000', 'WP', 'my', '6038888888'),
+('0052a34e-3098-4b32-ad62-90a161a1b347', 'Unilever Limited', 'unilever', 'dummy.unilever1@adxios.com', 'Loc U', 'Building U', 'Street U', 'Town U', 'Kuala Lumpur', '56700', 'WP', 'my', '6038888888'),
+('95de0d4e-2b5f-430a-a4d3-9e4daa5bf254', 'Watsons Sdn. Bhd.', 'watsons', 'admin.wtsns@adxios.com', 'Loc W', 'Building W', 'Street W', 'Town W', 'Kuala Lumpur', '55000', 'WP', 'my', '6038888888'),
+('3e9822b1-69df-4e32-aa4b-387b51654f22', 'Unilever Limited', 'unilever', 'dummy.unilever1@adxios.com', 'Loc U', 'Building U', 'Street U', 'Town U', 'Kuala Lumpur', '56700', 'WP', 'my', '6038888888');
+--;;
+insert into "public"."invoice" ("id", "inv_no", "value", "status", "date_issued", "issued_to", "issued_by", "cat_id", "sub_cat_id") values
+('c06e3eed-6001-4750-bdc0-fde55903cd41', 'INVC-0001', 150.00, 'DRAFT', now(), '0052a34e-3098-4b32-ad62-90a161a1b347', '7f59f78f-723d-4add-af36-cc59ce945fae', 1, 1),
+('0b5c4992-8f86-4d40-b8c9-d00ff6d69796', 'INVC-0002', 810.00, 'DRAFT', now(), '95de0d4e-2b5f-430a-a4d3-9e4daa5bf254', '3e9822b1-69df-4e32-aa4b-387b51654f22', 2, 4);
+--;;
+insert into "public"."invoice_item" ("id", "inv_id", "desc", "recurring", "recur_type", "unit_price", "quantity") values
+(uuid_generate_v4(), 'c06e3eed-6001-4750-bdc0-fde55903cd41', 'Some text', '1', 'M', 90, 10),
+(uuid_generate_v4(), '0b5c4992-8f86-4d40-b8c9-d00ff6d69796', 'Some text', '0', null, 510, 1);
+--;;
+insert into "public"."invoice_misc" ("id", "inv_id", "desc", "value", "percent") values
+(uuid_generate_v4(), 'c06e3eed-6001-4750-bdc0-fde55903cd41', 'Some text', 10, '1'),
+(uuid_generate_v4(), '0b5c4992-8f86-4d40-b8c9-d00ff6d69796', 'Some text', 50, '0');
+--;;
+insert into "public"."invoice_discount" ("id", "inv_id", "desc", "value", "percent") values
+(uuid_generate_v4(), 'c06e3eed-6001-4750-bdc0-fde55903cd41', 'Some text', 5, '1'),
+(uuid_generate_v4(), '0b5c4992-8f86-4d40-b8c9-d00ff6d69796', 'Some text', 90, '0');
