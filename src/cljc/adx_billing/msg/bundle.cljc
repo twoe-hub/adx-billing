@@ -11,7 +11,9 @@
                          :admin "Admin"
                          :audit-log "Audit Log"
                          :about "About"
-                         :doc-quote "Quotation"
+                         :quotation "Quotations"
+                         :work-order "Work Orders"
+                         :invoice "Invoices"
                          :user "Users"
                          :role "Roles"
                          :pwd-policy "Password Policy"}

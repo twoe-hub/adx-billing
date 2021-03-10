@@ -7,12 +7,16 @@ insert into "public"."access" ("id", "name", "desc") values
 (6, 'audit-view-access', 'Access to view audit logs'),
 (7, 'qutn-view-access', 'Access to view quotations'),
 (8, 'qutn-all-access', 'All access to quotations'),
-(9, 'user-view-access', 'Access to view users'),
-(10, 'user-all-access', 'All access to users'),
-(11, 'role-view-access', 'Access to view roles'),
-(12, 'role-all-access', 'All access to roles'),
-(13, 'pwd-policy-view-access', 'Access to view password policy'),
-(14, 'pwd-policy-all-access', 'All access to password policy');
+(9, 'wo-view-access', 'Access to view work-orders'),
+(10, 'wo-all-access', 'All access to work-orders'),
+(11, 'inv-view-access', 'Access to view invoices'),
+(12, 'inv-all-access', 'All access to invoices'),
+(13, 'user-view-access', 'Access to view users'),
+(14, 'user-all-access', 'All access to users'),
+(15, 'role-view-access', 'Access to view roles'),
+(16, 'role-all-access', 'All access to roles'),
+(17, 'pwd-policy-view-access', 'Access to view password policy'),
+(18, 'pwd-policy-all-access', 'All access to password policy');
 --;;
 insert into "public"."affiliate" ("id", "code", "name", "entity_type", "industry_id", "aff_type", "reg_no", "date_est", "email", "website") values
 ('fde78682-419e-423f-bdc6-32f48a7be64a', 'WTSNS', 'Watsons Sdn. Bhd.', 'PVT_LTD', 5400, 'BUYER', 'WTSNS-A235', '2001-01-15', 'info@watsons.com.my', 'watsons.com.my'),
@@ -731,10 +735,12 @@ insert into "module" ("id", "parent_id", "code", "ordinal", "access", "url", "me
 (5, null, 'admin', 4, 'admin-access', '#', '1'),
 (6, null, 'audit-log', 5, 'audit-view-access', '/', '1'),
 (7, null, 'about', 6, null, '/about', '1'),
-(8, 4, 'doc-quote', 40, 'qutn-view-access', '/qutn/list', '1'),
-(9, 5, 'user', 50, 'user-view-access', '/user/list', '1'),
-(10, 5, 'role', 51, 'role-view-access', '/role/list', '1'),
-(11, 5, 'pwd-policy', 52, 'pwd-policy-view-access', '/pwd-policy', '1');
+(8, 4, 'quotation', 40, 'qutn-view-access', '/qutn/list', '1'),
+(9, 4, 'work-order', 41, 'wo-view-access', '/wo/list', '1'),
+(10, 4, 'invoice', 42, 'inv-view-access', '/inv/list', '1'),
+(11, 5, 'user', 50, 'user-view-access', '/user/list', '1'),
+(12, 5, 'role', 51, 'role-view-access', '/role/list', '1'),
+(13, 5, 'pwd-policy', 52, 'pwd-policy-view-access', '/pwd-policy', '1');
 --;;
 insert into "public"."role" ("id", "aff_id", "name", "desc", "created_by") values
 ('b5ea41ba-dfbb-4ffd-b213-604267f27ffb', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'Admin', 'Administration group', 'SYSTEM'),
