@@ -181,3 +181,137 @@ AND c.name ~*
 AND sc.name ~*
 /*~ ) ~*/
 --~ (when (not (clojure.string/blank? (:sub-cat params))) (str-regex (:sub-cat params)))
+
+-- :name get-wos :? :*
+-- :require [adx-billing.db.util :refer [str-regex]]
+-- :doc selects all work-orders
+SELECT row_number() over (ORDER BY :i:sort
+/*~ (when (= (:order params) "desc") */
+DESC
+/*~ ) ~*/
+) AS no, i.id, i.wo_no, q.quote_no, p_to.aff_name AS issued_to, i.value, p_by.aff_name AS issued_by, i.date_issued, c.name AS cat, sc.name AS sub_cat
+FROM public.work_order i
+JOIN public.quote_wo_ref qw on qw.wo_id = wo.id
+JOIN public.quotation q on q.id = qw.quote_id
+JOIN public.category c on c.id = i.cat_id
+JOIN public.sub_category sc on sc.id = i.sub_cat_id
+JOIN public.party p_to on p_to.id = i.issued_to
+JOIN public.party p_by on p_by.id = i.issued_by
+WHERE 1 = 1
+/*~ (when (not (clojure.string/blank? (:status params))) */
+AND i.status = :status
+/*~ ) ~*/
+:snip:cond
+OFFSET :offset LIMIT :limit
+
+-- :name count-wos :? :*
+-- :require [adx-billing.db.util :refer [str-regex]]
+-- :doc count all work-orders
+SELECT wo.status, count(wo.id) count
+FROM public.work_order wo
+JOIN public.quote_wo_ref qw on qw.wo_id = wo.id
+JOIN public.quotation q on q.id = qw.quote_id
+JOIN public.category c on c.id = wo.cat_id
+JOIN public.sub_category sc on sc.id = wo.sub_cat_id
+JOIN public.party p_to on p_to.id = wo.issued_to
+JOIN public.party p_by on p_by.id = wo.issued_by
+WHERE 1 = 1
+:snip:cond
+GROUP BY wo.status
+
+-- :snip cond-wos
+/*~ (when (not (clojure.string/blank? (:wo-no params))) */
+AND wo.wo_no ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:wo-no params))) (str-regex (:wo-no params)))
+/*~ (when (not (clojure.string/blank? (:quote-no params))) */
+AND q.quote_no ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:quote-no params))) (str-regex (:quote-no params)))
+/*~ (when (not (clojure.string/blank? (:issued-to params))) */
+AND p_to.aff_name ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:issued-to params))) (str-regex (:issued-to params)))
+/*~ (when (not (clojure.string/blank? (:issued-by params))) */
+AND p_by.aff_name ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:issued-by params))) (str-regex (:issued-by params)))
+/*~ (when (not (clojure.string/blank? (:cat params))) */
+AND c.name ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:cat params))) (str-regex (:cat params)))
+/*~ (when (not (clojure.string/blank? (:sub-cat params))) */
+AND sc.name ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:sub-cat params))) (str-regex (:sub-cat params)))
+
+-- :name get-invs :? :*
+-- :require [adx-billing.db.util :refer [str-regex]]
+-- :doc selects all invoices
+SELECT row_number() over (ORDER BY :i:sort
+/*~ (when (= (:order params) "desc") */
+DESC
+/*~ ) ~*/
+) AS no, i.id, i.inv_no, wo.wo_no, q.quote_no, p_to.aff_name AS issued_to, i.value, p_by.aff_name AS issued_by, i.date_issued, c.name AS cat, sc.name AS sub_cat
+FROM public.invoice i
+JOIN public.quote_inv_ref qi on qi.inv_id = i.id
+JOIN public.quotation q on q.id = qi.quote_id
+JOIN public.wo_inv_ref wi on wi.inv_id = i.id
+JOIN public.work_order wo on wo.id = wi.wo_id
+JOIN public.category c on c.id = i.cat_id
+JOIN public.sub_category sc on sc.id = i.sub_cat_id
+JOIN public.party p_to on p_to.id = i.issued_to
+JOIN public.party p_by on p_by.id = i.issued_by
+WHERE 1 = 1
+/*~ (when (not (clojure.string/blank? (:status params))) */
+AND i.status = :status
+/*~ ) ~*/
+:snip:cond
+OFFSET :offset LIMIT :limit
+
+-- :name count-invs :? :*
+-- :require [adx-billing.db.util :refer [str-regex]]
+-- :doc count all invoices
+SELECT i.status, count(i.id) count
+FROM public.invoice i
+JOIN public.quote_inv_ref qi on qi.inv_id = i.id
+JOIN public.quotation q on q.id = qi.quote_id
+JOIN public.wo_inv_ref wi on wi.inv_id = i.id
+JOIN public.work_order wo on wo.id = wi.wo_id
+JOIN public.category c on c.id = i.cat_id
+JOIN public.sub_category sc on sc.id = i.sub_cat_id
+JOIN public.party p_to on p_to.id = i.issued_to
+JOIN public.party p_by on p_by.id = i.issued_by
+WHERE 1 = 1
+:snip:cond
+GROUP BY i.status
+
+-- :snip cond-invs
+/*~ (when (not (clojure.string/blank? (:inv-no params))) */
+AND i.inv_no ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:inv-no params))) (str-regex (:inv-no params)))
+/*~ (when (not (clojure.string/blank? (:quote-no params))) */
+AND q.quote_no ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:quote-no params))) (str-regex (:quote-no params)))
+/*~ (when (not (clojure.string/blank? (:wo-no params))) */
+AND wo.wo_no ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:wo-no params))) (str-regex (:wo-no params)))
+/*~ (when (not (clojure.string/blank? (:issued-to params))) */
+AND p_to.aff_name ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:issued-to params))) (str-regex (:issued-to params)))
+/*~ (when (not (clojure.string/blank? (:issued-by params))) */
+AND p_by.aff_name ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:issued-by params))) (str-regex (:issued-by params)))
+/*~ (when (not (clojure.string/blank? (:cat params))) */
+AND c.name ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:cat params))) (str-regex (:cat params)))
+/*~ (when (not (clojure.string/blank? (:sub-cat params))) */
+AND sc.name ~*
+/*~ ) ~*/
+--~ (when (not (clojure.string/blank? (:sub-cat params))) (str-regex (:sub-cat params)))
