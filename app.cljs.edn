@@ -14,6 +14,10 @@
            :aff-validate {:entries #{adx-billing.aff.validate}}
            :qutn {:entries #{adx-billing.qutn.qutn}}
            :qutn-validate {:entries #{adx-billing.qutn.validate}}
+           :wo {:entries #{adx-billing.wo.wo}}
+           :wo-validate {:entries #{adx-billing.wo.validate}}
+           :inv {:entries #{adx-billing.inv.inv}}
+           :inv-validate {:entries #{adx-billing.inv.validate}}
            :user {:entries #{adx-billing.user.user}}
            :user-validate {:entries #{adx-billing.user.validate}}
            }
