@@ -189,17 +189,17 @@ SELECT row_number() over (ORDER BY :i:sort
 /*~ (when (= (:order params) "desc") */
 DESC
 /*~ ) ~*/
-) AS no, i.id, i.wo_no, q.quote_no, p_to.aff_name AS issued_to, i.value, p_by.aff_name AS issued_by, i.date_issued, c.name AS cat, sc.name AS sub_cat
-FROM public.work_order i
+) AS no, wo.id, wo.wo_no, q.quote_no, p_to.aff_name AS issued_to, wo.value, p_by.aff_name AS issued_by, wo.date_issued, c.name AS cat, sc.name AS sub_cat
+FROM public.work_order wo
 JOIN public.quote_wo_ref qw on qw.wo_id = wo.id
 JOIN public.quotation q on q.id = qw.quote_id
-JOIN public.category c on c.id = i.cat_id
-JOIN public.sub_category sc on sc.id = i.sub_cat_id
-JOIN public.party p_to on p_to.id = i.issued_to
-JOIN public.party p_by on p_by.id = i.issued_by
+JOIN public.category c on c.id = wo.cat_id
+JOIN public.sub_category sc on sc.id = wo.sub_cat_id
+JOIN public.party p_to on p_to.id = wo.issued_to
+JOIN public.party p_by on p_by.id = wo.issued_by
 WHERE 1 = 1
 /*~ (when (not (clojure.string/blank? (:status params))) */
-AND i.status = :status
+AND wo.status = :status
 /*~ ) ~*/
 :snip:cond
 OFFSET :offset LIMIT :limit

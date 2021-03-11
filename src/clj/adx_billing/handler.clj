@@ -5,6 +5,7 @@
     [adx-billing.routes.auth :refer [auth-routes]]
     [adx-billing.routes.aff :refer [aff-routes]]
     [adx-billing.routes.qutn :refer [qutn-routes]]
+    [adx-billing.routes.wo :refer [wo-routes]]
     [adx-billing.routes.user :refer [user-routes]]
     [adx-billing.routes.profile :refer [profile-routes]]
     [reitit.ring :as ring]
@@ -25,6 +26,7 @@
       (profile-routes)
       (aff-routes)
       (qutn-routes)
+      (wo-routes)
       (user-routes)
       ])
     (ring/routes

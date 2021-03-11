@@ -49,6 +49,20 @@
                         :date-issued "Date Issued"
                         :cat "Category"
                         :sub-cat "Sub-category"}}
+           :wo {:qf-label {:draft "Draft"
+                             :sent "Sent"
+                             :approved "Approved"
+                             :completed "Completed"
+                             :all "All"}
+                  :cols {:no "No."
+                         :wo-no "Order No."
+                         :quote-no "Quote No."
+                         :issued-to "Issued To"
+                         :value "Value"
+                         :issued-by "Issued By"
+                         :date-issued "Date Issued"
+                         :cat "Category"
+                         :sub-cat "Sub-category"}}
            :user {:qf-label {:active "Active"
                              :inactive "Inactive"
                              :all "All"}
