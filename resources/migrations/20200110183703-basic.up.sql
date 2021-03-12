@@ -305,56 +305,6 @@ create table if not exists "public"."quote_discount" (
 "date_created" timestamp not null default now(),
 "last_updated" timestamp not null default now());
 --;;
-create table if not exists "public"."invoice" (
-"id" uuid not null,
-"inv_no" text not null,
-"value" decimal(12,2),
-"status" text not null default 'DRAFT',
-"date_issued" timestamp not null default now(),
-"issued_to" uuid not null,
-"issued_by" uuid not null,
-"cat_id" integer not null,
-"sub_cat_id" integer not null,
-"version" integer not null default 0,
-"date_created" timestamp not null default now(),
-"last_updated" timestamp not null default now());
---;;
-create table if not exists "public"."invoice_item" (
-"id" uuid not null,
-"inv_id" uuid not null,
-"desc" text not null,
-"recurring" boolean not null default '0',
-"recur_type" char(1),
-"unit_price" decimal(12,2),
-"quantity" integer not null,
-"version" integer not null default 0,
-"date_created" timestamp not null default now(),
-"last_updated" timestamp not null default now());
---;;
-create table if not exists "public"."invoice_misc" (
-"id" uuid not null,
-"inv_id" uuid not null,
-"desc" text not null,
-"value" decimal(12,2),
-"percent" boolean not null default '0',
-"version" integer not null default 0,
-"date_created" timestamp not null default now(),
-"last_updated" timestamp not null default now());
---;;
-create table if not exists "public"."invoice_discount" (
-"id" uuid not null,
-"inv_id" uuid not null,
-"desc" text not null,
-"value" decimal(12,2),
-"percent" boolean not null default '0',
-"version" integer not null default 0,
-"date_created" timestamp not null default now(),
-"last_updated" timestamp not null default now());
---;;
-create table if not exists "public"."quote_inv_ref" (
-"quote_id" uuid not null,
-"inv_id" uuid not null);
---;;
 create table if not exists "public"."work_order" (
 "id" uuid not null,
 "wo_no" text not null,
@@ -404,6 +354,56 @@ create table if not exists "public"."wo_discount" (
 create table if not exists "public"."quote_wo_ref" (
 "quote_id" uuid not null,
 "wo_id" uuid not null);
+--;;
+create table if not exists "public"."invoice" (
+"id" uuid not null,
+"inv_no" text not null,
+"value" decimal(12,2),
+"status" text not null default 'DRAFT',
+"date_issued" timestamp not null default now(),
+"issued_to" uuid not null,
+"issued_by" uuid not null,
+"cat_id" integer not null,
+"sub_cat_id" integer not null,
+"version" integer not null default 0,
+"date_created" timestamp not null default now(),
+"last_updated" timestamp not null default now());
+--;;
+create table if not exists "public"."inv_item" (
+"id" uuid not null,
+"inv_id" uuid not null,
+"desc" text not null,
+"recurring" boolean not null default '0',
+"recur_type" char(1),
+"unit_price" decimal(12,2),
+"quantity" integer not null,
+"version" integer not null default 0,
+"date_created" timestamp not null default now(),
+"last_updated" timestamp not null default now());
+--;;
+create table if not exists "public"."inv_misc" (
+"id" uuid not null,
+"inv_id" uuid not null,
+"desc" text not null,
+"value" decimal(12,2),
+"percent" boolean not null default '0',
+"version" integer not null default 0,
+"date_created" timestamp not null default now(),
+"last_updated" timestamp not null default now());
+--;;
+create table if not exists "public"."inv_discount" (
+"id" uuid not null,
+"inv_id" uuid not null,
+"desc" text not null,
+"value" decimal(12,2),
+"percent" boolean not null default '0',
+"version" integer not null default 0,
+"date_created" timestamp not null default now(),
+"last_updated" timestamp not null default now());
+--;;
+create table if not exists "public"."quote_inv_ref" (
+"quote_id" uuid not null,
+"inv_id" uuid not null);
 --;;
 create table if not exists "public"."wo_inv_ref" (
 "wo_id" uuid not null,

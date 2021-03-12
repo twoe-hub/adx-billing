@@ -792,12 +792,12 @@ insert into "public"."role_access" ("role_id", "access_id") values
 ('cd2dcf2d-8b7b-4cd0-be4a-32ee00fdbde1', 14);
 --;;
 insert into "public"."user" ("id", "aff_id", "username", "password", "first_name", "last_name", "email", "enabled") values
-('c9c93c10-c02d-445b-a05d-1a2f8501c9fe', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'watsons', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Wadud', 'admin.wtsns@adxios.com', 't'),
-('0696f9a0-339f-4a05-b1f6-dc5c86daf378', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'dummy.wtsns1@adxios.com', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Rehman', 'dummy1@adxios.com', 'f'),
-('7907b471-99c0-4778-8dba-97493623bd7c', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'dummy.wtsns2@adxios.com', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Rashid', 'dummy.wtsns2@adxios.com', 'f'),
-('fd8ec1c3-59e2-49fe-bdff-c15537a02b3c', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'dummy.wtsns3@adxios.com', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'al-Latif', 'dummy.wtsns3@adxios.com', 'f'),
-('c9c93c10-c02d-445b-a05d-1a2f8501c9ff', 'fde78682-419e-423f-bdc6-32f48a7be64b', 'guardian', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'Abd', 'Guardian', 'dummy.grdn1@adxios.com', 't'),
-('c9c93c10-c02d-445b-a05d-1a2f8501cccc', 'fde78682-419e-423f-bdc6-32f48a7be64c', 'unilever', 'bcrypt+sha512$cc2343962f50da60cf1a986ee35ea515$12$24de72ef71fc906d2378fd57c4d9a2490c3c28ac1d9a2e5a', 'A.', 'Unilever', 'dummy.unilever1@adxios.com','t');
+('c9c93c10-c02d-445b-a05d-1a2f8501c9fe', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'watsons', 'bcrypt+sha512$7c09fc6bb1bd14709b180d7aebcd5b8f$12$5825ee26b1e95d849175f9d0aaaf7e00d60ae2090cfb739b', 'Abd', 'al-Wadud', 'admin.wtsns@adxios.com', 't'),
+('0696f9a0-339f-4a05-b1f6-dc5c86daf378', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'dummy.wtsns1@adxios.com', 'bcrypt+sha512$7c09fc6bb1bd14709b180d7aebcd5b8f$12$5825ee26b1e95d849175f9d0aaaf7e00d60ae2090cfb739b', 'Abd', 'al-Rehman', 'dummy1@adxios.com', 'f'),
+('7907b471-99c0-4778-8dba-97493623bd7c', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'dummy.wtsns2@adxios.com', 'bcrypt+sha512$7c09fc6bb1bd14709b180d7aebcd5b8f$12$5825ee26b1e95d849175f9d0aaaf7e00d60ae2090cfb739b', 'Abd', 'al-Rashid', 'dummy.wtsns2@adxios.com', 'f'),
+('fd8ec1c3-59e2-49fe-bdff-c15537a02b3c', 'fde78682-419e-423f-bdc6-32f48a7be64a', 'dummy.wtsns3@adxios.com', 'bcrypt+sha512$7c09fc6bb1bd14709b180d7aebcd5b8f$12$5825ee26b1e95d849175f9d0aaaf7e00d60ae2090cfb739b', 'Abd', 'al-Latif', 'dummy.wtsns3@adxios.com', 'f'),
+('c9c93c10-c02d-445b-a05d-1a2f8501c9ff', 'fde78682-419e-423f-bdc6-32f48a7be64b', 'guardian', 'bcrypt+sha512$7c09fc6bb1bd14709b180d7aebcd5b8f$12$5825ee26b1e95d849175f9d0aaaf7e00d60ae2090cfb739b', 'Abd', 'Guardian', 'dummy.grdn1@adxios.com', 't'),
+('c9c93c10-c02d-445b-a05d-1a2f8501cccc', 'fde78682-419e-423f-bdc6-32f48a7be64c', 'unilever', 'bcrypt+sha512$7c09fc6bb1bd14709b180d7aebcd5b8f$12$5825ee26b1e95d849175f9d0aaaf7e00d60ae2090cfb739b', 'A.', 'Unilever', 'dummy.unilever1@adxios.com','t');
 --;;
 insert into "public"."user_role" ("user_id", "role_id") values
 ('c9c93c10-c02d-445b-a05d-1a2f8501c9fe', 'b5ea41ba-dfbb-4ffd-b213-604267f27ffb'),
@@ -828,7 +828,7 @@ insert into "public"."party" ("id", "aff_name", "user_name", "user_email", "loc_
 --;;
 insert into "public"."quotation" ("id", "quote_no", "value", "status", "date_issued", "issued_to", "issued_by", "cat_id", "sub_cat_id") values
 ('6b640f2d-34f2-4fd0-910a-2dfa70f977da', 'QUTN-0001', 150.00, 'DRAFT', now(), 'fde78682-419e-423f-bdc6-32f48a7be64c', 'fde78682-419e-423f-bdc6-32f48a7be64a', 1, 1),
-('6a9ab2ff-b861-4bb3-a32f-b9c12da37d82', 'QUTN-0002', 810.00, 'DRAFT', now(), 'a47f9d4c-25ea-47f4-9dba-dbacc1f85f98', '09995447-5f7e-496d-9015-891a6cd483a8', 2, 4);
+('6a9ab2ff-b861-4bb3-a32f-b9c12da37d82', 'QUTN-0002', 810.00, 'DRAFT', now(), '09995447-5f7e-496d-9015-891a6cd483a8', 'a47f9d4c-25ea-47f4-9dba-dbacc1f85f98', 2, 4);
 --;;
 insert into "public"."quote_item" ("id", "quote_id", "desc", "recurring", "recur_type", "unit_price", "quantity") values
 (uuid_generate_v4(), '6b640f2d-34f2-4fd0-910a-2dfa70f977da', 'Some text', '1', 'M', 90, 10),
@@ -843,6 +843,28 @@ insert into "public"."quote_discount" ("id", "quote_id", "desc", "value", "perce
 (uuid_generate_v4(), '6a9ab2ff-b861-4bb3-a32f-b9c12da37d82', 'Some text', 90, '0');
 --;;
 insert into "public"."party" ("id", "aff_name", "user_name", "user_email", "loc_name", "line1", "line2", "line3", "city", "postcode", "state", "country_id", "contact") values
+('2ba67eb1-0afe-42b9-b038-9532a0c72fef', 'Watsons Sdn. Bhd.', 'watsons', 'admin.wtsns@adxios.com', 'Loc W', 'Building W', 'Street W', 'Town W', 'Kuala Lumpur', '55000', 'WP', 'my', '6038888888'),
+('c114e452-8a11-4ae0-a02b-815d7fb85815', 'Unilever Limited', 'unilever', 'dummy.unilever1@adxios.com', 'Loc U', 'Building U', 'Street U', 'Town U', 'Kuala Lumpur', '56700', 'WP', 'my', '6038888888'),
+('a0415490-cfd8-4c90-8f67-da062fb70638', 'Watsons Sdn. Bhd.', 'watsons', 'admin.wtsns@adxios.com', 'Loc W', 'Building W', 'Street W', 'Town W', 'Kuala Lumpur', '55000', 'WP', 'my', '6038888888'),
+('cdca7df0-c498-47b7-a3c4-d37fd0295f14', 'Unilever Limited', 'unilever', 'dummy.unilever1@adxios.com', 'Loc U', 'Building U', 'Street U', 'Town U', 'Kuala Lumpur', '56700', 'WP', 'my', '6038888888');
+--;;
+insert into "public"."work_order" ("id", "wo_no", "value", "status", "date_issued", "issued_to", "issued_by", "cat_id", "sub_cat_id") values
+('2678c2d3-9a76-4249-af17-7d76720a9c53', 'WO-0001', 150.00, 'DRAFT', now(), 'c114e452-8a11-4ae0-a02b-815d7fb85815', '2ba67eb1-0afe-42b9-b038-9532a0c72fef', 1, 1),
+('475b6dc5-3717-4944-a643-cfba99787060', 'WO-0002', 810.00, 'DRAFT', now(), 'cdca7df0-c498-47b7-a3c4-d37fd0295f14', 'a0415490-cfd8-4c90-8f67-da062fb70638', 2, 4);
+--;;
+insert into "public"."wo_item" ("id", "wo_id", "desc", "recurring", "recur_type", "unit_price", "quantity") values
+(uuid_generate_v4(), '2678c2d3-9a76-4249-af17-7d76720a9c53', 'Some text', '1', 'M', 90, 10),
+(uuid_generate_v4(), '475b6dc5-3717-4944-a643-cfba99787060', 'Some text', '0', null, 510, 1);
+--;;
+insert into "public"."wo_misc" ("id", "wo_id", "desc", "value", "percent") values
+(uuid_generate_v4(), '2678c2d3-9a76-4249-af17-7d76720a9c53', 'Some text', 10, '1'),
+(uuid_generate_v4(), '475b6dc5-3717-4944-a643-cfba99787060', 'Some text', 50, '0');
+--;;
+insert into "public"."wo_discount" ("id", "wo_id", "desc", "value", "percent") values
+(uuid_generate_v4(), '2678c2d3-9a76-4249-af17-7d76720a9c53', 'Some text', 5, '1'),
+(uuid_generate_v4(), '475b6dc5-3717-4944-a643-cfba99787060', 'Some text', 90, '0');
+--;;
+insert into "public"."party" ("id", "aff_name", "user_name", "user_email", "loc_name", "line1", "line2", "line3", "city", "postcode", "state", "country_id", "contact") values
 ('7f59f78f-723d-4add-af36-cc59ce945fae', 'Watsons Sdn. Bhd.', 'watsons', 'admin.wtsns@adxios.com', 'Loc W', 'Building W', 'Street W', 'Town W', 'Kuala Lumpur', '55000', 'WP', 'my', '6038888888'),
 ('0052a34e-3098-4b32-ad62-90a161a1b347', 'Unilever Limited', 'unilever', 'dummy.unilever1@adxios.com', 'Loc U', 'Building U', 'Street U', 'Town U', 'Kuala Lumpur', '56700', 'WP', 'my', '6038888888'),
 ('95de0d4e-2b5f-430a-a4d3-9e4daa5bf254', 'Watsons Sdn. Bhd.', 'watsons', 'admin.wtsns@adxios.com', 'Loc W', 'Building W', 'Street W', 'Town W', 'Kuala Lumpur', '55000', 'WP', 'my', '6038888888'),
@@ -850,16 +872,16 @@ insert into "public"."party" ("id", "aff_name", "user_name", "user_email", "loc_
 --;;
 insert into "public"."invoice" ("id", "inv_no", "value", "status", "date_issued", "issued_to", "issued_by", "cat_id", "sub_cat_id") values
 ('c06e3eed-6001-4750-bdc0-fde55903cd41', 'INVC-0001', 150.00, 'DRAFT', now(), '0052a34e-3098-4b32-ad62-90a161a1b347', '7f59f78f-723d-4add-af36-cc59ce945fae', 1, 1),
-('0b5c4992-8f86-4d40-b8c9-d00ff6d69796', 'INVC-0002', 810.00, 'DRAFT', now(), '95de0d4e-2b5f-430a-a4d3-9e4daa5bf254', '3e9822b1-69df-4e32-aa4b-387b51654f22', 2, 4);
+('0b5c4992-8f86-4d40-b8c9-d00ff6d69796', 'INVC-0002', 810.00, 'DRAFT', now(), '3e9822b1-69df-4e32-aa4b-387b51654f22', '95de0d4e-2b5f-430a-a4d3-9e4daa5bf254', 2, 4);
 --;;
-insert into "public"."invoice_item" ("id", "inv_id", "desc", "recurring", "recur_type", "unit_price", "quantity") values
+insert into "public"."inv_item" ("id", "inv_id", "desc", "recurring", "recur_type", "unit_price", "quantity") values
 (uuid_generate_v4(), 'c06e3eed-6001-4750-bdc0-fde55903cd41', 'Some text', '1', 'M', 90, 10),
 (uuid_generate_v4(), '0b5c4992-8f86-4d40-b8c9-d00ff6d69796', 'Some text', '0', null, 510, 1);
 --;;
-insert into "public"."invoice_misc" ("id", "inv_id", "desc", "value", "percent") values
+insert into "public"."inv_misc" ("id", "inv_id", "desc", "value", "percent") values
 (uuid_generate_v4(), 'c06e3eed-6001-4750-bdc0-fde55903cd41', 'Some text', 10, '1'),
 (uuid_generate_v4(), '0b5c4992-8f86-4d40-b8c9-d00ff6d69796', 'Some text', 50, '0');
 --;;
-insert into "public"."invoice_discount" ("id", "inv_id", "desc", "value", "percent") values
+insert into "public"."inv_discount" ("id", "inv_id", "desc", "value", "percent") values
 (uuid_generate_v4(), 'c06e3eed-6001-4750-bdc0-fde55903cd41', 'Some text', 5, '1'),
 (uuid_generate_v4(), '0b5c4992-8f86-4d40-b8c9-d00ff6d69796', 'Some text', 90, '0');

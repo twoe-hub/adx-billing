@@ -191,8 +191,8 @@ DESC
 /*~ ) ~*/
 ) AS no, wo.id, wo.wo_no, q.quote_no, p_to.aff_name AS issued_to, wo.value, p_by.aff_name AS issued_by, wo.date_issued, c.name AS cat, sc.name AS sub_cat
 FROM public.work_order wo
-JOIN public.quote_wo_ref qw on qw.wo_id = wo.id
-JOIN public.quotation q on q.id = qw.quote_id
+LEFT JOIN public.quote_wo_ref qw on qw.wo_id = wo.id
+LEFT JOIN public.quotation q on q.id = qw.quote_id
 JOIN public.category c on c.id = wo.cat_id
 JOIN public.sub_category sc on sc.id = wo.sub_cat_id
 JOIN public.party p_to on p_to.id = wo.issued_to
@@ -209,8 +209,8 @@ OFFSET :offset LIMIT :limit
 -- :doc count all work-orders
 SELECT wo.status, count(wo.id) count
 FROM public.work_order wo
-JOIN public.quote_wo_ref qw on qw.wo_id = wo.id
-JOIN public.quotation q on q.id = qw.quote_id
+LEFT JOIN public.quote_wo_ref qw on qw.wo_id = wo.id
+LEFT JOIN public.quotation q on q.id = qw.quote_id
 JOIN public.category c on c.id = wo.cat_id
 JOIN public.sub_category sc on sc.id = wo.sub_cat_id
 JOIN public.party p_to on p_to.id = wo.issued_to
@@ -254,10 +254,10 @@ DESC
 /*~ ) ~*/
 ) AS no, i.id, i.inv_no, wo.wo_no, q.quote_no, p_to.aff_name AS issued_to, i.value, p_by.aff_name AS issued_by, i.date_issued, c.name AS cat, sc.name AS sub_cat
 FROM public.invoice i
-JOIN public.quote_inv_ref qi on qi.inv_id = i.id
-JOIN public.quotation q on q.id = qi.quote_id
-JOIN public.wo_inv_ref wi on wi.inv_id = i.id
-JOIN public.work_order wo on wo.id = wi.wo_id
+LEFT JOIN public.quote_inv_ref qi on qi.inv_id = i.id
+LEFT JOIN public.quotation q on q.id = qi.quote_id
+LEFT JOIN public.wo_inv_ref wi on wi.inv_id = i.id
+LEFT JOIN public.work_order wo on wo.id = wi.wo_id
 JOIN public.category c on c.id = i.cat_id
 JOIN public.sub_category sc on sc.id = i.sub_cat_id
 JOIN public.party p_to on p_to.id = i.issued_to
@@ -274,10 +274,10 @@ OFFSET :offset LIMIT :limit
 -- :doc count all invoices
 SELECT i.status, count(i.id) count
 FROM public.invoice i
-JOIN public.quote_inv_ref qi on qi.inv_id = i.id
-JOIN public.quotation q on q.id = qi.quote_id
-JOIN public.wo_inv_ref wi on wi.inv_id = i.id
-JOIN public.work_order wo on wo.id = wi.wo_id
+LEFT JOIN public.quote_inv_ref qi on qi.inv_id = i.id
+LEFT JOIN public.quotation q on q.id = qi.quote_id
+LEFT JOIN public.wo_inv_ref wi on wi.inv_id = i.id
+LEFT JOIN public.work_order wo on wo.id = wi.wo_id
 JOIN public.category c on c.id = i.cat_id
 JOIN public.sub_category sc on sc.id = i.sub_cat_id
 JOIN public.party p_to on p_to.id = i.issued_to
